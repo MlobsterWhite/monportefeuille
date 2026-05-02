@@ -22,7 +22,7 @@ const tools = [
     name: "Calculateur REER",
     tagline: "Calculez votre remboursement d'impôt et votre valeur à la retraite.",
     category: "Investissement",
-    ready: false,
+    ready: true,
   },
   {
     id: "celi-vs-reer",
