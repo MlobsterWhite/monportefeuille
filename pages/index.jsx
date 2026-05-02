@@ -4,14 +4,14 @@ import Layout from "../components/Layout";
 
 const tools = [
   {
-    id: "borrowell",
+    id: "estimateur-credit",
     name: "Estimateur de crédit",
     tagline: "Estimez votre profil de crédit et découvrez comment l'améliorer.",
     category: "Crédit",
     ready: true,
   },
   {
-    id: "wealthsimple",
+    id: "calculateur-celi",
     name: "Calculateur CELI",
     tagline: "Projetez la croissance de votre CELI jusqu'à la retraite.",
     category: "Investissement",
