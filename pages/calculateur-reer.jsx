@@ -230,6 +230,7 @@ export default function CalculateurREER() {
   const [tab, setTab] = useState("inputs");
   const [contribMode, setContribMode] = useState("$");
   const [employeePct, setEmployeePct] = useState(3);
+  const [currentBalance, setCurrentBalance] = useState(0);
 
   const years = Math.max(1, retireAge - age);
   const annualContrib = monthly * 12;
@@ -247,7 +248,7 @@ export default function CalculateurREER() {
     const r = returnRate / 100 / 12;
     const dataBase = [];
     const dataReinvest = [];
-    let balBase = 0, balReinvest = 0;
+    let balBase = currentBalance, balReinvest = currentBalance;
     const empMonthly = (income / 12) * (employerPct / 100);
     const total = monthly + empMonthly;
     const refundMonthly = annualRefund / 12;
@@ -269,7 +270,7 @@ export default function CalculateurREER() {
     const netReinvest = finalReinvest * (1 - retireTaxRate);
 
     return { dataBase, dataReinvest, finalBase, finalReinvest, retireTaxRate, netBase, netReinvest };
-  }, [income, monthly, employerPct, age, retireAge, returnRate, province, reinvest, annualRefund, years]);
+  }, [income, monthly, employerPct, currentBalance, age, retireAge, returnRate, province, reinvest, annualRefund, years]);
 
   useEffect(() => {
     localStorage.setItem("reer:projected", Math.round(reinvest ? finalReinvest : finalBase));
@@ -428,6 +429,9 @@ export default function CalculateurREER() {
               <Slider label="Rendement annuel estimé" value={returnRate} min={1} max={12} step={0.5}
                 onChange={setReturnRate} display={returnRate + "%"} />
 
+              <Slider label="Solde actuel du REER" value={currentBalance} min={0} max={500000} step={1000}
+                onChange={setCurrentBalance} display={currentBalance > 0 ? fmt(currentBalance) : "0 (nouveau REER)"} />
+
               {/* Reinvest toggle */}
               <div className="flex items-start gap-3 bg-[#0D1117] rounded-xl p-4 border border-[#21262D] cursor-pointer"
                 onClick={() => setReinvest(!reinvest)}>
@@ -442,6 +446,14 @@ export default function CalculateurREER() {
                   </div>
                 </div>
               </div>
+
+              {/* Voir résultats */}
+              <button
+                onClick={() => { setTab("results"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                className="w-full bg-[#F0A500] text-[#0D1117] font-bold rounded-xl py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors"
+              >
+                Voir mes résultats ↑
+              </button>
             </div>
           )}
 
