@@ -1,6 +1,109 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
+
+function CELIChart({ dataPoints }) {
+  const max = Math.max(...dataPoints.map(d => d.total));
+  const width = 560;
+  const height = 200;
+  const padL = 60;
+  const padR = 16;
+  const padT = 16;
+  const padB = 32;
+  const chartW = width - padL - padR;
+  const chartH = height - padT - padB;
+  const n = dataPoints.length;
+
+  const fmt = (n) => {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M$";
+    if (n >= 1000) return Math.round(n / 1000) + "k$";
+    return Math.round(n) + "$";
+  };
+
+  const contribPath = dataPoints.map((d, i) => {
+    const x = padL + (i / (n - 1)) * chartW;
+    const y = padT + chartH - (d.contributions / max) * chartH;
+    return `${i === 0 ? "M" : "L"}${x},${y}`;
+  }).join(" ");
+
+  const totalPath = dataPoints.map((d, i) => {
+    const x = padL + (i / (n - 1)) * chartW;
+    const y = padT + chartH - (d.total / max) * chartH;
+    return `${i === 0 ? "M" : "L"}${x},${y}`;
+  }).join(" ");
+
+  const totalAreaPath = [
+    ...dataPoints.map((d, i) => {
+      const x = padL + (i / (n - 1)) * chartW;
+      const y = padT + chartH - (d.total / max) * chartH;
+      return `${i === 0 ? "M" : "L"}${x},${y}`;
+    }),
+    `L${padL + chartW},${padT + chartH}`,
+    `L${padL},${padT + chartH}`,
+    "Z"
+  ].join(" ");
+
+  const contribAreaPath = [
+    ...dataPoints.map((d, i) => {
+      const x = padL + (i / (n - 1)) * chartW;
+      const y = padT + chartH - (d.contributions / max) * chartH;
+      return `${i === 0 ? "M" : "L"}${x},${y}`;
+    }),
+    `L${padL + chartW},${padT + chartH}`,
+    `L${padL},${padT + chartH}`,
+    "Z"
+  ].join(" ");
+
+  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="w-full" style={{ overflow: "visible" }}>
+      <defs>
+        <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#F0A500" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#F0A500" stopOpacity="0.02" />
+        </linearGradient>
+        <linearGradient id="contribGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3DDC97" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#3DDC97" stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+
+      {/* Y grid + labels */}
+      {yTicks.map(t => {
+        const y = padT + chartH - t * chartH;
+        return (
+          <g key={t}>
+            <line x1={padL} y1={y} x2={padL + chartW} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+            <text x={padL - 8} y={y + 4} textAnchor="end" fontSize="10" fill="rgba(255,255,255,0.25)">{fmt(max * t)}</text>
+          </g>
+        );
+      })}
+
+      {/* Area fills */}
+      <path d={totalAreaPath} fill="url(#totalGrad)" />
+      <path d={contribAreaPath} fill="url(#contribGrad)" />
+
+      {/* Lines */}
+      <path d={totalPath} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={contribPath} fill="none" stroke="#3DDC97" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 3" />
+
+      {/* X axis labels */}
+      {dataPoints.filter((_, i) => i % Math.floor(n / 5) === 0 || i === n - 1).map((d, _, arr) => {
+        const origI = dataPoints.indexOf(d);
+        const x = padL + (origI / (n - 1)) * chartW;
+        return (
+          <text key={origI} x={x} y={padT + chartH + 18} textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.25)">
+            {d.year}
+          </text>
+        );
+      })}
+
+      {/* End dot */}
+      <circle cx={padL + chartW} cy={padT + chartH - (dataPoints[n-1].total / max) * chartH} r="4" fill="#F0A500" />
+    </svg>
+  );
+}
 
 function CELICalculator() {
   const [age, setAge] = useState(30);
@@ -8,23 +111,30 @@ function CELICalculator() {
   const [monthlyContrib, setMonthlyContrib] = useState(300);
   const [returnRate, setReturnRate] = useState(7);
 
-  const yearsToRetirement = Math.max(0, 65 - age);
+  const yearsToRetirement = Math.max(1, 65 - age);
   const monthlyRate = returnRate / 100 / 12;
-  const months = yearsToRetirement * 12;
 
-  let balance = currentBalance;
-  for (let i = 0; i < months; i++) {
-    balance = balance * (1 + monthlyRate) + monthlyContrib;
-  }
-  const totalContribs = currentBalance + monthlyContrib * months;
-  const growth = balance - totalContribs;
+  const dataPoints = useMemo(() => {
+    const points = [];
+    let bal = currentBalance;
+    const currentYear = new Date().getFullYear();
+    for (let y = 0; y <= yearsToRetirement; y++) {
+      const contributions = currentBalance + monthlyContrib * 12 * y;
+      points.push({ year: currentYear + y, total: bal, contributions: Math.min(contributions, bal) });
+      for (let m = 0; m < 12; m++) bal = bal * (1 + monthlyRate) + monthlyContrib;
+    }
+    return points;
+  }, [age, currentBalance, monthlyContrib, returnRate, yearsToRetirement, monthlyRate]);
+
+  const finalBalance = dataPoints[dataPoints.length - 1].total;
+  const totalContribs = currentBalance + monthlyContrib * 12 * yearsToRetirement;
+  const growth = finalBalance - totalContribs;
 
   const fmt = (n) => Math.round(n).toLocaleString("fr-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 });
-
   const inputClass = "bg-[#0D1117] border border-[#21262D] text-[#E6EDF3] rounded-lg px-3.5 py-2.5 w-full text-sm focus:outline-none focus:border-[#3DDC97]/50";
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between">
@@ -34,53 +144,63 @@ function CELICalculator() {
           <input type="range" min={18} max={64} value={age} onChange={e => setAge(+e.target.value)} className="w-full accent-[#F0A500]" />
           <div className="flex justify-between text-xs text-[#484F58]"><span>18</span><span>64</span></div>
         </div>
-
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between">
-            <label className="text-xs text-[#8B949E] uppercase tracking-wider">Taux de rendement estimé</label>
+            <label className="text-xs text-[#8B949E] uppercase tracking-wider">Taux de rendement</label>
             <span className="text-xs font-bold text-[#F0A500]">{returnRate}%</span>
           </div>
           <input type="range" min={1} max={12} value={returnRate} onChange={e => setReturnRate(+e.target.value)} className="w-full accent-[#F0A500]" />
           <div className="flex justify-between text-xs text-[#484F58]"><span>1%</span><span>12%</span></div>
         </div>
-
         <div className="flex flex-col gap-1.5">
           <label className="text-xs text-[#8B949E] uppercase tracking-wider">Solde actuel ($)</label>
           <input type="number" className={inputClass} value={currentBalance} onChange={e => setCurrentBalance(+e.target.value)} min={0} />
         </div>
-
         <div className="flex flex-col gap-1.5">
           <label className="text-xs text-[#8B949E] uppercase tracking-wider">Contribution mensuelle ($)</label>
           <input type="number" className={inputClass} value={monthlyContrib} onChange={e => setMonthlyContrib(+e.target.value)} min={0} />
         </div>
       </div>
 
+      {/* Chart */}
+      <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
+        <div className="flex gap-4 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-0.5 bg-[#F0A500]"></div>
+            <span className="text-xs text-[#8B949E]">Valeur totale</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-0.5 bg-[#3DDC97] border-dashed" style={{borderTop: "2px dashed #3DDC97", height: 0}}></div>
+            <span className="text-xs text-[#8B949E]">Vos contributions</span>
+          </div>
+        </div>
+        <CELIChart dataPoints={dataPoints} />
+      </div>
+
       {/* Results */}
-      <div className="grid grid-cols-3 gap-3 mt-2">
+      <div className="grid grid-cols-3 gap-3">
         <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
           <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">À la retraite</div>
-          <div className="text-xl font-black text-[#F0A500]">{fmt(balance)}</div>
+          <div className="text-lg font-black text-[#F0A500]">{fmt(finalBalance)}</div>
         </div>
         <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
-          <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">Vos contributions</div>
-          <div className="text-xl font-black text-[#E6EDF3]">{fmt(totalContribs)}</div>
+          <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">Contributions</div>
+          <div className="text-lg font-black text-[#E6EDF3]">{fmt(totalContribs)}</div>
         </div>
         <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
           <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">Croissance</div>
-          <div className="text-xl font-black text-[#3DDC97]">{fmt(growth)}</div>
+          <div className="text-lg font-black text-[#3DDC97]">{fmt(growth)}</div>
         </div>
       </div>
 
-      {yearsToRetirement > 0 && (
-        <div className="bg-[#F0A500]/06 rounded-xl p-4 border border-[#F0A500]/20">
-          <p className="text-sm text-[#8B949E] leading-relaxed">
-            En contribuant <strong className="text-[#E6EDF3]">{fmt(monthlyContrib)}/mois</strong> pendant{" "}
-            <strong className="text-[#E6EDF3]">{yearsToRetirement} ans</strong>, votre CELI pourrait atteindre{" "}
-            <strong className="text-[#F0A500]">{fmt(balance)}</strong> à la retraite — dont{" "}
-            <strong className="text-[#3DDC97]">{fmt(growth)}</strong> en intérêts composés, complètement libres d'impôt.
-          </p>
-        </div>
-      )}
+      <div className="bg-[#F0A500]/06 rounded-xl p-4 border border-[#F0A500]/20">
+        <p className="text-sm text-[#8B949E] leading-relaxed">
+          En contribuant <strong className="text-[#E6EDF3]">{fmt(monthlyContrib)}/mois</strong> pendant{" "}
+          <strong className="text-[#E6EDF3]">{yearsToRetirement} ans</strong>, votre CELI pourrait atteindre{" "}
+          <strong className="text-[#F0A500]">{fmt(finalBalance)}</strong> — dont{" "}
+          <strong className="text-[#3DDC97]">{fmt(growth)}</strong> en intérêts composés, complètement libres d'impôt.
+        </p>
+      </div>
     </div>
   );
 }
@@ -93,44 +213,38 @@ export default function WealthsimplePage() {
           ← Retour aux outils
         </Link>
 
-        {/* Hero */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-xl overflow-hidden bg-white flex items-center justify-center border border-[#21262D]">
-              <img src="https://logo.clearbit.com/wealthsimple.com" alt="Wealthsimple"
-                className="w-8 h-8 object-contain"
-                onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="📈"; }} />
+            <div className="w-11 h-11 rounded-xl bg-[#F0A500]/10 border border-[#F0A500]/20 flex items-center justify-center">
+              <span className="text-[#F0A500] font-bold text-lg">W</span>
             </div>
             <div>
-              <div className="text-xs text-[#8B949E] uppercase tracking-widest">Investissement</div>
+              <div className="text-xs text-[#8B949E] uppercase tracking-widest">Banque & Investissement</div>
               <h1 className="text-2xl font-extrabold text-[#E6EDF3] tracking-tight">Wealthsimple</h1>
             </div>
           </div>
           <p className="text-base text-[#8B949E] leading-relaxed">
-            La plateforme d'investissement canadienne #1. Ouvrez un CELI, REER ou un compte de courtage
-            et achetez des actions et FNB sans frais de commission.
+            La plateforme financière canadienne #1. Compte bancaire, CELI, REER et courtage — tout en un, sans frais de commission.
           </p>
         </div>
 
-        {/* Tool */}
         <div className="bg-[#161B22] rounded-2xl p-7 border border-[#21262D] mb-7">
           <div className="mb-5">
             <h2 className="text-lg font-bold text-[#E6EDF3] mb-1">🛠 Calculateur CELI</h2>
             <p className="text-sm text-[#8B949E]">
-              Estimez la croissance de votre CELI jusqu'à la retraite selon vos contributions mensuelles.
+              Estimez la croissance de votre CELI jusqu'à la retraite. Ajustez les paramètres pour voir l'impact en temps réel.
             </p>
           </div>
           <CELICalculator />
         </div>
 
-        {/* Features */}
         <div className="bg-[#161B22] rounded-2xl p-7 border border-[#21262D] mb-7">
           <h2 className="text-lg font-bold text-[#E6EDF3] mb-4">Pourquoi Wealthsimple?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { icon: "💸", title: "0$ de commission", desc: "Achetez et vendez des actions canadiennes et américaines sans frais." },
               { icon: "🇨🇦", title: "100% canadien", desc: "Fondé à Toronto. Réglementé par l'OCRI. Protégé par le FCPE." },
-              { icon: "📱", title: "Simple à utiliser", desc: "Application mobile intuitive. Idéal pour les débutants et investisseurs actifs." },
+              { icon: "🏦", title: "Tout en un", desc: "Compte bancaire, carte Visa, épargne et investissement dans une seule app." },
             ].map(item => (
               <div key={item.title} className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
                 <div className="text-2xl mb-2">{item.icon}</div>
@@ -141,13 +255,11 @@ export default function WealthsimplePage() {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="bg-[#F0A500]/06 border border-[#F0A500]/25 rounded-2xl p-8 text-center">
           <div className="text-3xl mb-3">🚀</div>
           <h3 className="text-xl font-bold text-[#E6EDF3] mb-2">Commencez à investir aujourd'hui</h3>
           <p className="text-sm text-[#8B949E] mb-6 leading-relaxed max-w-sm mx-auto">
-            Ouvrez un compte CELI ou REER en 5 minutes. Aucuns frais mensuels, aucune commission.
-            Recevez un bonus à l'ouverture via ce lien.
+            Ouvrez un compte CELI ou REER en 5 minutes. Aucuns frais mensuels, aucune commission. Recevez un bonus à l'ouverture via ce lien.
           </p>
           <a
             href="https://www.wealthsimple.com/invite/EDVQ3W"
