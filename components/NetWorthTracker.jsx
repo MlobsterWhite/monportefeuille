@@ -337,7 +337,25 @@ export default function NetWorthTracker() {
               <NumberInput value={assets.celi} onChange={setAsset("celi")} placeholder={t.ph.celi} />
             </div>
 
-            {["reer", "savings", "investments", "realEstate", "vehicle", "otherAsset"].map((k) => (
+            {/* REER with import */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs text-[#8B949E]">{t.cat.reer}</label>
+                <button
+                  onClick={() => {
+                    const val = localStorage.getItem("reer:projected");
+                    if (val) { setAssets(p => ({ ...p, reer: val })); notify(lang === "fr" ? "✓ Valeur REER importée" : "✓ RRSP value imported", true); }
+                    else notify(lang === "fr" ? "Calculateur REER non connecté" : "RRSP calculator not connected", false);
+                  }}
+                  className="text-[10px] text-[#F0A500] hover:text-[#D4940A] transition-colors font-medium"
+                >
+                  ↓ {lang === "fr" ? "Importer valeur REER projetée" : "Import projected RRSP value"}
+                </button>
+              </div>
+              <NumberInput value={assets.reer} onChange={setAsset("reer")} placeholder={t.ph.reer} />
+            </div>
+
+            {["savings", "investments", "realEstate", "vehicle", "otherAsset"].map((k) => (
               <div key={k}>
                 <label className="text-xs text-[#8B949E] block mb-1">{t.cat[k]}</label>
                 <NumberInput value={assets[k]} onChange={setAsset(k)} placeholder={t.ph[k]} />

@@ -60,6 +60,10 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
                     className="block px-4 py-2.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
                     💼 Valeur nette
                   </Link>
+                  <Link href="/calculateur-reer" onClick={() => setOpen(false)}
+                    className="block px-4 py-2.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                    📋 Calculateur REER
+                  </Link>
                 </div>
               )}
             </div>
