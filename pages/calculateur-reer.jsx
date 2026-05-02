@@ -140,6 +140,22 @@ function getRefund(income, contribution, province) {
   return Math.max(0, taxBefore - taxAfter);
 }
 
+// ─── Tooltip ─────────────────────────────────────────────────────────────────
+function Tooltip({ text, children }) {
+  const [show, setShow] = useState(false);
+  return (
+    <span className="relative inline-block"
+      onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+      {children}
+      {show && (
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-[#21262D] border border-[#30363D] text-[#C9D1D9] text-[10px] rounded-lg px-3 py-2 z-50 leading-relaxed shadow-xl">
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
+
 // ─── Chart ───────────────────────────────────────────────────────────────────
 function AreaChart({ dataBase, dataReinvest, showReinvest, maxVal }) {
   if (!dataBase.length) return null;
@@ -231,51 +247,17 @@ export default function CalculateurREER() {
   const [contribMode, setContribMode] = useState("$");
   const [employeePct, setEmployeePct] = useState(3);
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [reerUnusedRoom, setReerUnusedRoom] = useState(0);
   const [desiredIncome, setDesiredIncome] = useState(60000);
   const [govtRente, setGovtRente] = useState(province === "QC" ? 800 : 700);
   const [oas, setOas] = useState(727);
   const [otherIncome, setOtherIncome] = useState(0);
   const [drawdownRate, setDrawdownRate] = useState(4);
 
-// Charger les paramètres sauvegardés
-useEffect(() => {
-  try {
-    const saved = localStorage.getItem("reer:params");
-    if (saved) {
-      const p = JSON.parse(saved);
-      if (p.income) setIncome(p.income);
-      if (p.monthly) setMonthly(p.monthly);
-      if (p.employerPct !== undefined) setEmployerPct(p.employerPct);
-      if (p.employeePct) setEmployeePct(p.employeePct);
-      if (p.age) setAge(p.age);
-      if (p.retireAge) setRetireAge(p.retireAge);
-      if (p.returnRate) setReturnRate(p.returnRate);
-      if (p.province) setProvince(p.province);
-      if (p.reinvest !== undefined) setReinvest(p.reinvest);
-      if (p.currentBalance !== undefined) setCurrentBalance(p.currentBalance);
-      if (p.desiredIncome) setDesiredIncome(p.desiredIncome);
-      if (p.govtRente) setGovtRente(p.govtRente);
-      if (p.oas) setOas(p.oas);
-      if (p.otherIncome !== undefined) setOtherIncome(p.otherIncome);
-      if (p.drawdownRate) setDrawdownRate(p.drawdownRate);
-    }
-  } catch {}
-}, []);
-
-    // Sauvegarder les paramètres à chaque changement
-    useEffect(() => {
-    try {
-        localStorage.setItem("reer:params", JSON.stringify({
-        income, monthly, employerPct, employeePct, age, retireAge,
-        returnRate, province, reinvest, currentBalance,
-        desiredIncome, govtRente, oas, otherIncome, drawdownRate
-        }));
-    } catch {}
-    }, [income, monthly, employerPct, employeePct, age, retireAge,
-        returnRate, province, reinvest, currentBalance,
-        desiredIncome, govtRente, oas, otherIncome, drawdownRate]);
-
   const years = Math.max(1, retireAge - age);
+  const REER_MAX_2025 = 31560;
+  const annualReerRoom = Math.min(income * 0.18, REER_MAX_2025);
+  const totalReerRoom = reerUnusedRoom + annualReerRoom * years;
   const annualContrib = monthly * 12;
   const employerMonthly = (income / 12) * (employerPct / 100);
   const employerAnnual = employerMonthly * 12;
@@ -349,6 +331,44 @@ useEffect(() => {
   const yearLabels = Array.from({ length: years + 1 }, (_, i) => new Date().getFullYear() + i);
   const gain = reinvest ? finalReinvest - finalBase : 0;
 
+  // Persist params
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("reer:params");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.income) setIncome(p.income);
+        if (p.monthly) setMonthly(p.monthly);
+        if (p.employerPct !== undefined) setEmployerPct(p.employerPct);
+        if (p.employeePct) setEmployeePct(p.employeePct);
+        if (p.age) setAge(p.age);
+        if (p.retireAge) setRetireAge(p.retireAge);
+        if (p.returnRate) setReturnRate(p.returnRate);
+        if (p.province) setProvince(p.province);
+        if (p.reinvest !== undefined) setReinvest(p.reinvest);
+        if (p.currentBalance !== undefined) setCurrentBalance(p.currentBalance);
+        if (p.reerUnusedRoom !== undefined) setReerUnusedRoom(p.reerUnusedRoom);
+        if (p.desiredIncome) setDesiredIncome(p.desiredIncome);
+        if (p.govtRente) setGovtRente(p.govtRente);
+        if (p.oas) setOas(p.oas);
+        if (p.otherIncome !== undefined) setOtherIncome(p.otherIncome);
+        if (p.drawdownRate) setDrawdownRate(p.drawdownRate);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("reer:params", JSON.stringify({
+        income, monthly, employerPct, employeePct, age, retireAge,
+        returnRate, province, reinvest, currentBalance, reerUnusedRoom,
+        desiredIncome, govtRente, oas, otherIncome, drawdownRate
+      }));
+    } catch {}
+  }, [income, monthly, employerPct, employeePct, age, retireAge,
+      returnRate, province, reinvest, currentBalance, reerUnusedRoom,
+      desiredIncome, govtRente, oas, otherIncome, drawdownRate]);
+
   const tabs = [
     { key: "inputs", label: "Paramètres" },
     { key: "results", label: "Résultats" },
@@ -373,53 +393,112 @@ useEffect(() => {
           {/* Hero — Tax Summary */}
           <div className="rounded-2xl p-5 mb-4 relative overflow-hidden" style={{ background: "#161B22", border: "1px solid #21262D" }}>
             <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 80% 50%, rgba(240,165,0,0.07) 0%, transparent 65%)" }} />
-            <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Taux marginal</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-2xl text-[#F0A500] font-medium">{pct(marginalRate)}</div>
-                <div className="text-[10px] text-[#484F58] mt-0.5">fédéral + {province}</div>
+            <div className="relative">
+              {/* Ligne 1 — valeurs principales */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Valeur à la retraite</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl text-[#F0A500] font-medium">{fmt(reinvest ? finalReinvest : finalBase)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">brut à {retireAge} ans</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Remboursement fiscal annuel</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl text-[#3DDC97] font-medium">{fmt(annualRefund)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">{fmt(monthlyRefund)} / mois</div>
+                </div>
               </div>
-              <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Remboursement fiscal annuel</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-2xl text-[#3DDC97] font-medium">{fmt(annualRefund)}</div>
-                <div className="text-[10px] text-[#484F58] mt-0.5">{fmt(monthlyRefund)} / mois</div>
+              {/* Ligne 2 — valeurs secondaires */}
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#21262D]">
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Taux marginal</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-base text-[#F0A500] font-medium">{pct(marginalRate)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">fédéral + {province}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Valeur nette (après impôt)</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-base text-[#E6EDF3] font-medium">{fmt(reinvest ? netReinvest : netBase)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">estimé à {pct(retireTaxRate)} retraite</div>
+                </div>
               </div>
-              <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Valeur à la retraite</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-2xl text-[#E6EDF3] font-medium">{fmt(reinvest ? finalReinvest : finalBase)}</div>
-                <div className="text-[10px] text-[#484F58] mt-0.5">brut à {retireAge} ans</div>
-              </div>
-              <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Valeur nette (après impôt)</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-2xl text-[#E6EDF3] font-medium">{fmt(reinvest ? netReinvest : netBase)}</div>
-                <div className="text-[10px] text-[#484F58] mt-0.5">estimé à {pct(retireTaxRate)} retraite</div>
-              </div>
+              {reinvest && gain > 0 && (
+                <div className="mt-4 bg-[#3DDC97]/10 border border-[#3DDC97]/20 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                  <span className="text-xs text-[#3DDC97]">✦ Gain du réinvestissement automatique</span>
+                  <span style={{ fontFamily: "'DM Mono', monospace" }} className="text-sm text-[#3DDC97] font-medium">+{fmt(gain)}</span>
+                </div>
+              )}
             </div>
-
-            {reinvest && gain > 0 && (
-              <div className="mt-4 bg-[#3DDC97]/10 border border-[#3DDC97]/20 rounded-xl px-4 py-2.5 flex items-center justify-between">
-                <span className="text-xs text-[#3DDC97]">✦ Gain du réinvestissement automatique</span>
-                <span style={{ fontFamily: "'DM Mono', monospace" }} className="text-sm text-[#3DDC97] font-medium">+{fmt(gain)}</span>
-              </div>
-            )}
           </div>
 
           {/* Chart */}
-          <div className="rounded-2xl p-5 mb-4" style={{ background: "#161B22", border: "1px solid #21262D" }}>
-            <div className="flex items-center justify-between mb-3">
-              <div className="text-xs text-[#8B949E] uppercase tracking-widest">Projection sur {years} ans</div>
-              <div className="flex items-center gap-3 text-[10px] text-[#8B949E]">
-                <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#F0A500] inline-block rounded" />Sans réinvestissement</span>
-                {reinvest && <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#3DDC97] inline-block rounded" />Avec réinvestissement</span>}
+          {(() => {
+            const totalMonthlyContrib = monthly + (income / 12) * (employerPct / 100);
+            const contribData = Array.from({ length: years + 1 }, (_, i) => currentBalance + totalMonthlyContrib * 12 * i);
+            const roomData = Array.from({ length: years + 1 }, (_, i) => reerUnusedRoom + annualReerRoom * i);
+            const overLimit = contribData.some((v, i) => v > roomData[i]);
+            const W = 500, H = 180, PX = 8, PY = 12;
+            const iW = W - PX * 2, iH = H - PY * 2;
+            const allVals = [...dataBase, ...dataReinvest, ...contribData, ...roomData];
+            const maxV = Math.max(...allVals) || 1;
+            const x = (i) => PX + (i / (dataBase.length - 1)) * iW;
+            const y = (v) => PY + ((maxV - v) / maxV) * iH;
+            const pathBase = dataBase.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const areaBase = pathBase + ` L ${x(dataBase.length - 1)} ${H} L ${PX} ${H} Z`;
+            const pathReinvest = dataReinvest.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const areaReinvest = pathReinvest + ` L ${x(dataReinvest.length - 1)} ${H} L ${PX} ${H} Z`;
+            const contribPath = contribData.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const roomPath = roomData.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const lastBase = dataBase[dataBase.length - 1];
+            const lastReinvest = dataReinvest[dataReinvest.length - 1];
+            const lastContrib = contribData[contribData.length - 1];
+            const lastRoom = roomData[roomData.length - 1];
+            return (
+              <div className="rounded-2xl p-5 mb-4" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-xs text-[#8B949E] uppercase tracking-widest">Projection sur {years} ans</div>
+                  <div className="flex items-center gap-3 text-[10px] text-[#8B949E]">
+                    <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#F0A500] inline-block rounded" />Valeur</span>
+                    {reinvest && <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#3DDC97] inline-block rounded" />Réinvestissement</span>}
+                    <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#484F58] inline-block rounded" />Contributions</span>
+                    <span className="flex items-center gap-1"><span className="w-3 border-t border-dashed border-[#3DDC97] inline-block" style={{width:12}} />Plafond</span>
+                  </div>
+                </div>
+                {overLimit && (
+                  <div className="mb-3 bg-red-500/10 border border-red-500/25 rounded-xl px-4 py-2.5 text-xs text-red-400">
+                    ⚠️ Attention — vos contributions projetées dépassent vos droits REER disponibles. Vous ne pourrez pas déduire l'excédent.
+                  </div>
+                )}
+                <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 180 }}>
+                  <defs>
+                    <linearGradient id="gradBase" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#F0A500" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#F0A500" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="gradReinvest" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3DDC97" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#3DDC97" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path d={areaBase} fill="url(#gradBase)" />
+                  <path d={pathBase} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                  {reinvest && <>
+                    <path d={areaReinvest} fill="url(#gradReinvest)" />
+                    <path d={pathReinvest} fill="none" stroke="#3DDC97" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                  </>}
+                  <path d={contribPath} fill="none" stroke="#484F58" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+                  <path d={roomPath} fill="none" stroke="#3DDC97" strokeWidth="1.5" strokeDasharray="4 3" strokeLinejoin="round" strokeLinecap="round" />
+                  <text x={W - PX - 4} y={Math.max(PY + 8, y(lastBase) - 5)} textAnchor="end" fontSize="8" fill="#F0A500" fontFamily="monospace">{fmt(lastBase)}</text>
+                  {reinvest && <text x={W - PX - 4} y={Math.max(PY + 8, y(lastReinvest) - 5)} textAnchor="end" fontSize="8" fill="#3DDC97" fontFamily="monospace">{fmt(lastReinvest)}</text>}
+                  <text x={W - PX - 4} y={Math.min(H - 4, y(lastContrib) + 10)} textAnchor="end" fontSize="8" fill="#8B949E" fontFamily="monospace">{fmt(lastContrib)}</text>
+                  <text x={W - PX - 4} y={Math.max(PY + 8, y(lastRoom) - 5)} textAnchor="end" fontSize="8" fill="#3DDC97" fontFamily="monospace">{fmt(lastRoom)}</text>
+                </svg>
+                <div className="flex justify-between mt-1 text-[10px] text-[#484F58]">
+                  <span>{new Date().getFullYear()}</span>
+                  <span>{new Date().getFullYear() + Math.floor(years / 2)}</span>
+                  <span>{new Date().getFullYear() + years}</span>
+                </div>
               </div>
-            </div>
-            <AreaChart dataBase={dataBase} dataReinvest={dataReinvest} showReinvest={reinvest} maxVal={maxVal} />
-            <div className="flex justify-between mt-1 text-[10px] text-[#484F58]">
-              <span>{new Date().getFullYear()}</span>
-              <span>{new Date().getFullYear() + Math.floor(years / 2)}</span>
-              <span>{new Date().getFullYear() + years}</span>
-            </div>
-          </div>
+            );
+          })()}
 
           {/* Tabs */}
           <div className="flex gap-1 mb-4 bg-[#161B22] border border-[#21262D] rounded-xl p-1">
@@ -498,8 +577,35 @@ useEffect(() => {
               <Slider label="Rendement annuel estimé" value={returnRate} min={1} max={12} step={0.5}
                 onChange={setReturnRate} display={returnRate + "%"} />
 
-              <Slider label="Solde actuel du REER" value={currentBalance} min={0} max={500000} step={1000}
-                onChange={setCurrentBalance} display={currentBalance > 0 ? fmt(currentBalance) : "0 (nouveau REER)"} />
+              <div>
+                <label className="text-xs text-[#8B949E] block mb-1.5">Solde actuel du REER</label>
+                <input
+                  type="number" min="0" step="1000" value={currentBalance || ""}
+                  onChange={(e) => setCurrentBalance(Number(e.target.value) || 0)}
+                  placeholder="0 (nouveau REER)"
+                  className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <label className="text-xs text-[#8B949E]">Droits REER non utilisés aujourd'hui</label>
+                  <Tooltip text="Consultez votre avis de cotisation (ARC) ou Mon dossier sur canada.ca pour connaître vos droits REER disponibles. Cherchez 'Déductions inutilisées au titre des REER'.">
+                    <span className="text-[10px] text-[#484F58] border border-[#484F58] rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help">?</span>
+                  </Tooltip>
+                </div>
+                <input
+                  type="number" min="0" step="500" value={reerUnusedRoom || ""}
+                  onChange={(e) => setReerUnusedRoom(Number(e.target.value) || 0)}
+                  placeholder="Ex: 25 000 (laisser vide si inconnu)"
+                  className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
+                />
+                <div className="text-[10px] text-[#8B949E] mt-1.5 bg-[#0D1117] rounded-lg px-3 py-2 border border-[#21262D]">
+                  Droits annuels estimés : <span className="text-[#F0A500]">{fmt(annualReerRoom)}/an</span>
+                  {" "}(18% de {fmt(income)}, max {fmt(REER_MAX_2025)})
+                  {reerUnusedRoom > 0 && <> · Plafond total sur {years} ans : <span className="text-[#F0A500]">{fmt(totalReerRoom)}</span></>}
+                </div>
+              </div>
 
               {/* Reinvest toggle */}
               <div className="flex items-start gap-3 bg-[#0D1117] rounded-xl p-4 border border-[#21262D] cursor-pointer"
@@ -516,12 +622,25 @@ useEffect(() => {
                 </div>
               </div>
 
-              {/* Voir résultats */}
+{/* Voir résultats + Reset */}
               <button
                 onClick={() => { setTab("results"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 className="w-full bg-[#F0A500] text-[#0D1117] font-bold rounded-xl py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors"
               >
                 Voir mes résultats ↑
+              </button>
+              <button
+                onClick={() => {
+                  setIncome(75000); setMonthly(500); setEmployerPct(0); setEmployeePct(3);
+                  setAge(35); setRetireAge(65); setReturnRate(6); setProvince("QC");
+                  setReinvest(false); setCurrentBalance(0); setReerUnusedRoom(0);
+                  setDesiredIncome(60000); setGovtRente(800); setOas(727);
+                  setOtherIncome(0); setDrawdownRate(4);
+                  localStorage.removeItem("reer:params");
+                }}
+                className="w-full border border-[#21262D] text-[#8B949E] rounded-xl py-3 text-sm hover:border-[#484F58] hover:text-[#E6EDF3] transition-colors"
+              >
+                Réinitialiser
               </button>
             </div>
           )}
@@ -711,7 +830,7 @@ useEffect(() => {
           )}
 
           {/* CTA */}
-          <div className="mt-4 bg-[#F0A500]/06 border border-[#F0A500]/25 rounded-2xl p-8 text-center">
+          <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
             <div className="text-3xl mb-3">🏦</div>
             <h3 className="text-xl font-bold text-[#E6EDF3] mb-2">Ouvrez votre REER chez Wealthsimple</h3>
             <p className="text-sm text-[#8B949E] mb-6 leading-relaxed max-w-sm mx-auto">
@@ -720,7 +839,7 @@ useEffect(() => {
             <AffiliateLink
               href="https://www.wealthsimple.com/invite/EDVQ3W"
               partner="wealthsimple-reer"
-              className="inline-block bg-[#F0A500] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors no-underline"
+              className="inline-block bg-[#3B82F6] text-white font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2563EB] transition-colors no-underline"
             >
               Ouvrir un REER chez Wealthsimple →
             </AffiliateLink>

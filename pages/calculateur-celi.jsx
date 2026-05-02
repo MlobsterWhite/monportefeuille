@@ -1,289 +1,419 @@
-import Link from "next/link";
-import Layout from "../components/Layout";
 import { useState, useMemo, useEffect } from "react";
+import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
 
-function CELIChart({ dataPoints }) {
-  const max = Math.max(...dataPoints.map(d => d.total));
-  const width = 560;
-  const height = 200;
-  const padL = 60;
-  const padR = 16;
-  const padT = 16;
-  const padB = 32;
-  const chartW = width - padL - padR;
-  const chartH = height - padT - padB;
-  const n = dataPoints.length;
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const fmt = (n) => "$" + Math.round(n || 0).toLocaleString("fr-CA");
+const pct = (n) => (n * 100).toFixed(1) + "%";
 
-  const fmt = (n) => {
-    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M$";
-    if (n >= 1000) return Math.round(n / 1000) + "k$";
-    return Math.round(n) + "$";
-  };
-
-  const contribPath = dataPoints.map((d, i) => {
-    const x = padL + (i / (n - 1)) * chartW;
-    const y = padT + chartH - (d.contributions / max) * chartH;
-    return `${i === 0 ? "M" : "L"}${x},${y}`;
-  }).join(" ");
-
-  const totalPath = dataPoints.map((d, i) => {
-    const x = padL + (i / (n - 1)) * chartW;
-    const y = padT + chartH - (d.total / max) * chartH;
-    return `${i === 0 ? "M" : "L"}${x},${y}`;
-  }).join(" ");
-
-  const totalAreaPath = [
-    ...dataPoints.map((d, i) => {
-      const x = padL + (i / (n - 1)) * chartW;
-      const y = padT + chartH - (d.total / max) * chartH;
-      return `${i === 0 ? "M" : "L"}${x},${y}`;
-    }),
-    `L${padL + chartW},${padT + chartH}`,
-    `L${padL},${padT + chartH}`, "Z"
-  ].join(" ");
-
-  const contribAreaPath = [
-    ...dataPoints.map((d, i) => {
-      const x = padL + (i / (n - 1)) * chartW;
-      const y = padT + chartH - (d.contributions / max) * chartH;
-      return `${i === 0 ? "M" : "L"}${x},${y}`;
-    }),
-    `L${padL + chartW},${padT + chartH}`,
-    `L${padL},${padT + chartH}`, "Z"
-  ].join(" ");
-
-  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+// ─── Slider with click-to-edit ────────────────────────────────────────────────
+function Slider({ label, value, min, max, step, onChange, display }) {
+  const [editing, setEditing] = useState(false);
+  const [raw, setRaw] = useState("");
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full" style={{ overflow: "visible" }}>
-      <defs>
-        <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#F0A500" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#F0A500" stopOpacity="0.02" />
-        </linearGradient>
-        <linearGradient id="contribGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3DDC97" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#3DDC97" stopOpacity="0.02" />
-        </linearGradient>
-      </defs>
-      {yTicks.map(t => {
-        const y = padT + chartH - t * chartH;
-        return (
-          <g key={t}>
-            <line x1={padL} y1={y} x2={padL + chartW} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-            <text x={padL - 8} y={y + 4} textAnchor="end" fontSize="10" fill="rgba(255,255,255,0.25)">{fmt(max * t)}</text>
-          </g>
-        );
-      })}
-      <path d={totalAreaPath} fill="url(#totalGrad)" />
-      <path d={contribAreaPath} fill="url(#contribGrad)" />
-      <path d={totalPath} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={contribPath} fill="none" stroke="#3DDC97" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 3" />
-      {dataPoints.filter((_, i) => i % Math.max(1, Math.floor(n / 5)) === 0 || i === n - 1).map((d) => {
-        const origI = dataPoints.indexOf(d);
-        const x = padL + (origI / (n - 1)) * chartW;
-        return (
-          <text key={origI} x={x} y={padT + chartH + 18} textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.25)">
-            {d.year}
-          </text>
-        );
-      })}
-      <circle cx={padL + chartW} cy={padT + chartH - (dataPoints[n - 1].total / max) * chartH} r="4" fill="#F0A500" />
-    </svg>
-  );
-}
-
-function CELICalculator() {
-  const [age, setAge] = useState(30);
-  const [retirementAge, setRetirementAge] = useState(65);
-  const [currentBalance, setCurrentBalance] = useState(10000);
-  const [monthlyContrib, setMonthlyContrib] = useState(300);
-  const [returnRate, setReturnRate] = useState(7);
-
-  const yearsToRetirement = Math.max(1, retirementAge - age);
-  const monthlyRate = returnRate / 100 / 12;
-
-  const dataPoints = useMemo(() => {
-    const points = [];
-    let bal = currentBalance;
-    const currentYear = new Date().getFullYear();
-    for (let y = 0; y <= yearsToRetirement; y++) {
-      const contributions = currentBalance + monthlyContrib * 12 * y;
-      points.push({ year: currentYear + y, total: bal, contributions: Math.min(contributions, bal) });
-      for (let m = 0; m < 12; m++) bal = bal * (1 + monthlyRate) + monthlyContrib;
-    }
-    return points;
-  }, [age, retirementAge, currentBalance, monthlyContrib, returnRate, yearsToRetirement, monthlyRate]);
-
-  const finalBalance = dataPoints[dataPoints.length - 1].total;
-  useEffect(() => {
-    localStorage.setItem("celi:projected", Math.round(finalBalance));
-  }, [finalBalance]);
-  const totalContribs = currentBalance + monthlyContrib * 12 * yearsToRetirement;
-  const growth = finalBalance - totalContribs;
-
-  const fmt = (n) => Math.round(n).toLocaleString("fr-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 });
-  const inputClass = "bg-[#0D1117] border border-[#21262D] text-[#E6EDF3] rounded-lg px-3.5 py-2.5 w-full text-sm focus:outline-none focus:border-[#F0A500]/50";
-
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between">
-            <label className="text-xs text-[#8B949E] uppercase tracking-wider">Votre âge actuel</label>
-            <span className="text-xs font-bold text-[#F0A500]">{age} ans</span>
-          </div>
-          <input type="range" min={18} max={retirementAge - 1} value={age}
-            onChange={e => setAge(+e.target.value)} className="w-full accent-[#F0A500]" />
-          <div className="flex justify-between text-xs text-[#484F58]"><span>18</span><span>{retirementAge - 1}</span></div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between">
-            <label className="text-xs text-[#8B949E] uppercase tracking-wider">Âge de retraite visé</label>
-            <span className="text-xs font-bold text-[#F0A500]">{retirementAge} ans</span>
-          </div>
-          <input type="range" min={age + 1} max={80} value={retirementAge}
-            onChange={e => setRetirementAge(+e.target.value)} className="w-full accent-[#F0A500]" />
-          <div className="flex justify-between text-xs text-[#484F58]"><span>{age + 1}</span><span>80</span></div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between">
-            <label className="text-xs text-[#8B949E] uppercase tracking-wider">Taux de rendement</label>
-            <span className="text-xs font-bold text-[#F0A500]">{returnRate}%</span>
-          </div>
-          <input type="range" min={1} max={12} value={returnRate}
-            onChange={e => setReturnRate(+e.target.value)} className="w-full accent-[#F0A500]" />
-          <div className="flex justify-between text-xs text-[#484F58]"><span>1%</span><span>12%</span></div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-[#8B949E] uppercase tracking-wider">Contribution mensuelle ($)</label>
-          <input type="number" className={inputClass} value={monthlyContrib}
-            onChange={e => setMonthlyContrib(+e.target.value)} min={0} />
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label className="text-xs text-[#8B949E] uppercase tracking-wider">Solde actuel ($)</label>
-          <input type="number" className={inputClass} value={currentBalance}
-            onChange={e => setCurrentBalance(+e.target.value)} min={0} />
-        </div>
+    <div>
+      <div className="flex justify-between items-center mb-1.5">
+        <label className="text-xs text-[#8B949E]">{label}</label>
+        {editing ? (
+          <input
+            type="number" autoFocus value={raw} min={min} max={max}
+            onChange={(e) => setRaw(e.target.value)}
+            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
+            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
+            className="w-28 bg-[#0D1117] border border-[#F0A500] rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none"
+          />
+        ) : (
+          <span onClick={() => { setRaw(value); setEditing(true); }}
+            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer hover:text-[#F0A500] transition-colors border-b border-dashed border-[#484F58]"
+            title="Cliquez pour modifier">
+            {display}
+          </span>
+        )}
       </div>
-
-      {/* Summary bar */}
-      <div className="bg-[#F0A500]/06 rounded-xl px-5 py-3 border border-[#F0A500]/15 flex flex-wrap gap-4 justify-between">
-        <span className="text-xs text-[#8B949E]">
-          📅 <strong className="text-[#E6EDF3]">{yearsToRetirement} ans</strong> d'investissement
-        </span>
-        <span className="text-xs text-[#8B949E]">
-          🎯 Retraite à <strong className="text-[#E6EDF3]">{retirementAge} ans</strong>
-        </span>
-        <span className="text-xs text-[#8B949E]">
-          📈 Rendement <strong className="text-[#E6EDF3]">{returnRate}%/an</strong>
-        </span>
-      </div>
-
-      {/* Chart */}
-      <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
-        <div className="flex gap-4 mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-0.5 bg-[#F0A500]"></div>
-            <span className="text-xs text-[#8B949E]">Valeur totale</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6" style={{ borderTop: "2px dashed #3DDC97" }}></div>
-            <span className="text-xs text-[#8B949E]">Vos contributions</span>
-          </div>
-        </div>
-        <CELIChart dataPoints={dataPoints} />
-      </div>
-
-      {/* Results */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
-          <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">À la retraite</div>
-          <div className="text-lg font-black text-[#F0A500]">{fmt(finalBalance)}</div>
-        </div>
-        <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
-          <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">Contributions</div>
-          <div className="text-lg font-black text-[#E6EDF3]">{fmt(totalContribs)}</div>
-        </div>
-        <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] text-center">
-          <div className="text-xs text-[#8B949E] mb-2 uppercase tracking-wider">Croissance</div>
-          <div className="text-lg font-black text-[#3DDC97]">{fmt(growth)}</div>
-        </div>
-      </div>
-
-      <div className="bg-[#F0A500]/06 rounded-xl p-4 border border-[#F0A500]/20">
-        <p className="text-sm text-[#8B949E] leading-relaxed">
-          En contribuant <strong className="text-[#E6EDF3]">{fmt(monthlyContrib)}/mois</strong> pendant{" "}
-          <strong className="text-[#E6EDF3]">{yearsToRetirement} ans</strong>, votre CELI pourrait atteindre{" "}
-          <strong className="text-[#F0A500]">{fmt(finalBalance)}</strong> à <strong className="text-[#E6EDF3]">{retirementAge} ans</strong> — dont{" "}
-          <strong className="text-[#3DDC97]">{fmt(growth)}</strong> en intérêts composés, libres d'impôt.
-        </p>
+      <input type="range" min={min} max={max} step={step} value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-[#F0A500] h-1.5 rounded-full cursor-pointer" />
+      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
+        <span>{typeof min === "number" && min >= 1000 ? fmt(min) : min}</span>
+        <span>{typeof max === "number" && max >= 1000 ? fmt(max) : max}</span>
       </div>
     </div>
   );
 }
 
-export default function CalculateurCELIPage() {
+// ─── Chart ────────────────────────────────────────────────────────────────────
+function AreaChart({ dataPoints, maxVal }) {
+  if (!dataPoints.length) return null;
+  const W = 500, H = 140, PX = 8, PY = 12;
+  const iW = W - PX * 2, iH = H - PY * 2;
+  const x = (i) => PX + (i / (dataPoints.length - 1)) * iW;
+  const y = (v) => PY + ((maxVal - v) / (maxVal || 1)) * iH;
+
+  const path = dataPoints.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+  const area = path + ` L ${x(dataPoints.length - 1)} ${H} L ${PX} ${H} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 140 }}>
+      <defs>
+        <linearGradient id="celiGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#F0A500" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#F0A500" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill="url(#celiGrad)" />
+      <path d={path} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// ─── Tooltip ─────────────────────────────────────────────────────────────────
+function Tooltip({ text, children }) {
+  const [show, setShow] = useState(false);
+  return (
+    <span className="relative inline-block"
+      onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+      {children}
+      {show && (
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-[#21262D] border border-[#30363D] text-[#C9D1D9] text-[10px] rounded-lg px-3 py-2 z-50 leading-relaxed shadow-xl">
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+export default function CalculateurCELI() {
+  const [currentBalance, setCurrentBalance] = useState(0);
+  const [monthly, setMonthly] = useState(300);
+  const [age, setAge] = useState(30);
+  const [retirementAge, setRetirementAge] = useState(65);
+  const [returnRate, setReturnRate] = useState(7);
+  const [tab, setTab] = useState("inputs");
+  const [celiRoom, setCeliRoom] = useState(0);
+
+  const yearsToRetirement = Math.max(1, retirementAge - age);
+  const CELI_ANNUAL = 7000; // 2025
+  const totalCeliRoom = celiRoom + CELI_ANNUAL * yearsToRetirement;
+
+  // Persist params
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("celi:params");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.currentBalance !== undefined) setCurrentBalance(p.currentBalance);
+        if (p.monthly) setMonthly(p.monthly);
+        if (p.age) setAge(p.age);
+        if (p.retirementAge) setRetirementAge(p.retirementAge);
+        if (p.returnRate) setReturnRate(p.returnRate);
+        if (p.celiRoom !== undefined) setCeliRoom(p.celiRoom);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("celi:params", JSON.stringify({ currentBalance, monthly, age, retirementAge, returnRate, celiRoom }));
+    } catch {}
+  }, [currentBalance, monthly, age, retirementAge, returnRate, celiRoom]);
+
+  const { dataPoints, finalBalance, totalContribs, growth } = useMemo(() => {
+    const r = returnRate / 100 / 12;
+    const dataPoints = [];
+    let bal = currentBalance;
+
+    for (let m = 0; m <= yearsToRetirement * 12; m++) {
+      if (m % 12 === 0) dataPoints.push(bal);
+      bal = bal * (1 + r) + monthly;
+    }
+
+    const finalBalance = dataPoints[dataPoints.length - 1];
+    const totalContribs = currentBalance + monthly * 12 * yearsToRetirement;
+    const growth = finalBalance - totalContribs;
+
+    return { dataPoints, finalBalance, totalContribs, growth };
+  }, [currentBalance, monthly, age, retirementAge, returnRate, yearsToRetirement]);
+
+  // Export to net worth tracker
+  useEffect(() => {
+    localStorage.setItem("celi:projected", Math.round(finalBalance));
+  }, [finalBalance]);
+
+  const maxVal = Math.max(...dataPoints);
+  const currentYear = new Date().getFullYear();
+
+  const tabs = [
+    { key: "inputs", label: "Paramètres" },
+    { key: "results", label: "Résultats" },
+    { key: "info", label: "C'est quoi le CELI?" },
+  ];
+
   return (
     <Layout title="Calculateur CELI — Projetez votre retraite">
-      <div className="max-w-3xl mx-auto px-6 pb-20">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#8B949E] hover:text-[#E6EDF3] no-underline pt-6 pb-8 transition-colors">
-          ← Retour aux outils
-        </Link>
+      <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
-        <div className="mb-10">
-          <div className="inline-block bg-[#F0A500]/10 border border-[#F0A500]/20 rounded-full px-3 py-1 text-xs text-[#F0A500] uppercase tracking-widest mb-4">
-            Investissement
+          {/* Header */}
+          <div className="mb-6">
+            <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
+            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">
+              Calculateur CELI
+            </h1>
+            <p className="text-sm text-[#8B949E] mt-1">Projetez la croissance de votre CELI jusqu'à la retraite</p>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#E6EDF3] tracking-tight mb-3">Calculateur CELI</h1>
-          <p className="text-base text-[#8B949E] leading-relaxed font-light">
-            Projetez la croissance de votre CELI jusqu'à l'âge de retraite que vous visez.
-            Ajustez les paramètres pour voir l'impact de vos contributions en temps réel.
-          </p>
-        </div>
 
-        <div className="bg-[#161B22] rounded-2xl p-7 border border-[#21262D] mb-7">
-          <CELICalculator />
-        </div>
-
-        <div className="bg-[#161B22] rounded-2xl p-7 border border-[#21262D] mb-7">
-          <h2 className="text-lg font-bold text-[#E6EDF3] mb-4">Pourquoi le CELI est si puissant?</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { icon: "🚫", title: "Zéro impôt sur la croissance", desc: "Vos gains, dividendes et intérêts ne sont jamais imposés, même au retrait." },
-              { icon: "🔄", title: "Retraits sans pénalité", desc: "Vous récupérez vos droits de cotisation l'année suivante. Aucune restriction." },
-              { icon: "📅", title: "Droits cumulatifs", desc: "Si vous n'avez jamais cotisé, vous pouvez accumuler jusqu'à 95 000$ de droits (2024)." },
-            ].map(item => (
-              <div key={item.title} className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
-                <div className="text-2xl mb-2">{item.icon}</div>
-                <div className="text-sm font-bold text-[#E6EDF3] mb-1">{item.title}</div>
-                <div className="text-xs text-[#8B949E] leading-relaxed font-light">{item.desc}</div>
+          {/* Hero */}
+          <div className="rounded-2xl p-5 mb-4 relative overflow-hidden" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+            <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 80% 50%, rgba(61,220,151,0.07) 0%, transparent 65%)" }} />
+            <div className="relative">
+              {/* Ligne 1 — valeurs principales */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Valeur à la retraite</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl text-[#F0A500] font-medium">{fmt(finalBalance)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">libre d'impôt à {retirementAge} ans</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Croissance</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl text-[#F0A500] font-medium">{fmt(growth)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">intérêts composés</div>
+                </div>
               </div>
+              {/* Ligne 2 — valeurs secondaires */}
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#21262D]">
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Total contributions</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-base text-[#E6EDF3] font-medium">{fmt(totalContribs)}</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">sur {yearsToRetirement} ans</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Contribution mensuelle</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-base text-[#E6EDF3] font-medium">{fmt(monthly)} / mois</div>
+                  <div className="text-[10px] text-[#484F58] mt-0.5">à {returnRate}% de rendement</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chart */}
+          {(() => {
+            const contribData = Array.from({ length: yearsToRetirement + 1 }, (_, i) => currentBalance + monthly * 12 * i);
+            const roomData = Array.from({ length: yearsToRetirement + 1 }, (_, i) => (celiRoom > 0 ? celiRoom : 0) + CELI_ANNUAL * i);
+            const overLimit = celiRoom > 0 && contribData.some((v, i) => v > roomData[i]);
+            const W = 500, H = 180, PX = 8, PY = 12;
+            const iW = W - PX * 2, iH = H - PY * 2;
+            const allVals = [...dataPoints, ...contribData, ...(celiRoom > 0 ? roomData : [])];
+            const maxV = Math.max(...allVals) || 1;
+            const x = (i) => PX + (i / (dataPoints.length - 1)) * iW;
+            const y = (v) => PY + ((maxV - v) / maxV) * iH;
+            const growthPath = dataPoints.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const growthArea = growthPath + ` L ${x(dataPoints.length - 1)} ${H} L ${PX} ${H} Z`;
+            const contribPath = contribData.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const roomPath = roomData.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+            const lastGrowth = dataPoints[dataPoints.length - 1];
+            const lastContrib = contribData[contribData.length - 1];
+            const lastRoom = celiRoom > 0 ? roomData[roomData.length - 1] : null;
+            return (
+              <div className="rounded-2xl p-5 mb-4" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-xs text-[#8B949E] uppercase tracking-widest">Projection sur {yearsToRetirement} ans</div>
+                  <div className="flex items-center gap-3 text-[10px] text-[#8B949E]">
+                    <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#F0A500] inline-block rounded" />Valeur</span>
+                    <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-[#484F58] inline-block rounded" />Contributions</span>
+                    {celiRoom > 0 && <span className="flex items-center gap-1"><span className="w-3 border-t border-dashed border-[#3DDC97] inline-block" style={{width:12}} />Plafond</span>}
+                  </div>
+                </div>
+                {overLimit && (
+                  <div className="mb-3 bg-red-500/10 border border-red-500/25 rounded-xl px-4 py-2.5 text-xs text-red-400">
+                    ⚠️ Attention — vos contributions projetées dépassent votre plafond CELI disponible. Vous risquez une pénalité de 1%/mois sur l'excédent.
+                  </div>
+                )}
+                <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 180 }}>
+                  <defs>
+                    <linearGradient id="celiGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#F0A500" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#F0A500" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path d={growthArea} fill="url(#celiGrad)" />
+                  <path d={growthPath} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                  <path d={contribPath} fill="none" stroke="#484F58" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+                  {celiRoom > 0 && <path d={roomPath} fill="none" stroke="#3DDC97" strokeWidth="1.5" strokeDasharray="4 3" strokeLinejoin="round" strokeLinecap="round" />}
+                  <text x={W - PX - 4} y={Math.max(PY + 8, y(lastGrowth) - 5)} textAnchor="end" fontSize="8" fill="#F0A500" fontFamily="monospace">{fmt(lastGrowth)}</text>
+                  <text x={W - PX - 4} y={Math.min(H - 4, y(lastContrib) + 10)} textAnchor="end" fontSize="8" fill="#8B949E" fontFamily="monospace">{fmt(lastContrib)}</text>
+                  {lastRoom && <text x={W - PX - 4} y={Math.max(PY + 8, y(lastRoom) - 5)} textAnchor="end" fontSize="8" fill="#3DDC97" fontFamily="monospace">{fmt(lastRoom)}</text>}
+                </svg>
+                <div className="flex justify-between mt-1 text-[10px] text-[#484F58]">
+                  <span>{currentYear}</span>
+                  <span>{currentYear + Math.floor(yearsToRetirement / 2)}</span>
+                  <span>{currentYear + yearsToRetirement}</span>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Tabs */}
+          <div className="flex gap-1 mb-4 bg-[#161B22] border border-[#21262D] rounded-xl p-1">
+            {tabs.map(({ key, label }) => (
+              <button key={key} onClick={() => setTab(key)}
+                className={`flex-1 text-xs py-2 rounded-lg transition-all font-medium ${tab === key ? "bg-[#21262D] text-[#E6EDF3]" : "text-[#8B949E] hover:text-[#C9D1D9]"}`}>
+                {label}
+              </button>
             ))}
           </div>
-        </div>
 
-        <div className="bg-[#F0A500]/06 border border-[#F0A500]/25 rounded-2xl p-8 text-center">
-          <h3 className="text-xl font-bold text-[#E6EDF3] mb-2">Ouvrez votre CELI en 5 minutes</h3>
-          <p className="text-sm text-[#8B949E] mb-6 leading-relaxed max-w-sm mx-auto">
-            Wealthsimple est la plateforme canadienne la plus simple pour ouvrir un CELI.
-            Aucuns frais, aucune commission sur les FNB. Recevez un bonus à l'ouverture.
-          </p>
-          <AffiliateLink
-            href="https://www.wealthsimple.com/invite/EDVQ3W"
-            partner="wealthsimple"
-            className="inline-block bg-[#F0A500] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors no-underline"
-          >
-            Ouvrir un CELI chez Wealthsimple →
-          </AffiliateLink>
-          <p className="text-xs text-[#484F58] mt-4">
-            ✓ Gratuit · ✓ Aucune commission · ✓ Protégé FCPE · Lien affilié
-          </p>
+          {/* Inputs Tab */}
+          {tab === "inputs" && (
+            <div className="rounded-2xl p-5 space-y-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+
+              <div>
+                <label className="text-xs text-[#8B949E] block mb-1.5">Solde actuel du CELI</label>
+                <input
+                  type="number" min="0" step="1000" value={currentBalance || ""}
+                  onChange={(e) => setCurrentBalance(Number(e.target.value) || 0)}
+                  placeholder="0 (nouveau CELI)"
+                  className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <label className="text-xs text-[#8B949E]">Droits de cotisation disponibles aujourd'hui</label>
+                  <Tooltip text="Consultez votre compte 'Mon dossier' sur canada.ca (ARC) pour connaître vos droits CELI exacts. Cherchez 'Droits de cotisation au CELI'.">
+                    <span className="text-[10px] text-[#484F58] border border-[#484F58] rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help">?</span>
+                  </Tooltip>
+                </div>
+                <input
+                  type="number" min="0" step="500" value={celiRoom || ""}
+                  onChange={(e) => setCeliRoom(Number(e.target.value) || 0)}
+                  placeholder="Ex: 45 000 (laisser vide si inconnu)"
+                  className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
+                />
+                {celiRoom > 0 && (
+                  <div className="text-[10px] text-[#8B949E] mt-1.5 bg-[#0D1117] rounded-lg px-3 py-2 border border-[#21262D]">
+                    Plafond total sur {yearsToRetirement} ans : <span className="text-[#F0A500]">{fmt(totalCeliRoom)}</span>
+                    {" "}(droits actuels + {fmt(CELI_ANNUAL)}/an)
+                  </div>
+                )}
+              </div>
+
+              <Slider label="Contribution mensuelle" value={monthly} min={50} max={2500} step={50}
+                onChange={setMonthly} display={fmt(monthly) + " / mois"} />
+
+              <div className="grid grid-cols-2 gap-4">
+                <Slider label="Âge actuel" value={age} min={18} max={retirementAge - 1} step={1}
+                  onChange={setAge} display={age + " ans"} />
+                <Slider label="Âge de retraite" value={retirementAge} min={age + 1} max={80} step={1}
+                  onChange={setRetirementAge} display={retirementAge + " ans"} />
+              </div>
+
+              <Slider label="Rendement annuel estimé" value={returnRate} min={1} max={12} step={0.5}
+                onChange={setReturnRate} display={returnRate + "%"} />
+
+              {/* Voir résultats + Reset */}
+              <button
+                onClick={() => { setTab("results"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                className="w-full bg-[#F0A500] text-[#0D1117] font-bold rounded-xl py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors"
+              >
+                Voir mes résultats ↑
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentBalance(0); setCeliRoom(0); setMonthly(300);
+                  setAge(30); setRetirementAge(65); setReturnRate(7);
+                  localStorage.removeItem("celi:params");
+                }}
+                className="w-full border border-[#21262D] text-[#8B949E] rounded-xl py-3 text-sm hover:border-[#484F58] hover:text-[#E6EDF3] transition-colors"
+              >
+                Réinitialiser
+              </button>
+              </div>
+            )}
+
+          {/* Results Tab */}
+          {tab === "results" && (
+            <div className="space-y-3">
+              <div className="rounded-2xl p-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+                <div className="text-xs text-[#8B949E] uppercase tracking-widest mb-4">Projection détaillée</div>
+                <div className="space-y-3">
+                  {[
+                    { label: "Solde de départ", val: fmt(currentBalance), color: "#E6EDF3" },
+                    { label: "Contribution mensuelle", val: fmt(monthly) + " / mois", color: "#E6EDF3" },
+                    { label: "Durée", val: yearsToRetirement + " ans", color: "#E6EDF3" },
+                    { label: "Rendement annuel estimé", val: returnRate + "%", color: "#E6EDF3" },
+                    { label: "Total contributions", val: fmt(totalContribs), color: "#E6EDF3" },
+                    { label: "Croissance (intérêts composés)", val: fmt(growth), color: "#F0A500" },
+                    { label: "Valeur à la retraite", val: fmt(finalBalance), color: "#F0A500" },
+                    { label: "Impôt sur les retraits", val: "0$ — 100% libre d'impôt", color: "#F0A500" },
+                  ].map(({ label, val, color }) => (
+                    <div key={label} className="flex justify-between items-center py-2 border-b border-[#21262D] last:border-0">
+                      <span className="text-xs text-[#8B949E]">{label}</span>
+                      <span style={{ fontFamily: "'DM Mono', monospace", color }} className="text-sm font-medium">{val}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-2xl p-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+                <div className="text-xs text-[#8B949E] uppercase tracking-widest mb-3">Jalons de croissance</div>
+                <div className="space-y-2">
+                  {[5, 10, 15, 20, 25, 30].filter(y => y <= yearsToRetirement).map(y => {
+                    const r = returnRate / 100 / 12;
+                    let bal = currentBalance;
+                    for (let m = 0; m < y * 12; m++) bal = bal * (1 + r) + monthly;
+                    return (
+                      <div key={y} className="flex justify-between items-center py-1.5 border-b border-[#21262D] last:border-0">
+                        <span className="text-xs text-[#8B949E]">Dans {y} ans ({currentYear + y})</span>
+                        <span style={{ fontFamily: "'DM Mono', monospace" }} className="text-sm text-[#E6EDF3]">{fmt(bal)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Info Tab */}
+          {tab === "info" && (
+            <div className="rounded-2xl p-5 space-y-4" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+              {[
+                { icon: "💡", title: "C'est quoi un CELI?", text: "Le Compte d'Épargne Libre d'Impôt (CELI) est un compte enregistré canadien où votre argent croît à l'abri de l'impôt. Contrairement au REER, vous ne déduisez pas vos contributions, mais tous les retraits sont 100% libres d'impôt." },
+                { icon: "📅", title: "Droits de cotisation", text: "Chaque année, un nouveau montant s'ajoute à vos droits disponibles (6 500$ en 2023, 7 000$ en 2024). Les droits inutilisés s'accumulent depuis 2009 — si vous n'avez jamais cotisé, vous pouvez avoir plus de 95 000$ disponibles." },
+                { icon: "🔄", title: "Flexibilité des retraits", text: "Vous pouvez retirer n'importe quel montant en tout temps, sans pénalité et sans impôt. Les droits retirés sont récupérés le 1er janvier de l'année suivante — une flexibilité unique par rapport au REER." },
+                { icon: "📊", title: "CELI vs REER", text: "Le CELI est idéal si votre taux d'imposition est bas maintenant (revenus modestes, retraite proche, jeune adulte). Le REER est plus avantageux si vous êtes dans une tranche d'imposition élevée aujourd'hui et prévoyez être dans une tranche plus basse à la retraite." },
+                { icon: "⚠️", title: "Important", text: "Ce calculateur est un outil éducatif. Les droits de cotisation exacts dépendent de votre historique personnel. Consultez votre compte CRA Mon dossier ou un conseiller financier pour connaître vos droits précis." },
+              ].map(({ icon, title, text }) => (
+                <div key={title} className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg">{icon}</span>
+                    <span className="text-sm font-medium text-[#E6EDF3]">{title}</span>
+                  </div>
+                  <p className="text-xs text-[#8B949E] leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* CTA */}
+          <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
+            <div className="text-3xl mb-3">📈</div>
+            <h3 className="text-xl font-bold text-[#E6EDF3] mb-2">Ouvrez votre CELI chez Wealthsimple</h3>
+            <p className="text-sm text-[#8B949E] mb-6 leading-relaxed max-w-sm mx-auto">
+              Aucuns frais, aucune commission sur les FNB. Recevez un bonus à l'ouverture de votre compte.
+            </p>
+            <AffiliateLink
+              href="https://www.wealthsimple.com/invite/EDVQ3W"
+              partner="wealthsimple-celi"
+              className="inline-block bg-[#3B82F6] text-white font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2563EB] transition-colors no-underline"
+            >
+              Ouvrir un CELI chez Wealthsimple →
+            </AffiliateLink>
+            <p className="text-xs text-[#484F58] mt-4">✓ Gratuit · ✓ Aucune commission · ✓ Protégé FCPE · Lien affilié</p>
+          </div>
+
         </div>
       </div>
     </Layout>
