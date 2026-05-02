@@ -227,7 +227,7 @@ export default function BorrowellPage() {
           </p>
           {/* Replace href with your Borrowell affiliate link */}
           <a
-            href="https://www.borrowell.com"
+            href="https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247"
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-block bg-[#3DDC97] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2EC97F] transition-colors no-underline"
