@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Script from "next/script";
 
 export default function Layout({ children, title = "Mon Portefeuille" }) {
   return (
@@ -10,6 +11,15 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {/* Google Analytics */}
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-7ZLYDVL8BM" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">{`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-7ZLYDVL8BM');
+      `}</Script>
 
       <div className="min-h-screen bg-[#0D1117] text-[#E6EDF3]">
         {/* Nav */}
