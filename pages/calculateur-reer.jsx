@@ -342,7 +342,7 @@ export default function CalculateurREER() {
                 <div className="text-[10px] text-[#484F58] mt-0.5">fédéral + {province}</div>
               </div>
               <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Remboursement / an</div>
+                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">Remboursement fiscal annuel</div>
                 <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-2xl text-[#3DDC97] font-medium">{fmt(annualRefund)}</div>
                 <div className="text-[10px] text-[#484F58] mt-0.5">{fmt(monthlyRefund)} / mois</div>
               </div>
