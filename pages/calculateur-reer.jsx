@@ -237,6 +237,44 @@ export default function CalculateurREER() {
   const [otherIncome, setOtherIncome] = useState(0);
   const [drawdownRate, setDrawdownRate] = useState(4);
 
+// Charger les paramètres sauvegardés
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem("reer:params");
+    if (saved) {
+      const p = JSON.parse(saved);
+      if (p.income) setIncome(p.income);
+      if (p.monthly) setMonthly(p.monthly);
+      if (p.employerPct !== undefined) setEmployerPct(p.employerPct);
+      if (p.employeePct) setEmployeePct(p.employeePct);
+      if (p.age) setAge(p.age);
+      if (p.retireAge) setRetireAge(p.retireAge);
+      if (p.returnRate) setReturnRate(p.returnRate);
+      if (p.province) setProvince(p.province);
+      if (p.reinvest !== undefined) setReinvest(p.reinvest);
+      if (p.currentBalance !== undefined) setCurrentBalance(p.currentBalance);
+      if (p.desiredIncome) setDesiredIncome(p.desiredIncome);
+      if (p.govtRente) setGovtRente(p.govtRente);
+      if (p.oas) setOas(p.oas);
+      if (p.otherIncome !== undefined) setOtherIncome(p.otherIncome);
+      if (p.drawdownRate) setDrawdownRate(p.drawdownRate);
+    }
+  } catch {}
+}, []);
+
+    // Sauvegarder les paramètres à chaque changement
+    useEffect(() => {
+    try {
+        localStorage.setItem("reer:params", JSON.stringify({
+        income, monthly, employerPct, employeePct, age, retireAge,
+        returnRate, province, reinvest, currentBalance,
+        desiredIncome, govtRente, oas, otherIncome, drawdownRate
+        }));
+    } catch {}
+    }, [income, monthly, employerPct, employeePct, age, retireAge,
+        returnRate, province, reinvest, currentBalance,
+        desiredIncome, govtRente, oas, otherIncome, drawdownRate]);
+
   const years = Math.max(1, retireAge - age);
   const annualContrib = monthly * 12;
   const employerMonthly = (income / 12) * (employerPct / 100);
