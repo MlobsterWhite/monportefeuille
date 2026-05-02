@@ -32,6 +32,27 @@ const tools = [
     ready: true,
   },
   {
+    id: "calculateur-hypotheque",
+    name: "Calculateur hypothécaire",
+    tagline: "Estimez vos paiements, les intérêts totaux et l'impact de votre mise de fonds.",
+    category: "Immobilier",
+    ready: true,
+  },
+  {
+    id: "estimateur-assurance",
+    name: "Estimateur d'assurance",
+    tagline: "Estimez votre prime mensuelle en auto ou habitation selon votre profil.",
+    category: "Assurance",
+    ready: true,
+  },
+  {
+    id: "estimateur-impot",
+    name: "Estimateur d'impôt",
+    tagline: "Estimez votre remboursement ou solde dû, et l'impact de votre REER.",
+    category: "Fiscal",
+    ready: true,
+  },
+  {
     id: "celi-vs-reer",
     name: "CELI vs REER",
     tagline: "Comparez les deux régimes selon votre situation personnelle.",
@@ -94,7 +115,7 @@ const faqs = [
   },
   {
     q: "Quelle est la différence entre un CELI et un REER?",
-    a: "Le CELI (Compte d'Épargne Libre d'Impôt) : vous cotisez après impôt, mais tous les retraits sont 100% libres d'impôt. Idéal si vous êtes dans une tranche d'imposition basse ou si vous aurez besoin d'accéder à l'argent avant la retraite. Le REER (Régime Enregistré d'Épargne-Retraite) : vos cotisations réduisent votre revenu imposable aujourd'hui, mais vous payez de l'impôt au retrait. Idéal si vous êtes dans une tranche élevée maintenant et prévoyez une retraite plus modeste. Les deux sont complémentaires — commencez par maximiser votre CELI."
+    a: "Le CELI vous permet de retirer sans payer d'impôt. Le REER réduit votre revenu imposable maintenant, mais vous payez de l'impôt au retrait. En général, le CELI est recommandé en premier."
   },
 ];
 
@@ -128,6 +149,8 @@ const categoryColors = {
   "Épargne": "#60A5FA",
   "Immobilier": "#FB923C",
   "Retraite": "#C084FC",
+  "Assurance": "#60A5FA",
+  "Fiscal": "#C084FC",
 };
 
 export default function Home() {
@@ -153,7 +176,7 @@ export default function Home() {
         {/* ── Faits financiers ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-20">
           {[
-            { stat: "53%", desc: "des Canadiens seraient incapables de payer une dépense imprévue de 200$ sans s'endetter", source: "MNP" },,
+            { stat: "53%", desc: "des Canadiens vivent à moins de 200$ de ne pas pouvoir payer leurs factures", source: "MNP" },
             { stat: "650", desc: "est la cote de crédit moyenne au Canada — sous le seuil idéal de 720", source: "Equifax" },
             { stat: "32%", desc: "des Canadiens n'ont aucune épargne-retraite à 45 ans", source: "Stats Canada" },
           ].map((item) => (
