@@ -211,7 +211,9 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
             {" "}·{" "}
             <Link href="/nous-joindre" className="underline hover:text-[#8B949E]">Nous joindre</Link>
             {" "}·{" "}
-            <a href="/confidentialite" className="underline hover:text-[#8B949E]">Confidentialité</a>
+            <Link href="/mentions-legales" className="underline hover:text-[#8B949E]">Mentions légales</Link>
+            {" "}·{" "}
+            <Link href="/confidentialite" className="underline hover:text-[#8B949E]">Confidentialité</Link>
           </p>
         </footer>
       </div>
