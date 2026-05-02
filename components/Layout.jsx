@@ -1,8 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
+import { useState } from "react";
 
 export default function Layout({ children, title = "Mon Portefeuille" }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Head>
@@ -28,10 +31,37 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
             <Link href="/" className="flex items-center no-underline">
               <img src="/logo.svg" alt="monportefeuille.ca" className="h-16 w-auto" />
             </Link>
-              <div className="flex items-center gap-4 text-xs text-[#8B949E]">
-              <Link href="/estimateur-credit" className="hover:text-[#E6EDF3] transition-colors no-underline">Crédit</Link>
-              <Link href="/calculateur-celi" className="hover:text-[#E6EDF3] transition-colors no-underline">CELI</Link>
-              <Link href="/valeur-nette" className="hover:text-[#E6EDF3] transition-colors no-underline">Valeur nette</Link>
+
+            {/* Dropdown Outils */}
+            <div className="relative">
+              <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center gap-1.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors border border-[#21262D] rounded-lg px-3 py-1.5"
+              >
+                Outils
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </button>
+              {open && (
+                <div
+                  className="absolute top-9 right-0 bg-[#161B22] border border-[#21262D] rounded-xl py-1 w-52 z-50 shadow-xl"
+                  onMouseLeave={() => setOpen(false)}
+                >
+                  <Link href="/estimateur-credit" onClick={() => setOpen(false)}
+                    className="block px-4 py-2.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                    📊 Estimateur de crédit
+                  </Link>
+                  <Link href="/calculateur-celi" onClick={() => setOpen(false)}
+                    className="block px-4 py-2.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                    📈 Calculateur CELI
+                  </Link>
+                  <Link href="/valeur-nette" onClick={() => setOpen(false)}
+                    className="block px-4 py-2.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                    💼 Valeur nette
+                  </Link>
+                </div>
+              )}
             </div>
 
             <span className="flex items-center gap-1.5 text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
