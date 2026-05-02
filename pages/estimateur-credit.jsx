@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import AffiliateLink from "../components/AffiliateLink";
 
 function CreditEstimator() {
   const [form, setForm] = useState({
@@ -191,11 +192,13 @@ export default function EstimateurCreditPage() {
             L'estimateur vous donne une idée — Borrowell vous donne votre vraie cote Equifax,
             mise à jour chaque semaine, gratuitement et sans impact sur votre score.
           </p>
-          <a href="https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247"
-            target="_blank" rel="noopener noreferrer sponsored"
-            className="inline-block bg-[#3DDC97] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2EC97F] transition-colors no-underline">
+          <AffiliateLink
+            href="https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247"
+            partner="borrowell"
+            className="inline-block bg-[#3DDC97] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2EC97F] transition-colors no-underline"
+          >
             Vérifier mon vrai score — Gratuit →
-          </a>
+          </AffiliateLink>
           <p className="text-xs text-[#484F58] mt-4">
             ✓ Aucune carte de crédit · ✓ Aucun impact · ✓ 100% gratuit · Lien affilié
           </p>
