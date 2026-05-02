@@ -25,12 +25,8 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
         {/* Nav */}
         <nav className="border-b border-[#21262D] sticky top-0 bg-[#0D1117]/90 backdrop-blur-md z-50">
           <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-[60px]">
-            <Link href="/" className="flex items-center gap-2 no-underline">
-              <span className="text-xl">💼</span>
-              <span className="text-base font-extrabold tracking-tight text-[#E6EDF3]">
-                mon<span className="text-[#3DDC97]">portefeuille</span>
-                <span className="text-[#484F58] font-normal">.ca</span>
-              </span>
+            <Link href="/" className="flex items-center no-underline">
+              <img src="/logo.svg" alt="monportefeuille.ca" className="h-8 w-auto" />
             </Link>
             <span className="text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
               🇨🇦 100% canadien
