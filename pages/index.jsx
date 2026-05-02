@@ -18,7 +18,7 @@ const tools = [
     ready: true,
   },
   {
-    id: "reer",
+    id: "calculateur-reer",
     name: "Calculateur REER",
     tagline: "Calculez votre remboursement d'impôt et votre valeur à la retraite.",
     category: "Investissement",
