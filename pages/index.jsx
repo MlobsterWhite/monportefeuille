@@ -2,26 +2,9 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 
 const partners = [
-  { id: "borrowell", name: "Borrowell", tagline: "Vérifiez votre cote de crédit gratuitement", category: "Crédit", badge: "Gratuit", tool: "Estimateur de crédit", domain: "borrowell.com", emoji: "📊" },
-  { id: "wealthsimple", name: "Wealthsimple", tagline: "Investissez sans frais de commission", category: "Investissement", badge: "Populaire", tool: "Calculateur CELI", domain: "wealthsimple.com", emoji: "📈" },
-  { id: "tangerine", name: "Tangerine", tagline: "Compte chèques sans frais + bonus", category: "Banque", badge: "Bonus 200$", tool: "Calculateur d'économies", domain: "tangerine.ca", emoji: "🍊" },
+  { id: "borrowell", name: "Borrowell", tagline: "Vérifiez votre cote de crédit gratuitement", category: "Crédit", badge: "Gratuit", tool: "Estimateur de crédit" },
+  { id: "wealthsimple", name: "Wealthsimple", tagline: "Banque, épargne et investissement sans frais", category: "Banque & Investissement", badge: "Populaire", tool: "Calculateur CELI" },
 ];
-
-function PartnerLogo({ domain, name, emoji }) {
-  return (
-    <div className="w-11 h-11 rounded-xl overflow-hidden bg-white flex items-center justify-center border border-[#21262D] flex-shrink-0">
-      <img
-        src={`https://logo.clearbit.com/${domain}`}
-        alt={name}
-        className="w-8 h-8 object-contain"
-        onError={e => {
-          e.target.style.display = "none";
-          e.target.parentNode.innerHTML = `<span style="font-size:18px">${emoji}</span>`;
-        }}
-      />
-    </div>
-  );
-}
 
 export default function Home() {
   return (
@@ -45,7 +28,7 @@ export default function Home() {
 
         {/* Stats */}
         <div className="grid grid-cols-3 border border-[#21262D] rounded-xl overflow-hidden mb-14">
-          {[["3", "Outils gratuits"], ["100%", "Canadien"], ["0$", "Aucun abonnement"]].map(([val, label]) => (
+          {[["2", "Outils gratuits"], ["100%", "Canadien"], ["0$", "Aucun abonnement"]].map(([val, label]) => (
             <div key={label} className="bg-[#161B22] py-5 text-center">
               <div className="text-2xl font-bold text-[#3DDC97]">{val}</div>
               <div className="text-xs text-[#8B949E] mt-1 font-light">{label}</div>
@@ -55,22 +38,24 @@ export default function Home() {
 
         {/* Grid */}
         <p className="text-xs text-[#484F58] uppercase tracking-widest mb-5">Choisissez un outil</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
           {partners.map(p => (
             <Link
               key={p.id}
               href={`/${p.id}`}
-              className="bg-[#0E1520] border border-[#21262D] rounded-2xl p-5 flex flex-col gap-4 no-underline hover:bg-[#121B28] hover:border-[#3DDC97]/20 transition-all"
+              className="bg-[#0E1520] border border-[#21262D] rounded-2xl p-6 flex flex-col gap-4 no-underline hover:bg-[#121B28] hover:border-[#3DDC97]/20 transition-all"
             >
               <div className="flex justify-between items-start">
-                <PartnerLogo domain={p.domain} name={p.name} emoji={p.emoji} />
+                <div className="w-11 h-11 rounded-xl bg-[#3DDC97]/10 border border-[#3DDC97]/20 flex items-center justify-center">
+                  <span className="text-[#3DDC97] font-bold text-lg">{p.name[0]}</span>
+                </div>
                 <span className="text-xs font-medium rounded-full px-3 py-1 text-[#8B949E] bg-white/5 border border-white/[0.06]">
                   {p.badge}
                 </span>
               </div>
               <div>
                 <div className="text-xs text-[#484F58] uppercase tracking-wider mb-1">{p.category}</div>
-                <div className="text-base font-semibold text-[#E6EDF3] mb-1.5">{p.name}</div>
+                <div className="text-lg font-semibold text-[#E6EDF3] mb-1.5">{p.name}</div>
                 <div className="text-sm text-[#8B949E] leading-relaxed font-light">{p.tagline}</div>
               </div>
               <div>
