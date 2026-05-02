@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import { useState, useMemo, useEffect } from "react";
 
 function CELIChart({ dataPoints }) {
   const max = Math.max(...dataPoints.map(d => d.total));
@@ -116,6 +116,9 @@ function CELICalculator() {
   }, [age, retirementAge, currentBalance, monthlyContrib, returnRate, yearsToRetirement, monthlyRate]);
 
   const finalBalance = dataPoints[dataPoints.length - 1].total;
+  useEffect(() => {
+    localStorage.setItem("celi:projected", Math.round(finalBalance));
+  }, [finalBalance]);
   const totalContribs = currentBalance + monthlyContrib * 12 * yearsToRetirement;
   const growth = finalBalance - totalContribs;
 

@@ -28,7 +28,13 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
             <Link href="/" className="flex items-center no-underline">
               <img src="/logo.svg" alt="monportefeuille.ca" className="h-16 w-auto" />
             </Link>
-            <span className="text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
+              <div className="flex items-center gap-4 text-xs text-[#8B949E]">
+              <Link href="/estimateur-credit" className="hover:text-[#E6EDF3] transition-colors no-underline">Crédit</Link>
+              <Link href="/calculateur-celi" className="hover:text-[#E6EDF3] transition-colors no-underline">CELI</Link>
+              <Link href="/valeur-nette" className="hover:text-[#E6EDF3] transition-colors no-underline">Valeur nette</Link>
+            </div>
+
+            <span className="flex items-center gap-1.5 text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
               🇨🇦 100% canadien
             </span>
           </div>
