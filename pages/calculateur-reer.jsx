@@ -429,8 +429,18 @@ export default function CalculateurREER() {
               <Slider label="Rendement annuel estimé" value={returnRate} min={1} max={12} step={0.5}
                 onChange={setReturnRate} display={returnRate + "%"} />
 
-              <Slider label="Solde actuel du REER" value={currentBalance} min={0} max={500000} step={1000}
-                onChange={setCurrentBalance} display={currentBalance > 0 ? fmt(currentBalance) : "0 (nouveau REER)"} />
+                <div>
+                <label className="text-xs text-[#8B949E] block mb-1.5">Solde actuel du REER</label>
+                <input
+                    type="number"
+                    min="0"
+                    step="1000"
+                    value={currentBalance || ""}
+                    onChange={(e) => setCurrentBalance(Number(e.target.value) || 0)}
+                    placeholder="0 (nouveau REER)"
+                    className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
+                />
+                </div>
 
               {/* Reinvest toggle */}
               <div className="flex items-start gap-3 bg-[#0D1117] rounded-xl p-4 border border-[#21262D] cursor-pointer"
