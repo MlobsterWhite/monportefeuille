@@ -25,6 +25,13 @@ const tools = [
     ready: true,
   },
   {
+    id: "valeur-nette",
+    name: "Calculateur valeur nette",
+    tagline: "Faites le bilan de vos actifs et passifs pour connaître votre valeur nette.",
+    category: "Épargne",
+    ready: true,
+  },
+  {
     id: "celi-vs-reer",
     name: "CELI vs REER",
     tagline: "Comparez les deux régimes selon votre situation personnelle.",
@@ -189,9 +196,13 @@ export default function Home() {
               const card = (
                 <div className={`rounded-2xl p-5 flex flex-col gap-4 h-full border transition-all ${
                   t.ready
-                    ? "bg-[#0E1520] border-[#21262D] hover:bg-[#121B28] hover:border-[#3DDC97]/20 cursor-pointer"
+                    ? "bg-[#0E1520] border-[#21262D] hover:bg-[#121B28] cursor-pointer"
                     : "bg-[#0A0E15] border-[#1A1F28] opacity-50 cursor-default"
-                }`}>
+                }`}
+                style={t.ready ? { "--hover-border": `${color}30` } : {}}
+                onMouseEnter={t.ready ? (e) => e.currentTarget.style.borderColor = `${color}30` : undefined}
+                onMouseLeave={t.ready ? (e) => e.currentTarget.style.borderColor = "#21262D" : undefined}
+                >
                   <div className="flex justify-between items-start">
                     <span
                       className="text-xs font-medium rounded-full px-3 py-1 border"
