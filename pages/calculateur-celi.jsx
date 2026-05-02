@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { useState, useMemo, useEffect } from "react";
+import AffiliateLink from "../components/AffiliateLink";
 
 function CELIChart({ dataPoints }) {
   const max = Math.max(...dataPoints.map(d => d.total));
@@ -273,11 +274,13 @@ export default function CalculateurCELIPage() {
             Wealthsimple est la plateforme canadienne la plus simple pour ouvrir un CELI.
             Aucuns frais, aucune commission sur les FNB. Recevez un bonus à l'ouverture.
           </p>
-          <a href="https://www.wealthsimple.com/invite/EDVQ3W"
-            target="_blank" rel="noopener noreferrer sponsored"
-            className="inline-block bg-[#F0A500] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors no-underline">
+          <AffiliateLink
+            href="https://www.wealthsimple.com/invite/EDVQ3W"
+            partner="wealthsimple"
+            className="inline-block bg-[#F0A500] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors no-underline"
+          >
             Ouvrir un CELI chez Wealthsimple →
-          </a>
+          </AffiliateLink>
           <p className="text-xs text-[#484F58] mt-4">
             ✓ Gratuit · ✓ Aucune commission · ✓ Protégé FCPE · Lien affilié
           </p>
