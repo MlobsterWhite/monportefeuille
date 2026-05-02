@@ -231,6 +231,11 @@ export default function CalculateurREER() {
   const [contribMode, setContribMode] = useState("$");
   const [employeePct, setEmployeePct] = useState(3);
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [desiredIncome, setDesiredIncome] = useState(60000);
+  const [govtRente, setGovtRente] = useState(province === "QC" ? 800 : 700);
+  const [oas, setOas] = useState(727);
+  const [otherIncome, setOtherIncome] = useState(0);
+  const [drawdownRate, setDrawdownRate] = useState(4);
 
   const years = Math.max(1, retireAge - age);
   const annualContrib = monthly * 12;
@@ -275,6 +280,32 @@ export default function CalculateurREER() {
   useEffect(() => {
     localStorage.setItem("reer:projected", Math.round(reinvest ? finalReinvest : finalBase));
   }, [finalBase, finalReinvest, reinvest]);
+
+  // ─── Décaissement ────────────────────────────────────────────────────────────
+  const govtAnnual = (govtRente + oas) * 12;
+  const otherAnnual = otherIncome * 12;
+  const reerNeeded = Math.max(0, desiredIncome - govtAnnual - otherAnnual);
+  const reerAtRetire = reinvest ? finalReinvest : finalBase;
+  const drawdownR = drawdownRate / 100 / 12;
+
+  const decaissementData = useMemo(() => {
+    const r = drawdownRate / 100 / 12;
+    const monthlyNeeded = Math.max(0, desiredIncome - (govtRente + oas) * 12 - otherIncome * 12) / 12;
+    let bal = reinvest ? finalReinvest : finalBase;
+    const data = [bal];
+    let ageDeplete = null;
+    for (let m = 1; m <= 40 * 12; m++) {
+      bal = bal * (1 + r) - monthlyNeeded;
+      if (m % 12 === 0) data.push(Math.max(0, bal));
+      if (bal <= 0 && !ageDeplete) { ageDeplete = retireAge + m / 12; break; }
+    }
+    return { data, ageDeplete };
+  }, [desiredIncome, govtRente, oas, otherIncome, drawdownRate, finalBase, finalReinvest, reinvest, retireAge]);
+
+  const { data: drawData, ageDeplete } = decaissementData;
+  const drawMax = drawData[0] || 1;
+  const lastAge = ageDeplete ? Math.ceil(ageDeplete) : retireAge + drawData.length - 1;
+  const survives90 = !ageDeplete || ageDeplete >= 90;
 
   const maxVal = Math.max(...dataReinvest, ...dataBase);
   const yearLabels = Array.from({ length: years + 1 }, (_, i) => new Date().getFullYear() + i);
@@ -429,18 +460,8 @@ export default function CalculateurREER() {
               <Slider label="Rendement annuel estimé" value={returnRate} min={1} max={12} step={0.5}
                 onChange={setReturnRate} display={returnRate + "%"} />
 
-                <div>
-                <label className="text-xs text-[#8B949E] block mb-1.5">Solde actuel du REER</label>
-                <input
-                    type="number"
-                    min="0"
-                    step="1000"
-                    value={currentBalance || ""}
-                    onChange={(e) => setCurrentBalance(Number(e.target.value) || 0)}
-                    placeholder="0 (nouveau REER)"
-                    className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]"
-                />
-                </div>
+              <Slider label="Solde actuel du REER" value={currentBalance} min={0} max={500000} step={1000}
+                onChange={setCurrentBalance} display={currentBalance > 0 ? fmt(currentBalance) : "0 (nouveau REER)"} />
 
               {/* Reinvest toggle */}
               <div className="flex items-start gap-3 bg-[#0D1117] rounded-xl p-4 border border-[#21262D] cursor-pointer"
@@ -508,6 +529,124 @@ export default function CalculateurREER() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* ── Décaissement ── */}
+              <div className="rounded-2xl p-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+                <div className="text-xs text-[#8B949E] uppercase tracking-widest mb-4">Décaissement à la retraite</div>
+
+                {/* Inputs décaissement */}
+                <div className="space-y-4 mb-5">
+                  <div>
+                    <label className="text-xs text-[#8B949E] block mb-1.5">Revenu annuel désiré à la retraite</label>
+                    <input type="number" min="0" step="1000" value={desiredIncome || ""}
+                      onChange={(e) => setDesiredIncome(Number(e.target.value) || 0)}
+                      placeholder="60 000"
+                      className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-[#8B949E] block mb-1.5">
+                        {province === "QC" ? "RRQ estimée ($/mois)" : "RPC/CPP estimé ($/mois)"}
+                      </label>
+                      <input type="number" min="0" step="50" value={govtRente || ""}
+                        onChange={(e) => setGovtRente(Number(e.target.value) || 0)}
+                        placeholder={province === "QC" ? "800" : "700"}
+                        className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]" />
+                      <div className="text-[10px] text-[#484F58] mt-1">Voir votre relevé {province === "QC" ? "Retraite Québec" : "Service Canada"}</div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-[#8B949E] block mb-1.5">PSV/OAS ($/mois)</label>
+                      <input type="number" min="0" step="10" value={oas || ""}
+                        onChange={(e) => setOas(Number(e.target.value) || 0)}
+                        placeholder="727"
+                        className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]" />
+                      <div className="text-[10px] text-[#484F58] mt-1">~727$/mois en 2025 à 65 ans</div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-[#8B949E] block mb-1.5">Autres revenus ($/mois)</label>
+                      <input type="number" min="0" step="100" value={otherIncome || ""}
+                        onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
+                        placeholder="0"
+                        className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]" />
+                      <div className="text-[10px] text-[#484F58] mt-1">Pension, loyer, etc.</div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-[#8B949E] block mb-1.5">Rendement en décaissement</label>
+                      <input type="number" min="1" max="10" step="0.5" value={drawdownRate || ""}
+                        onChange={(e) => setDrawdownRate(Number(e.target.value) || 4)}
+                        placeholder="4"
+                        className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#F0A500] transition-colors placeholder-[#484F58]" />
+                      <div className="text-[10px] text-[#484F58] mt-1">Généralement plus conservateur</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Résumé revenus */}
+                <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] mb-4 space-y-2">
+                  {[
+                    { label: province === "QC" ? "RRQ" : "RPC/CPP", val: fmt(govtRente * 12) + "/an" },
+                    { label: "PSV/OAS", val: fmt(oas * 12) + "/an" },
+                    ...(otherIncome > 0 ? [{ label: "Autres revenus", val: fmt(otherIncome * 12) + "/an" }] : []),
+                    { label: "Total revenus gouvernement + autres", val: fmt(govtAnnual + otherAnnual) + "/an", bold: true },
+                    { label: "Manque à combler par le REER", val: fmt(reerNeeded) + "/an", bold: true, color: reerNeeded > 0 ? "#F0A500" : "#3DDC97" },
+                  ].map(({ label, val, bold, color }) => (
+                    <div key={label} className="flex justify-between items-center">
+                      <span className="text-xs text-[#8B949E]">{label}</span>
+                      <span style={{ fontFamily: "'DM Mono', monospace", color: color || "#E6EDF3" }} className={`text-xs ${bold ? "font-bold" : ""}`}>{val}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Hero décaissement */}
+                <div className={`rounded-xl p-4 border mb-4 ${survives90 ? "bg-[#3DDC97]/08 border-[#3DDC97]/25" : "bg-red-500/08 border-red-500/25"}`}>
+                  <div className="text-xs text-[#8B949E] uppercase tracking-wide mb-1">Votre REER durera jusqu'à</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace" }} className={`text-3xl font-medium ${survives90 ? "text-[#3DDC97]" : "text-red-400"}`}>
+                    {ageDeplete ? `${Math.floor(ageDeplete)} ans` : `90+ ans ✓`}
+                  </div>
+                  <div className="text-xs text-[#8B949E] mt-1">
+                    {survives90
+                      ? "Excellent — votre REER couvre vos besoins jusqu'à 90 ans et plus."
+                      : `Attention — il manquera ${fmt(reerNeeded * (90 - (ageDeplete || 90)))} pour atteindre 90 ans.`}
+                  </div>
+                </div>
+
+                {/* Graphique décaissement */}
+                {drawData.length > 1 && (
+                  <div>
+                    <div className="text-[10px] text-[#484F58] mb-2">Évolution du solde REER à la retraite</div>
+                    <svg viewBox="0 0 500 100" className="w-full" style={{ height: 100 }}>
+                      <defs>
+                        <linearGradient id="drawGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor={survives90 ? "#3DDC97" : "#f87171"} stopOpacity="0.15" />
+                          <stop offset="100%" stopColor={survives90 ? "#3DDC97" : "#f87171"} stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      {(() => {
+                        const W = 500, H = 100, PX = 8, PY = 10;
+                        const iW = W - PX * 2, iH = H - PY * 2;
+                        const x = (i) => PX + (i / (drawData.length - 1)) * iW;
+                        const y = (v) => PY + ((drawMax - v) / drawMax) * iH;
+                        const path = drawData.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(v)}`).join(" ");
+                        const area = path + ` L ${x(drawData.length - 1)} ${H} L ${PX} ${H} Z`;
+                        const color = survives90 ? "#3DDC97" : "#f87171";
+                        return <>
+                          <path d={area} fill="url(#drawGrad)" />
+                          <path d={path} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                        </>;
+                      })()}
+                    </svg>
+                    <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
+                      <span>{retireAge} ans</span>
+                      <span>{Math.round(retireAge + (drawData.length - 1) / 2)} ans</span>
+                      <span>{retireAge + drawData.length - 1} ans</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
