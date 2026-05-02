@@ -136,6 +136,27 @@ export default function NetWorthTracker() {
   const [notif, setNotif] = useState(null);
 
   const t = LANG[lang];
+
+    // Charger les données sauvegardées
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("networth:params");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.assets) setAssets(p.assets);
+        if (p.liabilities) setLiabilities(p.liabilities);
+        if (p.lang) setLang(p.lang);
+      }
+    } catch {}
+  }, []);
+
+  // Sauvegarder à chaque changement
+  useEffect(() => {
+    try {
+      localStorage.setItem("networth:params", JSON.stringify({ assets, liabilities, lang }));
+    } catch {}
+  }, [assets, liabilities, lang]);
+  
   const totalAssets = ASSET_KEYS.reduce((s, k) => s + parse(assets[k]), 0);
   const totalLiabilities = LIABILITY_KEYS.reduce((s, k) => s + parse(liabilities[k]), 0);
   const netWorth = totalAssets - totalLiabilities;
