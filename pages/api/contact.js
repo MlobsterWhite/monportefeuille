@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: "monportefeuille.ca <no-reply@monportefeuille.ca>",
-        to: ["mleblanc.prod@gmail.com"],
+        to: ["info@monportefeuille.ca"],
         reply_to: courriel,
         subject: `[${sujet}] Message de ${nom}`,
         html: `
