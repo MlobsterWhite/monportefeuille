@@ -85,7 +85,11 @@ export default function EstimateurAssurance() {
   ];
 
   return (
-    <Layout title="Estimateur d'assurance">
+    <Layout
+      title="Estimateur d'Assurance Auto et Habitation — Québec et Canada"
+      description="Estimez votre prime d'assurance auto ou habitation selon votre profil. Comparez et économisez sur votre assurance au Québec et au Canada."
+      canonical="https://monportefeuille.ca/estimateur-assurance"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>

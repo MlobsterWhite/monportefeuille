@@ -187,7 +187,11 @@ export default function CalculateurHypotheque() {
   ];
 
   return (
-    <Layout title="Calculateur hypothécaire">
+    <Layout
+      title="Calculateur Hypothèque 2025 — Mensualités et amortissement"
+      description="Calculez vos paiements hypothécaires mensuels, comparez taux fixe vs variable et planifiez l'achat de votre propriété au Canada."
+      canonical="https://monportefeuille.ca/calculateur-hypotheque"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>

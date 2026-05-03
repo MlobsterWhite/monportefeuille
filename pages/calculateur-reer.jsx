@@ -376,7 +376,11 @@ export default function CalculateurREER() {
   ];
 
   return (
-    <Layout title="Calculateur REER — Projetez votre retraite">
+    <Layout
+      title="Calculateur REER 2025 — Remboursement d'impôt et retraite"
+      description="Calculez votre remboursement d'impôt REER, projetez votre épargne-retraite et comparez REER vs CELI. Gratuit, pour tous les Canadiens et Québécois."
+      canonical="https://monportefeuille.ca/calculateur-reer"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>

@@ -155,7 +155,11 @@ const categoryColors = {
 
 export default function Home() {
   return (
-    <Layout title="Outils financiers canadiens">
+    <Layout
+      title="Outils Financiers Gratuits pour Canadiens"
+      description="Calculateurs REER, CELI, hypothèque, impôt, crédit et assurance. Des outils financiers gratuits et interactifs pour prendre de meilleures décisions au Canada."
+      canonical="https://monportefeuille.ca"
+    >
       <div className="max-w-5xl mx-auto px-6 pb-24">
 
         {/* ── Hero ── */}

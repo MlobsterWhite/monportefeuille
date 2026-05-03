@@ -183,7 +183,11 @@ export default function EstimateurCredit() {
   ];
 
   return (
-    <Layout title="Estimateur de cote de crédit">
+    <Layout
+      title="Estimateur de Cote de Crédit — Score Equifax Canada"
+      description="Estimez votre cote de crédit Equifax gratuitement, découvrez comment l'améliorer et accédez aux meilleurs taux au Canada. Sans impact sur votre score."
+      canonical="https://monportefeuille.ca/estimateur-credit"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>

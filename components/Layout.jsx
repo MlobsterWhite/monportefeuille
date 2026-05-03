@@ -49,7 +49,7 @@ const OUTILS = [
   },
 ];
 
-export default function Layout({ children, title = "Mon Portefeuille" }) {
+export default function Layout({ children, title = "Mon Portefeuille", description, canonical }) {
   const [outilsOpen, setOutilsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -57,7 +57,12 @@ export default function Layout({ children, title = "Mon Portefeuille" }) {
     <>
       <Head>
         <title>{title} | monportefeuille.ca</title>
-        <meta name="description" content="Outils financiers interactifs pour Canadiens — crédit, épargne, investissement." />
+        <meta name="description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
+        {canonical && <link rel="canonical" href={canonical} />}
+        {canonical && <meta property="og:url" content={canonical} />}
+        <meta property="og:title" content={`${title} | monportefeuille.ca`} />
+        <meta property="og:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
+        <meta property="og:type" content="website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>

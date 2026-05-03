@@ -151,7 +151,11 @@ export default function CalculateurCELI() {
   ];
 
   return (
-    <Layout title="Calculateur CELI — Projetez votre retraite">
+    <Layout
+      title="Calculateur CELI 2025 — Droits de cotisation et retraite"
+      description="Calculez vos droits de cotisation CELI, projetez votre épargne libre d'impôt et maximisez votre retraite. Gratuit pour tous les Canadiens."
+      canonical="https://monportefeuille.ca/calculateur-celi"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>

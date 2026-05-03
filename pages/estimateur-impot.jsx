@@ -265,7 +265,11 @@ export default function EstimateurImpot() {
   ];
 
   return (
-    <Layout title="Estimateur d'impôt">
+    <Layout
+      title="Estimateur d'impôt 2025 — Québec et Canada"
+      description="Estimez votre impôt fédéral et provincial 2025, calculez vos déductions REER et optimisez votre déclaration. Gratuit pour les résidents du Québec et du Canada."
+      canonical="https://monportefeuille.ca/estimateur-impot"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
