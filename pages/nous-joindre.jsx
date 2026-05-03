@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 
 export default function NousJoindre() {
   const [form, setForm] = useState({ nom: "", courriel: "", sujet: "", message: "" });
-  const [envoye, setEnvoye] = useState(false);
+  const [statut, setStatut] = useState("idle"); // idle | loading | success | error
 
   const sujets = [
     "Suggestion d'outil ou de fonctionnalité",
@@ -13,11 +13,24 @@ export default function NousJoindre() {
     "Autre",
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const mailtoLink = `mailto:info@monportefeuille.ca?subject=${encodeURIComponent(`[${form.sujet}] ${form.nom}`)}&body=${encodeURIComponent(`Nom : ${form.nom}\nCourriel : ${form.courriel}\n\n${form.message}`)}`;
-    window.location.href = mailtoLink;
-    setEnvoye(true);
+    setStatut("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setStatut("success");
+        setForm({ nom: "", courriel: "", sujet: "", message: "" });
+      } else {
+        setStatut("error");
+      }
+    } catch {
+      setStatut("error");
+    }
   };
 
   return (
@@ -32,7 +45,6 @@ export default function NousJoindre() {
             <p className="text-sm text-[#8B949E]">Une suggestion, une erreur à signaler ou une idée de partenariat? On lit tout.</p>
           </div>
 
-          {/* Raisons de nous écrire */}
           <div className="grid grid-cols-2 gap-3 mb-6">
             {[
               { icon: "💡", titre: "Suggestions", desc: "Nouvel outil, nouvelle fonctionnalité" },
@@ -48,8 +60,19 @@ export default function NousJoindre() {
             ))}
           </div>
 
-          {/* Formulaire */}
-          {!envoye ? (
+          {statut === "success" ? (
+            <div className="rounded-2xl p-8 text-center" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+              <div className="text-4xl mb-4">✅</div>
+              <h2 className="text-lg font-medium text-[#E6EDF3] mb-2">Message envoyé!</h2>
+              <p className="text-sm text-[#8B949E] mb-6">
+                Merci — nous vous répondrons dans les meilleurs délais.
+              </p>
+              <button onClick={() => setStatut("idle")}
+                className="text-xs text-[#484F58] hover:text-[#8B949E] border border-[#21262D] rounded-lg px-4 py-2 transition-colors">
+                Envoyer un autre message
+              </button>
+            </div>
+          ) : (
             <form onSubmit={handleSubmit} className="rounded-2xl p-6 space-y-4" style={{ background: "#161B22", border: "1px solid #21262D" }}>
 
               <div className="grid grid-cols-2 gap-4">
@@ -88,38 +111,27 @@ export default function NousJoindre() {
                   className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#3DDC97] transition-colors placeholder-[#484F58] resize-none" />
               </div>
 
-              <button type="submit"
-                className="w-full bg-[#3DDC97] text-[#0D1117] font-bold rounded-xl py-3.5 text-sm tracking-wide hover:bg-[#2bc47e] transition-colors">
-                Envoyer le message →
-              </button>
+              {statut === "error" && (
+                <div className="bg-red-500/10 border border-red-500/25 rounded-xl px-4 py-3 text-xs text-red-400">
+                  Une erreur s'est produite. Réessayez ou écrivez-nous directement à{" "}
+                  <a href="mailto:info@monportefeuille.ca" className="underline">info@monportefeuille.ca</a>
+                </div>
+              )}
 
-              <p className="text-[10px] text-[#484F58] text-center">
-                Ceci ouvrira votre client de messagerie avec le message pré-rempli à{" "}
-                <span className="text-[#8B949E]">info@monportefeuille.ca</span>
-              </p>
-            </form>
-          ) : (
-            <div className="rounded-2xl p-8 text-center" style={{ background: "#161B22", border: "1px solid #21262D" }}>
-              <div className="text-4xl mb-4">✉️</div>
-              <h2 className="text-lg font-medium text-[#E6EDF3] mb-2">Votre messagerie s'est ouverte!</h2>
-              <p className="text-sm text-[#8B949E] mb-6">Si rien ne s'est ouvert, écrivez-nous directement à{" "}
-                <a href="mailto:info@monportefeuille.ca" className="text-[#3DDC97] hover:underline">info@monportefeuille.ca</a>
-              </p>
-              <button onClick={() => setEnvoye(false)}
-                className="text-xs text-[#484F58] hover:text-[#8B949E] border border-[#21262D] rounded-lg px-4 py-2 transition-colors">
-                Envoyer un autre message
+              <button type="submit" disabled={statut === "loading"}
+                className="w-full font-bold rounded-xl py-3.5 text-sm tracking-wide transition-all disabled:opacity-60 text-[#0D1117]"
+                style={{ background: "#3DDC97" }}>
+                {statut === "loading" ? "Envoi en cours..." : "Envoyer le message →"}
               </button>
-            </div>
+            </form>
           )}
 
-          {/* Contact direct */}
           <div className="mt-4 rounded-xl p-4 flex items-center justify-between" style={{ background: "#161B22", border: "1px solid #21262D" }}>
             <div>
               <div className="text-xs text-[#8B949E]">Contact direct</div>
               <div className="text-sm text-[#E6EDF3] mt-0.5">info@monportefeuille.ca</div>
             </div>
-            <a href="mailto:info@monportefeuille.ca"
-              className="text-xs text-[#3DDC97] hover:underline no-underline">
+            <a href="mailto:info@monportefeuille.ca" className="text-xs text-[#3DDC97] hover:underline no-underline">
               Écrire →
             </a>
           </div>
