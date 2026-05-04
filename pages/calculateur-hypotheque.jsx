@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
+import ToolSchema from "../components/ToolSchema";
 
 const ACCENT = "#FB923C";
 const fmt = (n) => "$" + Math.round(n || 0).toLocaleString("fr-CA");
@@ -192,14 +193,24 @@ export default function CalculateurHypotheque() {
       description="Calculez vos paiements hypothécaires mensuels, comparez taux fixe vs variable et planifiez l'achat de votre propriété au Canada."
       canonical="https://monportefeuille.ca/calculateur-hypotheque"
     >
+      <ToolSchema
+        name="Calculateur Hypothèque Canada 2025"
+        description="Calculez vos paiements hypothécaires mensuels, comparez taux fixe vs variable, visualisez l'amortissement et planifiez l'achat de votre propriété au Canada."
+        url="https://monportefeuille.ca/calculateur-hypotheque"
+      />
+      
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
-            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">Calculateur hypothécaire</h1>
-            <p className="text-sm text-[#8B949E] mt-1">Estimez vos paiements, le total des intérêts et l'impact de votre mise de fonds</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
+              Calculateur Hypothèque Canada 2025
+            </h1>
+            <p className="text-sm text-[#8B949E] leading-relaxed">
+              Calculez vos paiements mensuels, comparez taux fixe vs variable et planifiez l'achat de votre propriété
+            </p>
           </div>
 
           {/* Hero */}

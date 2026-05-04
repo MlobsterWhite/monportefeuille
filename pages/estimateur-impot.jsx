@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
+import ToolSchema from "../components/ToolSchema";
 
 const ACCENT = "#C084FC";
 
@@ -270,14 +271,24 @@ export default function EstimateurImpot() {
       description="Estimez votre impôt fédéral et provincial 2025, calculez vos déductions REER et optimisez votre déclaration. Gratuit pour les résidents du Québec et du Canada."
       canonical="https://monportefeuille.ca/estimateur-impot"
     >
+      <ToolSchema
+        name="Estimateur d'Impôt Québec et Canada 2026"
+        description="Estimez votre impôt fédéral et provincial, calculez vos déductions REER, optimisez votre remboursement d'impôt. Outil gratuit pour résidents du Québec et du Canada."
+        url="https://monportefeuille.ca/estimateur-impot"
+      />
+      
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
-            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">Estimateur d'impôt</h1>
-            <p className="text-sm text-[#8B949E] mt-1">Votre vrai revenu net et l'économie de vos déductions</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
+              Estimateur d'Impôt Québec 2026
+            </h1>
+            <p className="text-sm text-[#8B949E] leading-relaxed">
+              Estimez votre impôt fédéral et provincial, calculez vos déductions REER et optimisez votre remboursement
+            </p>
           </div>
 
           {/* Hero */}

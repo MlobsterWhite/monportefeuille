@@ -65,6 +65,25 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <meta property="og:type" content="website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        
+        {/* Schema.org Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "monportefeuille.ca",
+              "url": "https://monportefeuille.ca",
+              "logo": "https://monportefeuille.ca/logo.svg",
+              "description": "Outils financiers gratuits pour Canadiens — calculateurs CELI, REER, hypothèque, impôt, crédit et assurance.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "CA"
+              }
+            })
+          }}
+        />
       </Head>
 
       {/* Google Analytics */}

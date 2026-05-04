@@ -111,7 +111,12 @@ const faqs = [
   },
   {
     q: "Par où commencer si je suis débutant?",
-    a: "Commencez par l'estimateur de crédit — gratuit, 2 minutes. Ensuite ouvrez un CELI et contribuez ce que vous pouvez chaque mois, même 50$."
+    a: (
+      <>
+        Commencez par <Link href="/estimateur-credit" className="text-[#3DDC97] underline hover:text-[#3DDC97]/80">l'estimateur de crédit</Link> — gratuit, 2 minutes. 
+        Ensuite ouvrez un <Link href="/calculateur-celi" className="text-[#3DDC97] underline hover:text-[#3DDC97]/80">CELI avec notre calculateur</Link> et contribuez ce que vous pouvez chaque mois, même 50$.
+      </>
+    )
   },
   {
     q: "Quelle est la différence entre un CELI et un REER?",
@@ -134,7 +139,7 @@ function FAQ() {
           </button>
           {open === i && (
             <div className="px-5 pb-4">
-              <p className="text-sm text-[#8B949E] leading-relaxed font-light">{item.a}</p>
+              <div className="text-sm text-[#8B949E] leading-relaxed font-light">{item.a}</div>
             </div>
           )}
         </div>
@@ -160,6 +165,59 @@ export default function Home() {
       description="Calculateurs REER, CELI, hypothèque, impôt, crédit et assurance. Des outils financiers gratuits et interactifs pour prendre de meilleures décisions au Canada."
       canonical="https://monportefeuille.ca"
     >
+      {/* Schema FAQPage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Est-ce que ces outils sont vraiment gratuits?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Oui, tous les outils sur monportefeuille.ca sont 100% gratuits. Le site est financé par des liens affiliés — si vous ouvrez un compte via nos liens, on reçoit une petite commission, sans coût supplémentaire pour vous."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Vérifier ma cote de crédit affecte-t-il mon score?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Non. La vérification est douce (soft check) et n'a aucun impact sur votre cote. Vous pouvez vérifier aussi souvent que vous voulez."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Wealthsimple est-il sécuritaire?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Oui. Wealthsimple est membre de l'OCRI et les comptes sont protégés par le FCPE jusqu'à 1 million de dollars."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Par où commencer si je suis débutant?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Commencez par l'estimateur de crédit — gratuit, 2 minutes. Ensuite ouvrez un CELI et contribuez ce que vous pouvez chaque mois, même 50$."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quelle est la différence entre un CELI et un REER?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Le CELI vous permet de retirer sans payer d'impôt. Le REER réduit votre revenu imposable maintenant, mais vous payez de l'impôt au retrait. En général, le CELI est recommandé en premier."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       <div className="max-w-5xl mx-auto px-6 pb-24">
 
         {/* ── Hero ── */}
@@ -194,7 +252,7 @@ export default function Home() {
 
         {/* ── Comment ça marche ── */}
         <div className="mb-20">
-          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Comment ça marche</h2>
+          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Comment utiliser nos outils financiers</h2>
           <p className="text-sm text-[#8B949E] text-center mb-10 font-light">Trois étapes pour reprendre le contrôle de vos finances</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
@@ -215,7 +273,7 @@ export default function Home() {
 
         {/* ── Outils ── */}
         <div className="mb-20">
-          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Nos outils</h2>
+          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Calculateurs financiers gratuits pour Canadiens</h2>
           <p className="text-sm text-[#8B949E] text-center mb-10 font-light">Gratuits, interactifs, conçus pour les Canadiens</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {tools.map(t => {
@@ -280,7 +338,7 @@ export default function Home() {
 
         {/* ── FAQ ── */}
         <div>
-          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Questions fréquentes</h2>
+          <h2 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">Questions fréquentes sur nos outils</h2>
           <p className="text-sm text-[#8B949E] text-center mb-10 font-light">Tout ce que vous voulez savoir avant de commencer</p>
           <div className="max-w-2xl mx-auto">
             <FAQ />
