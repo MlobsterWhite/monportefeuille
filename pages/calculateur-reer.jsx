@@ -117,15 +117,6 @@ const PROVINCES = [
   { code: "NT", name: "Territoires du Nord-Ouest" },
   { code: "NU", name: "Nunavut" },
 ];
-  useSharedParams({
-    income: { setter: setIncome, parser: Number },
-    monthly: { setter: setMonthly, parser: Number },
-    currentBalance: { setter: setCurrentBalance, parser: Number },
-    age: { setter: setAge, parser: Number },
-    retireAge: { setter: setRetireAge, parser: Number },
-    returnRate: { setter: setReturnRate, parser: Number },
-    province: { setter: setProvince },
-  });
 
 // ─── Tax Calculations ─────────────────────────────────────────────────────────
 function calcTax(income, brackets) {
@@ -264,6 +255,16 @@ export default function CalculateurREER() {
   const [oas, setOas] = useState(727);
   const [otherIncome, setOtherIncome] = useState(0);
   const [drawdownRate, setDrawdownRate] = useState(4);
+
+    useSharedParams({
+    income: { setter: setIncome, parser: Number },
+    monthly: { setter: setMonthly, parser: Number },
+    currentBalance: { setter: setCurrentBalance, parser: Number },
+    age: { setter: setAge, parser: Number },
+    retireAge: { setter: setRetireAge, parser: Number },
+    returnRate: { setter: setReturnRate, parser: Number },
+    province: { setter: setProvince },
+  });
 
   const years = Math.max(1, retireAge - age);
   const REER_MAX_2025 = 31560;
