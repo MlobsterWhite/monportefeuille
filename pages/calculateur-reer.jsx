@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
+import ShareButton from "../components/ShareButton";        
+import useSharedParams from "../hooks/useSharedParams";
 
 // ─── Tax Data 2025 ───────────────────────────────────────────────────────────
 const FEDERAL_BRACKETS = [
@@ -115,6 +117,15 @@ const PROVINCES = [
   { code: "NT", name: "Territoires du Nord-Ouest" },
   { code: "NU", name: "Nunavut" },
 ];
+  useSharedParams({
+    income: { setter: setIncome, parser: Number },
+    monthly: { setter: setMonthly, parser: Number },
+    currentBalance: { setter: setCurrentBalance, parser: Number },
+    age: { setter: setAge, parser: Number },
+    retireAge: { setter: setRetireAge, parser: Number },
+    returnRate: { setter: setReturnRate, parser: Number },
+    province: { setter: setProvince },
+  });
 
 // ─── Tax Calculations ─────────────────────────────────────────────────────────
 function calcTax(income, brackets) {
@@ -848,6 +859,18 @@ export default function CalculateurREER() {
               Ouvrir un REER chez Wealthsimple →
             </AffiliateLink>
             <p className="text-xs text-[#484F58] mt-4">✓ Gratuit · ✓ Aucune commission · ✓ Protégé FCPE · Lien affilié</p>
+          </div>
+
+          <div className="mt-8 rounded-2xl p-5 bg-[#161B22] border border-[#21262D]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium text-[#E6EDF3] mb-1">Partagez cette simulation</h3>
+                <p className="text-xs text-[#8B949E]">Envoyez le lien à un ami ou sauvegardez vos calculs</p>
+              </div>
+              <div className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">
+                <ShareButton params={{ income, monthly, currentBalance, age, retireAge, returnRate, province }} color="#F0A500" />
+              </div>
+            </div>
           </div>
 
         </div>

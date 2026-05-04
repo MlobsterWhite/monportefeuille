@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
 import ToolSchema from "../components/ToolSchema";
+import ShareButton from "../components/ShareButton";        
+import useSharedParams from "../hooks/useSharedParams";
+
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const fmt = (n) => Math.round(n || 0).toLocaleString("fr-CA");
@@ -153,6 +156,14 @@ export default function EstimateurCredit() {
   const [tab, setTab] = useState("inputs");
 
   const set = (key) => (val) => setParams(p => ({ ...p, [key]: val }));
+
+  useSharedParams({
+    payments: { setter: (v) => setParams(p => ({ ...p, payments: v })) },
+    utilization: { setter: (v) => setParams(p => ({ ...p, utilization: v })), parser: Number },
+    history: { setter: (v) => setParams(p => ({ ...p, history: v })) },
+    inquiries: { setter: (v) => setParams(p => ({ ...p, inquiries: v })) },
+    accounts: { setter: (v) => setParams(p => ({ ...p, accounts: v })) },
+  });
 
   // Persist
   useEffect(() => {
@@ -504,6 +515,18 @@ export default function EstimateurCredit() {
               Vérifier ma vraie cote — Gratuit →
             </AffiliateLink>
             <p className="text-xs text-[#484F58] mt-4">✓ Aucune carte de crédit · ✓ Aucun impact · ✓ Données sécurisées · Lien affilié</p>
+          </div>
+
+          <div className="mt-8 rounded-2xl p-5 bg-[#161B22] border border-[#21262D]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium text-[#E6EDF3] mb-1">Partagez cette simulation</h3>
+                <p className="text-xs text-[#8B949E]">Envoyez le lien à un ami ou sauvegardez vos calculs</p>
+              </div>
+              <div className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">
+                <ShareButton params={params} color="#3DDC97" />
+              </div>
+            </div>
           </div>
 
         </div>

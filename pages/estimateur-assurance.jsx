@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
+import ShareButton from "../components/ShareButton";        
+import useSharedParams from "../hooks/useSharedParams";
 
 const ACCENT = "#60A5FA";
 
@@ -8,6 +10,13 @@ const PROVINCES = ["QC", "ON", "BC", "AB", "SK", "MB", "NB", "NS", "PE", "NL"];
 
 const BASE_AUTO = { QC: 800, ON: 1600, BC: 1400, AB: 1200, SK: 1100, MB: 1300, NB: 950, NS: 1000, PE: 900, NL: 1050 };
 const BASE_HAB = { QC: 700, ON: 1000, BC: 950, AB: 850, SK: 800, MB: 820, NB: 780, NS: 850, PE: 720, NL: 900 };
+  useSharedParams({
+    type: { setter: setType },
+    province: { setter: setProvince },
+    age: { setter: setAge, parser: Number },
+    annees: { setter: setAnnees, parser: Number },
+    franchise: { setter: setFranchise, parser: Number },
+  });
 
 function calcPrime(type, province, age, annees, franchise) {
   const base = (type === "auto" ? BASE_AUTO : BASE_HAB)[province] || 1000;
@@ -279,6 +288,18 @@ export default function EstimateurAssurance() {
           </div>
           */}
           
+          <div className="mt-8 rounded-2xl p-5 bg-[#161B22] border border-[#21262D]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium text-[#E6EDF3] mb-1">Partagez cette simulation</h3>
+                <p className="text-xs text-[#8B949E]">Envoyez le lien à un ami ou sauvegardez vos calculs</p>
+              </div>
+              <div className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">
+                <ShareButton params={{ type, province, age, annees, franchise }} color="#60A5FA" />
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </Layout>
