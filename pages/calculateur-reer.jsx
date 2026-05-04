@@ -868,7 +868,18 @@ export default function CalculateurREER() {
                 <p className="text-xs text-[#8B949E]">Envoyez le lien à un ami ou sauvegardez vos calculs</p>
               </div>
               <div className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">
-                <ShareButton params={{ income, monthly, currentBalance, age, retireAge, returnRate, province }} color="#F0A500" />
+                <ShareButton
+                  params={{
+                    income,
+                    monthly,
+                    currentBalance,
+                    age,
+                    retireAge,
+                    returnRate,
+                    province,
+                  }}
+                  color="#F0A500"
+                />
               </div>
             </div>
           </div>
