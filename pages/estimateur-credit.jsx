@@ -410,6 +410,85 @@ export default function EstimateurCredit() {
             </div>
           )}
 
+          {/* ─── Guide Crédit ─── */}
+          <section className="mt-16 max-w-2xl mx-auto px-4 text-justify">
+            
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
+              Comment fonctionne la cote de crédit au Canada
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Votre cote de crédit (entre 300 et 900) reflète votre fiabilité financière selon les agences Equifax et TransUnion. Elle est calculée à partir de votre historique de paiement (35%), utilisation du crédit (30%), ancienneté des comptes (15%), types de crédit (10%) et nouvelles demandes (10%). Une cote de 720+ vous donne accès aux meilleurs taux hypothécaires et cartes de crédit premium. Une cote sous 650 peut entraîner des refus ou des taux d'intérêt beaucoup plus élevés. La bonne nouvelle : vous pouvez améliorer votre cote en 6-12 mois avec les bonnes stratégies.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Comment améliorer votre cote de crédit rapidement
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Payez TOUTES vos factures à temps — même un seul retard de 30+ jours peut faire chuter votre cote de 50-100 points. Gardez votre utilisation de crédit sous 30% de votre limite (idéalement sous 10%) — si votre limite totale est 10 000$, ne dépassez jamais 3 000$ de solde. Ne fermez pas vos vieilles cartes même si vous ne les utilisez plus (l'ancienneté aide). Évitez de demander trop de nouveaux crédits en peu de temps. Si vous avez des dettes, utilisez notre <a href="/calculateur-reer" className="text-[#3DDC97] underline">stratégie de remboursement</a> pour les éliminer méthodiquement.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Vérifier votre cote gratuitement sans impact
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Il existe deux types de vérifications : soft check (aucun impact) et hard check (baisse temporaire de 5-10 points). Quand VOUS vérifiez votre propre cote via Borrowell, Equifax ou TransUnion, c'est un soft check — vous pouvez vérifier aussi souvent que vous voulez. Quand un prêteur vérifie avant de vous accorder un crédit (hypothèque, carte de crédit, prêt auto), c'est un hard check qui apparaît dans votre dossier. Vérifiez votre cote au moins une fois par trimestre pour détecter les erreurs ou activités suspectes. C'est gratuit et ne nuit jamais à votre score.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Questions fréquentes sur la cote de crédit
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Quelle est une bonne cote de crédit au Canada ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  300-579 : Très faible (refus fréquents) • 580-669 : Acceptable (taux élevés) • 670-739 : Bon (taux moyens) • 740-799 : Très bon (bons taux) • 800-900 : Excellent (meilleurs taux). La moyenne canadienne est environ 650. Pour les meilleurs taux hypothécaires et cartes premium, visez 720+.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Combien de temps faut-il pour reconstruire une mauvaise cote ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Si votre cote a chuté à cause de retards de paiement ou dettes envoyées aux collections, comptez 6-12 mois pour voir une amélioration significative (+50-100 points) si vous adoptez de bonnes habitudes immédiatement. Les éléments négatifs restent dans votre dossier 6-7 ans, mais leur impact diminue avec le temps. Une faillite reste 6-7 ans selon la province. La clé : commencer maintenant et être patient.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Fermer une carte de crédit nuit-il à ma cote ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Oui, surtout si c'est une vieille carte. Fermer un compte réduit votre crédit disponible total (augmente votre taux d'utilisation) et peut réduire l'ancienneté moyenne de vos comptes. Exemple : si vous avez 10 000$ de limite totale et fermez une carte de 3 000$, vos autres soldes représentent maintenant un pourcentage plus élevé de votre nouveau total (7 000$). Gardez vos vieilles cartes ouvertes même si vous ne les utilisez plus, ou utilisez-les pour un petit achat mensuel automatique.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Ma cote est basse, puis-je quand même obtenir une hypothèque ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Oui, mais vos options sont limitées et les taux seront plus élevés. Avec une cote sous 650, les prêteurs traditionnels (banques) peuvent refuser ou exiger une mise de fonds plus élevée (20%+). Vous pourriez vous tourner vers les prêteurs B ou privés qui acceptent des cotes plus basses, mais avec des taux 2-4% plus élevés. Sur un prêt de 400 000$, ça représente 600-800$/mois de plus. Mieux vaut prendre 6-12 mois pour améliorer votre cote AVANT de demander une hypothèque — utilisez notre <a href="/calculateur-hypotheque" className="text-[#3DDC97] underline">calculateur hypothécaire</a> pour voir l'impact du taux sur vos paiements.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-12 p-6 bg-[#161B22] border border-[#21262D] rounded-xl">
+              <h3 className="text-base font-bold text-[#E6EDF3] mb-3">
+                💡 Outils connexes pour améliorer vos finances
+              </h3>
+              <ul className="text-sm text-[#8B949E] leading-relaxed space-y-2">
+                <li>→ <a href="/calculateur-hypotheque" className="text-[#3DDC97] underline">Calculateur hypothèque</a> : Voir l'impact de votre cote sur vos paiements</li>
+                <li>→ <a href="/valeur-nette" className="text-[#3DDC97] underline">Calculateur valeur nette</a> : Portrait financier complet</li>
+                <li>→ <a href="/calculateur-reer" className="text-[#3DDC97] underline">Calculateur REER</a> : Épargne automatique améliore crédit</li>
+              </ul>
+            </div>
+
+          </section>
+
           {/* CTA */}
           <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
             <div className="text-3xl mb-3">📊</div>

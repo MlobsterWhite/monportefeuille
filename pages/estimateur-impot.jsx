@@ -512,6 +512,85 @@ export default function EstimateurImpot() {
               ))}
             </div>
           )}
+          
+          {/* ─── Guide Impôt ─── */}
+          <section className="mt-16 max-w-2xl mx-auto px-4 text-justify">
+            
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
+              Comment fonctionne l'impôt au Québec en 2026
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Les résidents du Québec paient deux paliers d'impôt : fédéral et provincial. Le système est progressif — plus votre revenu augmente, plus le taux d'imposition sur chaque dollar additionnel est élevé. En 2026, le taux fédéral varie de 15% à 33%, tandis que le taux provincial québécois va de 14% à 25.75%. Notre estimateur calcule automatiquement votre impôt total en tenant compte des deux paliers et des crédits de base auxquels vous avez droit.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Maximisez vos déductions REER avant le 29 février
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Cotiser à un REER réduit votre revenu imposable — si vous gagnez 75 000$ et cotisez 10 000$ au REER, vous êtes imposé comme si vous gagniez 65 000$. Au Québec, ça représente environ 4 200$ d'économies d'impôt (42% du montant cotisé). La date limite pour cotiser au REER et déduire sur vos impôts 2025 est le 29 février 2026. Utilisez notre <a href="/calculateur-reer" className="text-[#3DDC97] underline">calculateur REER</a> pour voir combien vous pouvez économiser selon votre salaire et vos cotisations planifiées.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              CELI vs REER : lequel privilégier pour réduire vos impôts
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Le REER réduit votre impôt maintenant, mais vous payez de l'impôt au retrait à la retraite. Le CELI ne donne aucune déduction fiscale immédiate, mais les retraits sont 100% libres d'impôt. Si vous êtes dans une tranche d'imposition élevée aujourd'hui (50 000$+) et prévoyez un revenu plus bas à la retraite, le REER est souvent optimal. Si vous gagnez moins de 50 000$ ou prévoyez retirer l'argent avant la retraite, le <a href="/calculateur-celi" className="text-[#3DDC97] underline">CELI</a> est généralement meilleur. Notre estimateur d'impôt vous montre l'économie exacte selon vos cotisations REER.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Questions fréquentes sur l'impôt au Québec
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Quand dois-je produire ma déclaration de revenus 2026 ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  La date limite pour produire votre déclaration fédérale et provinciale est le 30 avril 2026 pour la plupart des contribuables. Si vous ou votre conjoint êtes travailleur autonome, la date limite est le 15 juin 2026, mais tout solde dû doit quand même être payé avant le 30 avril pour éviter les intérêts. Produire tôt (dès février) vous permet de recevoir votre remboursement plus rapidement.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Combien puis-je cotiser au REER en 2026 ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Votre plafond de cotisation REER pour 2026 est de 18% de votre revenu gagné en 2025, jusqu'à un maximum de 32 490$, plus vos droits inutilisés des années précédentes. Vous trouvez ce montant sur votre Avis de cotisation 2025 de l'ARC. Si vous avez déjà un REER collectif avec votre employeur, les cotisations de l'employeur comptent dans votre plafond.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Vais-je recevoir un remboursement ou devoir payer un solde ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Ça dépend de combien d'impôt a été retenu à la source sur vos payes. Si vous êtes salarié avec un seul employeur, vos impôts sont généralement bien calculés et vous recevez un petit remboursement ou payez un petit solde. Si vous avez plusieurs revenus, êtes travailleur autonome, ou avez cotisé au REER, vous pourriez avoir un remboursement plus important. Notre estimateur vous donne une prévision selon votre situation.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Dois-je déclarer mes revenus de placement et crypto ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Oui. Les intérêts, dividendes, gains en capital (incluant crypto) sont imposables. Les gains en capital sont imposés à 50% de leur valeur — si vous réalisez un gain de 10 000$ en vendant des actions ou du Bitcoin, 5 000$ s'ajoutent à votre revenu imposable. Les revenus dans un CELI ne sont jamais imposables, même les gains en capital. Si vous investissez hors CELI, gardez vos relevés pour les déclarer correctement.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-12 p-6 bg-[#161B22] border border-[#21262D] rounded-xl">
+              <h3 className="text-base font-bold text-[#E6EDF3] mb-3">
+                💡 Outils connexes pour optimiser vos impôts
+              </h3>
+              <ul className="text-sm text-[#8B949E] leading-relaxed space-y-2">
+                <li>→ <a href="/calculateur-reer" className="text-[#3DDC97] underline">Calculateur REER</a> : Estimez vos économies d'impôt REER</li>
+                <li>→ <a href="/calculateur-celi" className="text-[#3DDC97] underline">Calculateur CELI</a> : Planifiez votre épargne libre d'impôt</li>
+                <li>→ <a href="/valeur-nette" className="text-[#3DDC97] underline">Calculateur valeur nette</a> : Portrait financier complet</li>
+              </ul>
+            </div>
+
+          </section>
 
           {/* CTA */}
           <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">

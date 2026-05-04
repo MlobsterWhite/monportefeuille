@@ -435,6 +435,85 @@ export default function CalculateurHypotheque() {
             </div>
           )}
 
+          {/* ─── Guide Hypothèque ─── */}
+          <section className="mt-16 max-w-2xl mx-auto px-4 text-justify">
+            
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
+              Comment fonctionne un calculateur hypothécaire
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Un calculateur hypothécaire vous aide à estimer vos paiements mensuels en fonction du prix d'achat, de votre mise de fonds et du taux d'intérêt. Il prend en compte l'amortissement (durée totale du prêt) et calcule la portion qui va vers le capital versus les intérêts. Au Canada, la mise de fonds minimale est de 5% pour un prix jusqu'à 500 000$, mais une mise de fonds de 20% ou plus vous évite l'assurance SCHL, réduisant vos coûts totaux.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Taux fixe vs taux variable : lequel choisir en 2025
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Le taux fixe garantit un paiement stable pendant toute la durée du terme (généralement 5 ans), vous protégeant des hausses de taux. Le taux variable fluctue selon le taux directeur de la Banque du Canada — il peut être plus bas initialement, mais comporte un risque si les taux montent. En 2025, avec les taux qui ont grimpé depuis 2022, plusieurs Canadiens privilégient le fixe pour la prévisibilité budgétaire. Utilisez notre calculateur pour comparer les deux scénarios selon votre tolérance au risque.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Impact de la mise de fonds sur vos paiements
+            </h2>
+            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
+              Plus votre mise de fonds est élevée, plus vos paiements mensuels diminuent — et vous économisez des dizaines de milliers en intérêts sur 25 ans. Avec une mise de fonds de 20% ou plus, vous évitez l'assurance prêt hypothécaire SCHL (2.8% à 4% du montant emprunté). Par exemple, sur une maison de 500 000$ avec 10% de mise de fonds, l'assurance SCHL coûte environ 14 400$ additionnels. Épargner pour atteindre 20% peut sembler long, mais le <a href="/calculateur-celi" className="text-[#3DDC97] underline">CELI</a> ou le nouveau <a href="/calculateur-celi" className="text-[#3DDC97] underline">CELIAPP</a> peuvent accélérer le processus.
+            </p>
+
+            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
+              Questions fréquentes sur l'hypothèque
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Quelle est la mise de fonds minimale au Canada ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  5% pour les premiers 500 000$, puis 10% pour la portion au-dessus de 500 000$. Pour une maison de 700 000$, vous auriez besoin de 5% × 500 000$ (25 000$) + 10% × 200 000$ (20 000$) = 45 000$ minimum. Mais avec 20% de mise de fonds (140 000$), vous évitez l'assurance SCHL.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  C'est quoi l'assurance SCHL et comment l'éviter ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  L'assurance prêt hypothécaire SCHL (Société canadienne d'hypothèques et de logement) protège le prêteur si vous faites défaut de paiement. Elle est obligatoire si votre mise de fonds est inférieure à 20%. Le coût varie de 2.8% à 4% du montant emprunté selon votre mise de fonds. Pour l'éviter : épargnez 20% ou utilisez un <a href="/calculateur-celi" className="text-[#3DDC97] underline">CELIAPP</a> pour accélérer.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Amortissement 25 ans vs 30 ans : quelle différence ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Un amortissement de 30 ans réduit vos paiements mensuels (plus de temps pour rembourser), mais vous payez beaucoup plus d'intérêts au total. Sur un prêt de 400 000$ à 5%, passer de 25 à 30 ans réduit le paiement mensuel d'environ 200$, mais vous coûte 60 000$ de plus en intérêts totaux. Si vous pouvez vous permettre les paiements plus élevés, 25 ans est plus économique.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
+                  Dois-je vérifier ma cote de crédit avant de demander une hypothèque ?
+                </h3>
+                <p className="text-sm text-[#8B949E] leading-relaxed">
+                  Absolument. Les prêteurs utilisent votre cote de crédit pour déterminer votre taux d'intérêt. Une cote de 720+ vous donne accès aux meilleurs taux, tandis qu'une cote sous 650 peut résulter en un taux 1-2% plus élevé — ce qui représente des dizaines de milliers en coûts supplémentaires. Utilisez notre <a href="/estimateur-credit" className="text-[#3DDC97] underline">estimateur de crédit gratuit</a> pour vérifier votre profil sans impact sur votre score.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-12 p-6 bg-[#161B22] border border-[#21262D] rounded-xl">
+              <h3 className="text-base font-bold text-[#E6EDF3] mb-3">
+                💡 Outils connexes pour planifier votre achat
+              </h3>
+              <ul className="text-sm text-[#8B949E] leading-relaxed space-y-2">
+                <li>→ <a href="/calculateur-celi" className="text-[#3DDC97] underline">Calculateur CELI</a> : Épargnez pour votre mise de fonds</li>
+                <li>→ <a href="/estimateur-credit" className="text-[#3DDC97] underline">Estimateur de crédit</a> : Vérifiez votre profil avant la demande</li>
+                <li>→ <a href="/estimateur-impot" className="text-[#3DDC97] underline">Estimateur d'impôt</a> : Calculez votre capacité d'emprunt réelle</li>
+              </ul>
+            </div>
+
+          </section>
+
           {/* CTA */}
           <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
             <div className="text-3xl mb-3">🏠</div>
