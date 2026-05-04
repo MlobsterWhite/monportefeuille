@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://monportefeuille.ca
+
+# Sitemaps
+Sitemap: https://monportefeuille.ca/sitemap.xml
