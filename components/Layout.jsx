@@ -64,7 +64,6 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <meta property="og:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         <meta property="og:type" content="website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         
         {/* Schema.org Organization */}
         <script
