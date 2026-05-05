@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AffiliateLink from "./AffiliateLink";
 
 const LANG = {
   fr: {
@@ -16,16 +17,36 @@ const LANG = {
     noHistory: "Aucun relevé sauvegardé. Remplissez vos données et sauvegardez votre premier bilan.",
     evolution: "Évolution de la valeur nette",
     cat: {
-      celi: "CELI", reer: "REER", savings: "Compte épargne", investments: "Investissements",
-      realEstate: "Immobilier", vehicle: "Véhicule(s)", otherAsset: "Autre actif",
-      mortgage: "Hypothèque", carLoan: "Prêt auto", creditCards: "Cartes de crédit",
-      studentLoan: "Prêt étudiant", otherLiability: "Autre passif",
+      cash: "Argent comptant",
+      celi: "CELI", 
+      reer: "REER", 
+      savings: "Compte épargne", 
+      investments: "Investissements",
+      crypto: "Cryptomonnaies",
+      realEstate: "Immobilier", 
+      vehicle: "Véhicule(s)", 
+      otherAsset: "Autre actif",
+      mortgage: "Hypothèque", 
+      carLoan: "Prêt auto", 
+      creditCards: "Cartes de crédit",
+      studentLoan: "Prêt étudiant", 
+      otherLiability: "Autre passif",
     },
     ph: {
-      celi: "Ex: 45 000", reer: "Ex: 30 000", savings: "Ex: 8 000", investments: "Ex: 15 000",
-      realEstate: "Ex: 350 000", vehicle: "Ex: 18 000", otherAsset: "Ex: 5 000",
-      mortgage: "Ex: 280 000", carLoan: "Ex: 12 000", creditCards: "Ex: 3 500",
-      studentLoan: "Ex: 0", otherLiability: "Ex: 0",
+      cash: "Ex: 2 500",
+      celi: "Ex: 45 000", 
+      reer: "Ex: 30 000", 
+      savings: "Ex: 8 000", 
+      investments: "Ex: 15 000",
+      crypto: "Ex: 5 000",
+      realEstate: "Ex: 350 000", 
+      vehicle: "Ex: 18 000", 
+      otherAsset: "Ex: 5 000",
+      mortgage: "Ex: 280 000", 
+      carLoan: "Ex: 12 000", 
+      creditCards: "Ex: 3 500",
+      studentLoan: "Ex: 0", 
+      otherLiability: "Ex: 0",
     },
   },
   en: {
@@ -43,22 +64,63 @@ const LANG = {
     noHistory: "No snapshots yet. Fill in your data and save your first balance sheet.",
     evolution: "Net worth over time",
     cat: {
-      celi: "TFSA", reer: "RRSP", savings: "Savings account", investments: "Investments",
-      realEstate: "Real estate", vehicle: "Vehicle(s)", otherAsset: "Other asset",
-      mortgage: "Mortgage", carLoan: "Car loan", creditCards: "Credit cards",
-      studentLoan: "Student loan", otherLiability: "Other liability",
+      cash: "Cash",
+      celi: "TFSA", 
+      reer: "RRSP", 
+      savings: "Savings account", 
+      investments: "Investments",
+      crypto: "Cryptocurrency",
+      realEstate: "Real estate", 
+      vehicle: "Vehicle(s)", 
+      otherAsset: "Other asset",
+      mortgage: "Mortgage", 
+      carLoan: "Car loan", 
+      creditCards: "Credit cards",
+      studentLoan: "Student loan", 
+      otherLiability: "Other liability",
     },
     ph: {
-      celi: "e.g. 45,000", reer: "e.g. 30,000", savings: "e.g. 8,000", investments: "e.g. 15,000",
-      realEstate: "e.g. 350,000", vehicle: "e.g. 18,000", otherAsset: "e.g. 5,000",
-      mortgage: "e.g. 280,000", carLoan: "e.g. 12,000", creditCards: "e.g. 3,500",
-      studentLoan: "e.g. 0", otherLiability: "e.g. 0",
+      cash: "e.g. 2,500",
+      celi: "e.g. 45,000", 
+      reer: "e.g. 30,000", 
+      savings: "e.g. 8,000", 
+      investments: "e.g. 15,000",
+      crypto: "e.g. 5,000",
+      realEstate: "e.g. 350,000", 
+      vehicle: "e.g. 18,000", 
+      otherAsset: "e.g. 5,000",
+      mortgage: "e.g. 280,000", 
+      carLoan: "e.g. 12,000", 
+      creditCards: "e.g. 3,500",
+      studentLoan: "e.g. 0", 
+      otherLiability: "e.g. 0",
     },
   },
 };
 
-const ASSET_KEYS = ["celi", "reer", "savings", "investments", "realEstate", "vehicle", "otherAsset"];
+const ASSET_KEYS = ["cash", "celi", "reer", "savings", "investments", "crypto", "realEstate", "vehicle", "otherAsset"];
 const LIABILITY_KEYS = ["mortgage", "carLoan", "creditCards", "studentLoan", "otherLiability"];
+
+// Benchmarks canadiens par groupe d'âge (médiane)
+const BENCHMARKS = {
+  25: { median: 15000, p75: 50000 },
+  30: { median: 48000, p75: 120000 },
+  35: { median: 105000, p75: 250000 },
+  40: { median: 175000, p75: 400000 },
+  45: { median: 250000, p75: 600000 },
+  50: { median: 350000, p75: 800000 },
+  55: { median: 500000, p75: 1200000 },
+  60: { median: 690000, p75: 1600000 },
+  65: { median: 750000, p75: 1800000 },
+};
+
+function getBenchmark(age) {
+  if (age < 25) return BENCHMARKS[25];
+  if (age >= 65) return BENCHMARKS[65];
+  const keys = Object.keys(BENCHMARKS).map(Number).sort((a, b) => a - b);
+  const lower = keys.findLast(k => k <= age) || 25;
+  return BENCHMARKS[lower];
+}
 
 const fmt = (n) => {
   const abs = Math.abs(n || 0);
@@ -129,6 +191,7 @@ function NumberInput({ value, onChange, placeholder }) {
 export default function NetWorthTracker() {
   const [lang, setLang] = useState("fr");
   const [tab, setTab] = useState("assets");
+  const [age, setAge] = useState(35);
   const [assets, setAssets] = useState(Object.fromEntries(ASSET_KEYS.map((k) => [k, ""])));
   const [liabilities, setLiabilities] = useState(Object.fromEntries(LIABILITY_KEYS.map((k) => [k, ""])));
   const [snapshots, setSnapshots] = useState([]);
@@ -137,7 +200,6 @@ export default function NetWorthTracker() {
 
   const t = LANG[lang];
 
-    // Charger les données sauvegardées
   useEffect(() => {
     try {
       const saved = localStorage.getItem("networth:params");
@@ -146,16 +208,16 @@ export default function NetWorthTracker() {
         if (p.assets) setAssets(p.assets);
         if (p.liabilities) setLiabilities(p.liabilities);
         if (p.lang) setLang(p.lang);
+        if (p.age) setAge(p.age);
       }
     } catch {}
   }, []);
 
-  // Sauvegarder à chaque changement
   useEffect(() => {
     try {
-      localStorage.setItem("networth:params", JSON.stringify({ assets, liabilities, lang }));
+      localStorage.setItem("networth:params", JSON.stringify({ assets, liabilities, lang, age }));
     } catch {}
-  }, [assets, liabilities, lang]);
+  }, [assets, liabilities, lang, age]);
   
   const totalAssets = ASSET_KEYS.reduce((s, k) => s + parse(assets[k]), 0);
   const totalLiabilities = LIABILITY_KEYS.reduce((s, k) => s + parse(liabilities[k]), 0);
@@ -189,25 +251,26 @@ export default function NetWorthTracker() {
   };
 
   const saveSnapshot = () => {
-    const name =
-      snapshotName.trim() ||
-      new Date().toLocaleDateString(lang === "fr" ? "fr-CA" : "en-CA", { month: "short", year: "numeric" });
-    const snap = { id: Date.now(), date: new Date().toISOString(), name, totalAssets, totalLiabilities, netWorth };
-    const updated = [...snapshots, snap];
-    try {
-      localStorage.setItem("networth:snapshots", JSON.stringify(updated));
-      setSnapshots(updated);
-      setSnapshotName("");
-      notify(t.savedOk, true);
-    } catch {}
+    if (!snapshotName.trim()) return;
+    const snapshot = {
+      id: Date.now(),
+      name: snapshotName,
+      date: new Date().toISOString(),
+      netWorth,
+      totalAssets,
+      totalLiabilities,
+    };
+    const updated = [...snapshots, snapshot];
+    setSnapshots(updated);
+    localStorage.setItem("networth:snapshots", JSON.stringify(updated));
+    setSnapshotName("");
+    notify(t.savedOk, true);
   };
 
   const deleteSnapshot = (id) => {
     const updated = snapshots.filter((s) => s.id !== id);
-    try {
-      localStorage.setItem("networth:snapshots", JSON.stringify(updated));
-      setSnapshots(updated);
-    } catch {}
+    setSnapshots(updated);
+    localStorage.setItem("networth:snapshots", JSON.stringify(updated));
   };
 
   const setAsset = (k) => (v) => setAssets((p) => ({ ...p, [k]: v }));
@@ -219,97 +282,105 @@ export default function NetWorthTracker() {
     { key: "history", label: t.history },
   ];
 
-  return (
-    <div
-      style={{
-        fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
-        background: "#0D1117",
-        minHeight: "100vh",
-        padding: "1.5rem 1rem",
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Mono:wght@400;500&display=swap');
-        * { box-sizing: border-box; }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-      `}</style>
+  const benchmark = getBenchmark(age);
+  const vsMedian = netWorth - benchmark.median;
+  const vsP75 = netWorth - benchmark.p75;
 
-      <div style={{ maxWidth: 520, margin: "0 auto" }}>
+  return (
+    <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
+      
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex justify-between items-start mb-6">
           <div>
-            <div className="text-[10px] text-[#484F58] tracking-widest uppercase mb-1">{t.brand}</div>
-            <h1
-              style={{ fontFamily: "'DM Mono', monospace" }}
-              className="text-2xl font-medium text-[#E6EDF3] leading-tight"
-            >
+            <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">{t.brand}</div>
+            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">
               {t.title}
             </h1>
-            <p className="text-xs text-[#8B949E] mt-0.5">{t.subtitle}</p>
+            <p className="text-sm text-[#8B949E] mt-1">{t.subtitle}</p>
           </div>
           <button
             onClick={() => setLang(lang === "fr" ? "en" : "fr")}
-            className="text-xs border border-[#21262D] text-[#8B949E] rounded-lg px-3 py-1.5 hover:border-[#3DDC97] hover:text-[#3DDC97] transition-all mt-1"
+            className="text-xs text-[#8B949E] hover:text-[#E6EDF3] border border-[#21262D] rounded-lg px-3 py-1.5 transition-colors"
           >
             {t.toggle}
           </button>
         </div>
 
-        {/* Hero card */}
-        <div
-          className="rounded-2xl p-6 mb-4 relative overflow-hidden"
-          style={{
-            background: "#161B22",
-            border: "1px solid #21262D",
-          }}
-        >
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `radial-gradient(ellipse at 85% 40%, ${isPositive ? "rgba(61,220,151,0.08)" : "rgba(248,113,113,0.06)"} 0%, transparent 65%)`,
-            }}
-          />
+        {/* Hero - Valeur nette */}
+        <div className="rounded-2xl p-5 mb-4 relative overflow-hidden" style={{ background: "#161B22", border: "1px solid #21262D" }}>
+          <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 80% 50%, ${isPositive ? "rgba(61,220,151,0.07)" : "rgba(248,113,113,0.07)"} 0%, transparent 65%)` }} />
           <div className="relative">
-            <div className="text-[10px] text-[#8B949E] uppercase tracking-widest mb-2">{t.netWorth}</div>
-            <div
-              style={{ fontFamily: "'DM Mono', monospace" }}
-              className={`text-5xl font-medium mb-5 transition-all ${isPositive ? "text-[#3DDC97]" : "text-red-400"}`}
-            >
-              {fmt(netWorth)}
-            </div>
-            <div className="flex gap-6">
+            <div className="grid grid-cols-1 gap-4 mb-4">
               <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-0.5">{t.totalAssets}</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-sm text-[#E6EDF3]">
-                  {fmt(totalAssets)}
-                </div>
-              </div>
-              <div className="text-[#21262D] self-center text-lg">−</div>
-              <div>
-                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-0.5">{t.totalLiabilities}</div>
-                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-sm text-red-400">
-                  {fmt(totalLiabilities)}
+                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">{t.netWorth}</div>
+                <div style={{ fontFamily: "'DM Mono', monospace" }} className={`text-4xl font-medium ${isPositive ? "text-[#3DDC97]" : "text-red-400"}`}>
+                  {fmt(netWorth)}
                 </div>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-4 pt-3 border-t border-[#21262D]">
+              <div>
+                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">{t.totalAssets}</div>
+                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-lg text-[#3DDC97]">{fmt(totalAssets)}</div>
+              </div>
+              <div>
+                <div className="text-[10px] text-[#8B949E] uppercase tracking-wide mb-1">{t.totalLiabilities}</div>
+                <div style={{ fontFamily: "'DM Mono', monospace" }} className="text-lg text-red-400">{fmt(totalLiabilities)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            {/* Progress bar */}
-            {totalAssets > 0 && (
-              <div className="mt-4">
-                <div className="h-1.5 bg-[#21262D] rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min(100, (totalAssets > 0 ? (netWorth / totalAssets) * 100 : 0))}%`,
-                      background: isPositive
-                        ? "linear-gradient(90deg, #2bc47e, #3DDC97)"
-                        : "linear-gradient(90deg, #ef4444, #f87171)",
-                    }}
-                  />
+        {/* Benchmark card */}
+        <div className="bg-[#60A5FA]/10 border border-[#60A5FA]/30 rounded-2xl p-5 mb-4">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">📊</span>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-medium text-[#E6EDF3]">
+                  {lang === "fr" ? "Benchmark pour votre âge" : "Benchmark for your age"}
+                </h3>
+                <input
+                  type="number"
+                  min="18"
+                  max="75"
+                  value={age}
+                  onChange={(e) => setAge(Number(e.target.value) || 35)}
+                  className="w-16 bg-[#0D1117] border border-[#21262D] rounded-lg px-2 py-1 text-xs text-[#E6EDF3] text-center focus:outline-none focus:border-[#60A5FA]"
+                />
+              </div>
+              <div className="text-xs text-[#8B949E] space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <span>{lang === "fr" ? "Médiane canadienne" : "Canadian median"} ({age} {lang === "fr" ? "ans" : "y/o"})</span>
+                  <span className="text-[#E6EDF3] font-medium" style={{ fontFamily: "'DM Mono', monospace" }}>{fmt(benchmark.median)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>{lang === "fr" ? "Votre valeur nette" : "Your net worth"}</span>
+                  <span className={`font-medium ${netWorth >= benchmark.median ? "text-[#3DDC97]" : "text-[#F0A500]"}`} style={{ fontFamily: "'DM Mono', monospace" }}>
+                    {fmt(netWorth)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center pt-1.5 border-t border-[#60A5FA]/20">
+                  <span>{lang === "fr" ? "Différence vs médiane" : "Difference vs median"}</span>
+                  <span className={`font-medium ${vsMedian >= 0 ? "text-[#3DDC97]" : "text-red-400"}`} style={{ fontFamily: "'DM Mono', monospace" }}>
+                    {vsMedian >= 0 ? "+" : ""}{fmt(vsMedian)}
+                  </span>
                 </div>
               </div>
-            )}
+              <div className="mt-3 pt-3 border-t border-[#60A5FA]/20">
+                <div className="text-[10px] text-[#8B949E] leading-relaxed">
+                  {vsMedian >= 0 
+                    ? (lang === "fr"
+                      ? `✓ Vous êtes au-dessus de la médiane canadienne pour votre groupe d'âge. ${vsP75 >= 0 ? "Vous faites partie du top 25% !" : ""}`
+                      : `✓ You are above the Canadian median for your age group. ${vsP75 >= 0 ? "You're in the top 25%!" : ""}`)
+                    : (lang === "fr"
+                      ? "💡 Astuce : Augmentez vos actifs (CELI/REER) ou réduisez vos dettes pour améliorer votre situation."
+                      : "💡 Tip: Increase your assets (TFSA/RRSP) or reduce your debts to improve your situation.")}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -344,6 +415,12 @@ export default function NetWorthTracker() {
         {/* Assets tab */}
         {tab === "assets" && (
           <div className="bg-[#161B22] border border-[#21262D] rounded-2xl p-5 space-y-4">
+            {/* Cash */}
+            <div>
+              <label className="text-xs text-[#8B949E] block mb-1">{t.cat.cash}</label>
+              <NumberInput value={assets.cash} onChange={setAsset("cash")} placeholder={t.ph.cash} />
+            </div>
+
             {/* CELI with import */}
             <div>
               <div className="flex items-center justify-between mb-1">
@@ -376,7 +453,7 @@ export default function NetWorthTracker() {
               <NumberInput value={assets.reer} onChange={setAsset("reer")} placeholder={t.ph.reer} />
             </div>
 
-            {["savings", "investments", "realEstate", "vehicle", "otherAsset"].map((k) => (
+            {["savings", "investments", "crypto", "realEstate", "vehicle", "otherAsset"].map((k) => (
               <div key={k}>
                 <label className="text-xs text-[#8B949E] block mb-1">{t.cat[k]}</label>
                 <NumberInput value={assets[k]} onChange={setAsset(k)} placeholder={t.ph[k]} />
@@ -481,6 +558,35 @@ export default function NetWorthTracker() {
             </button>
           </div>
         </div>
+
+        {/* CTA Wealthsimple */}
+        {netWorth < 100000 && (
+          <div className="mt-6 bg-[#161B22] border border-[#21262D] rounded-2xl p-6">
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-2xl">💡</span>
+              <div>
+                <h3 className="text-sm font-medium text-[#E6EDF3] mb-2">
+                  {lang === "fr" ? "Augmentez votre valeur nette" : "Grow your net worth"}
+                </h3>
+                <p className="text-xs text-[#8B949E] leading-relaxed">
+                  {lang === "fr"
+                    ? "Commencez à investir avec aussi peu que 1$ dans un CELI chez Wealthsimple. Vos investissements croissent à l'abri de l'impôt et augmentent votre valeur nette."
+                    : "Start investing with as little as $1 in a TFSA with Wealthsimple. Your investments grow tax-free and increase your net worth."}
+                </p>
+              </div>
+            </div>
+            <AffiliateLink href="https://www.wealthsimple.com/invite/EDVQ3W" partner="wealthsimple-networth">
+              <button className="w-full bg-[#3DDC97] text-[#0D1117] font-medium rounded-xl py-3 text-sm hover:opacity-90 transition-opacity">
+                {lang === "fr" ? "Ouvrir un compte gratuit →" : "Open a free account →"}
+              </button>
+            </AffiliateLink>
+            <p className="text-[10px] text-[#484F58] text-center mt-3">
+              {lang === "fr" 
+                ? "Lien affilié — monportefeuille.ca reçoit une commission, sans frais pour vous."
+                : "Affiliate link — monportefeuille.ca receives a commission at no cost to you."}
+            </p>
+          </div>
+        )}
 
         {/* Footer note */}
         <p className="text-[10px] text-[#484F58] text-center mt-6 leading-relaxed">
