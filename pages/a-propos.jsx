@@ -3,9 +3,12 @@ import Link from "next/link";
 
 export default function APropos() {
   return (
-    <Layout title="À propos">
+    <Layout
+      title="À propos"
+      description="Découvrez la mission de monportefeuille.ca — des outils financiers gratuits, clairs et 100% canadiens pour aider les Canadiens à mieux gérer leur argent."
+      canonical="https://monportefeuille.ca/a-propos"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "3rem 1rem" }}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
           <div className="mb-10">

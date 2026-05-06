@@ -20,7 +20,7 @@ const FEDERAL_BRACKETS = [
 const PROVINCIAL_BRACKETS = {
   QC: [{ min: 0, max: 51780, rate: 0.14 }, { min: 51780, max: 103545, rate: 0.19 }, { min: 103545, max: 126000, rate: 0.24 }, { min: 126000, max: Infinity, rate: 0.2575 }],
   ON: [{ min: 0, max: 51446, rate: 0.0505 }, { min: 51446, max: 102894, rate: 0.0915 }, { min: 102894, max: 150000, rate: 0.1116 }, { min: 150000, max: 220000, rate: 0.1216 }, { min: 220000, max: Infinity, rate: 0.1316 }],
-  BC: [{ min: 0, max: 45654, rate: 0.0506 }, { min: 45654, max: 91310, rate: 0.077 }, { min: 91310, max: 104835, rate: 0.105 }, { min: 104835, max: 127299, rate: 0.1229 }, { min: 127299, max: Infinity, rate: 0.147 }],
+  BC: [{ min: 0, max: 45654, rate: 0.0506 }, { min: 45654, max: 91310, rate: 0.077 }, { min: 91310, max: 104835, rate: 0.105 }, { min: 104835, max: 127299, rate: 0.1229 }, { min: 127299, max: 172602, rate: 0.147 }, { min: 172602, max: 240716, rate: 0.168 }, { min: 240716, max: Infinity, rate: 0.205 }],
   AB: [{ min: 0, max: 148269, rate: 0.10 }, { min: 148269, max: 177922, rate: 0.12 }, { min: 177922, max: 237230, rate: 0.13 }, { min: 237230, max: Infinity, rate: 0.14 }],
   SK: [{ min: 0, max: 49720, rate: 0.105 }, { min: 49720, max: 142058, rate: 0.125 }, { min: 142058, max: Infinity, rate: 0.145 }],
   MB: [{ min: 0, max: 47000, rate: 0.108 }, { min: 47000, max: 100000, rate: 0.1275 }, { min: 100000, max: Infinity, rate: 0.174 }],
@@ -61,38 +61,47 @@ const PROVINCES = [
 
 // ─── Social Contributions 2025 ────────────────────────────────────────────────
 function calcSocial(revenu, province, situation) {
-  if (situation === "independant") {
-    // Travailleurs autonomes paient les deux parts
-    return { total: 0, items: [{ label: "Travailleur autonome", val: 0, note: "Déduisez vos dépenses d'entreprise" }] };
-  }
-
   const isQC = province === "QC";
+  const isSelfEmployed = situation === "independant";
   const items = [];
 
   if (isQC) {
-    // RRQ (remplace RPC au Québec)
+    // RRQ — travailleurs autonomes paient part employé + employeur (taux doublé)
     const rrqBase = Math.min(Math.max(0, revenu - 3500), 68500 - 3500);
-    const rrq = Math.round(rrqBase * 0.064);
-    const rrq2 = Math.round(Math.min(Math.max(0, revenu - 68500), 73200 - 68500) * 0.04);
-    items.push({ label: "RRQ (retraite Québec)", val: rrq + rrq2 });
+    const rrqRate = isSelfEmployed ? 0.128 : 0.064; // 6.4% × 2 for self-employed
+    const rrq = Math.round(rrqBase * rrqRate);
+    const rrq2Rate = isSelfEmployed ? 0.08 : 0.04;
+    const rrq2 = Math.round(Math.min(Math.max(0, revenu - 68500), 73200 - 68500) * rrq2Rate);
+    items.push({ label: isSelfEmployed ? "RRQ — parts employé + employeur" : "RRQ (retraite Québec)", val: rrq + rrq2 });
 
-    // RQAP
-    const rqap = Math.round(Math.min(revenu, 94000) * 0.00494);
-    items.push({ label: "RQAP (assurance parentale)", val: rqap });
+    // RQAP — travailleurs autonomes paient les deux parts
+    const rqapRate = isSelfEmployed ? 0.00878 : 0.00494; // combined rate for self-employed
+    const rqap = Math.round(Math.min(revenu, 94000) * rqapRate);
+    items.push({ label: isSelfEmployed ? "RQAP — parts employé + employeur" : "RQAP (assurance parentale)", val: rqap });
 
-    // AE taux réduit QC
-    const ae = Math.round(Math.min(revenu, 63200) * 0.0131);
-    items.push({ label: "Assurance-emploi (taux QC)", val: ae });
+    // AE — travailleurs autonomes ne cotisent pas obligatoirement (opt-in only)
+    if (!isSelfEmployed) {
+      const ae = Math.round(Math.min(revenu, 63200) * 0.0131);
+      items.push({ label: "Assurance-emploi (taux QC)", val: ae });
+    } else {
+      items.push({ label: "Assurance-emploi (optionnel — non inclus)", val: 0 });
+    }
   } else {
-    // RPC
+    // RPC — travailleurs autonomes paient part employé + employeur
     const rpcBase = Math.min(Math.max(0, revenu - 3500), 68500 - 3500);
-    const rpc = Math.round(rpcBase * 0.0595);
-    const rpc2 = Math.round(Math.min(Math.max(0, revenu - 68500), 73200 - 68500) * 0.04);
-    items.push({ label: "RPC (retraite Canada)", val: rpc + rpc2 });
+    const rpcRate = isSelfEmployed ? 0.119 : 0.0595; // 5.95% × 2 for self-employed
+    const rpc = Math.round(rpcBase * rpcRate);
+    const rpc2Rate = isSelfEmployed ? 0.08 : 0.04;
+    const rpc2 = Math.round(Math.min(Math.max(0, revenu - 68500), 73200 - 68500) * rpc2Rate);
+    items.push({ label: isSelfEmployed ? "RPC — parts employé + employeur" : "RPC (retraite Canada)", val: rpc + rpc2 });
 
-    // AE
-    const ae = Math.round(Math.min(revenu, 63200) * 0.0166);
-    items.push({ label: "Assurance-emploi", val: ae });
+    // AE — travailleurs autonomes ne cotisent pas obligatoirement
+    if (!isSelfEmployed) {
+      const ae = Math.round(Math.min(revenu, 63200) * 0.0166);
+      items.push({ label: "Assurance-emploi", val: ae });
+    } else {
+      items.push({ label: "Assurance-emploi (optionnel — non inclus)", val: 0 });
+    }
   }
 
   const total = items.reduce((s, i) => s + i.val, 0);
@@ -287,7 +296,6 @@ export default function EstimateurImpot() {
       />
       
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
           <div className="mb-6">

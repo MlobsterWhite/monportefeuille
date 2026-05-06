@@ -1,13 +1,15 @@
 import Layout from "../components/Layout";
 
-const today = new Date();
-const dateStr = today.toLocaleDateString("fr-CA", { year: "numeric", month: "long", day: "numeric" });
+const dateStr = "6 mai 2026";
 
 export default function MentionsLegales() {
   return (
-    <Layout title="Mentions légales">
+    <Layout
+      title="Mentions légales"
+      description="Mentions légales de monportefeuille.ca — nature du contenu éducatif, absence de conseils financiers, liens affiliés et limitation de responsabilité."
+      canonical="https://monportefeuille.ca/mentions-legales"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "3rem 1rem" }}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');`}</style>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
 
           <div className="mb-10">

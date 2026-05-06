@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
 import { useState } from "react";
+import CookieConsent from "./CookieConsent";
 
 const OUTILS = [
   {
@@ -17,6 +18,7 @@ const OUTILS = [
     items: [
       { href: "/calculateur-celi", label: "Calculateur CELI" },
       { href: "/calculateur-reer", label: "Calculateur REER" },
+      { href: "/celi-vs-reer", label: "CELI vs REER" },
     ],
   },
   {
@@ -51,6 +53,7 @@ const OUTILS = [
 
 export default function Layout({ children, title = "Mon Portefeuille", description, canonical }) {
   const [outilsOpen, setOutilsOpen] = useState(false);
+  const [guidesOpen, setGuidesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -63,6 +66,14 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <meta property="og:title" content={`${title} | monportefeuille.ca`} />
         <meta property="og:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="monportefeuille.ca" />
+        <meta property="og:image" content="https://monportefeuille.ca/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${title} | monportefeuille.ca`} />
+        <meta name="twitter:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
+        <meta name="twitter:image" content="https://monportefeuille.ca/og-image.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Schema.org Organization */}
@@ -85,7 +96,12 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         />
       </Head>
 
-      {/* Google Analytics */}
+      {/* Google Analytics — consent mode: denied by default until user accepts */}
+      <Script id="ga-consent-default" strategy="beforeInteractive">{`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', { analytics_storage: 'denied' });
+      `}</Script>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9MMLY6FHFR" strategy="afterInteractive" />
       <Script id="google-analytics" strategy="afterInteractive">{`
         window.dataLayer = window.dataLayer || [];
@@ -94,7 +110,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         gtag('config', 'G-9MMLY6FHFR');
       `}</Script>
 
-      <div className="min-h-screen bg-[#0D1117] text-[#E6EDF3]">
+      <div className="min-h-screen bg-[#0D1117] text-[#E6EDF3]" style={{ fontFamily: "var(--font-dm-sans, 'Helvetica Neue', sans-serif)" }}>
 
         {/* Nav */}
         <nav className="border-b border-[#21262D] sticky top-0 bg-[#0D1117]/95 backdrop-blur-md z-50">
@@ -150,6 +166,35 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
                 )}
               </div>
 
+              {/* Guides dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setGuidesOpen(!guidesOpen)}
+                  onBlur={() => setTimeout(() => setGuidesOpen(false), 150)}
+                  className="flex items-center gap-1.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22]"
+                >
+                  Guides
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"
+                    style={{ transform: guidesOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+                    <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </button>
+
+                {guidesOpen && (
+                  <div className="absolute top-10 left-0 bg-[#161B22] border border-[#21262D] rounded-xl py-3 w-72 z-50 shadow-2xl">
+                    <div className="px-4 pb-1">
+                      <span className="text-[9px] uppercase tracking-widest font-medium" style={{ color: "#F0A500" }}>
+                        Investissement
+                      </span>
+                    </div>
+                    <Link href="/guide-investissement-debutant-canada" onClick={() => setGuidesOpen(false)}
+                      className="block px-4 py-2 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                      Guide d'investissement pour débutants
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               {/* À propos */}
               <Link href="/a-propos"
                 className="text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22] no-underline">
@@ -194,6 +239,17 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
                 className="block py-3 text-sm text-[#8B949E] hover:text-[#E6EDF3] border-b border-[#21262D] no-underline">
                 Accueil
               </Link>
+
+              {/* Guides mobile */}
+              <div>
+                <div className="pt-3 pb-1">
+                  <span className="text-[9px] uppercase tracking-widest font-medium" style={{ color: "#F0A500" }}>Guides</span>
+                </div>
+                <Link href="/guide-investissement-debutant-canada" onClick={() => setMobileOpen(false)}
+                  className="block py-2 text-sm text-[#8B949E] hover:text-[#E6EDF3] pl-2 no-underline">
+                  Guide d'investissement pour débutants
+                </Link>
+              </div>
 
               {OUTILS.map(({ categorie, color, items }) => (
                 <div key={categorie}>
@@ -240,6 +296,8 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
           </p>
         </footer>
       </div>
+
+      <CookieConsent />
     </>
   );
 }
