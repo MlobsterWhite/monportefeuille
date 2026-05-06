@@ -270,7 +270,7 @@ export default function Home() {
           <p className="text-sm text-[#8B949E] text-center mb-10 font-light">Des ressources claires pour prendre de meilleures décisions financières</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/guide-investissement-debutant-canada" className="no-underline group">
-              <div className="bg-[#0E1520] border border-[#21262D] rounded-2xl p-6 flex flex-col gap-4 h-full transition-all hover:bg-[#121B28] group-hover:border-[#F0A50030]"
+              <div className="bg-[#0E1520] border border-[#21262D] rounded-2xl p-6 flex flex-col gap-4 h-full transition-all hover:bg-[#121B28]"
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = "#F0A50030"}
                 onMouseLeave={(e) => e.currentTarget.style.borderColor = "#21262D"}
               >
@@ -290,6 +290,35 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-[#F0A500] mt-auto">
+                  Lire le guide
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/guide-cote-de-credit-canada" className="no-underline group">
+              <div className="bg-[#0E1520] border border-[#21262D] rounded-2xl p-6 flex flex-col gap-4 h-full transition-all hover:bg-[#121B28]"
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = "#3DDC9730"}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = "#21262D"}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium rounded-full px-3 py-1 border"
+                    style={{ color: "#3DDC97", background: "#3DDC9712", borderColor: "#3DDC9725" }}>
+                    Crédit
+                  </span>
+                  <span className="text-xs text-[#484F58]">12 min de lecture</span>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#E6EDF3] mb-2">
+                    Guide cote de crédit au Canada
+                  </h3>
+                  <p className="text-sm text-[#8B949E]/80 leading-relaxed font-light">
+                    Les 5 facteurs, les habitudes qui améliorent ta cote, et comment bâtir un excellent dossier de crédit.
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-[#3DDC97] mt-auto">
                   Lire le guide
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

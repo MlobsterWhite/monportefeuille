@@ -185,6 +185,10 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
                       className="block px-4 py-2 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
                       Guide d'investissement pour débutants
                     </Link>
+                    <Link href="/guide-cote-de-credit-canada" onClick={() => setGuidesOpen(false)}
+                      className="block px-4 py-2 text-xs text-[#8B949E] hover:text-[#E6EDF3] hover:bg-[#21262D] transition-colors no-underline">
+                      Guide cote de crédit au Canada
+                    </Link>
                   </div>
                 )}
               </div>
@@ -245,6 +249,10 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
                 <Link href="/guide-investissement-debutant-canada" onClick={() => setMobileOpen(false)}
                   className="block py-2 text-sm text-[#8B949E] hover:text-[#E6EDF3] pl-2 no-underline">
                   Guide d'investissement pour débutants
+                </Link>
+                <Link href="/guide-cote-de-credit-canada" onClick={() => setMobileOpen(false)}
+                  className="block py-2 text-sm text-[#8B949E] hover:text-[#E6EDF3] pl-2 no-underline">
+                  Guide cote de crédit au Canada
                 </Link>
               </div>
 
