@@ -124,12 +124,6 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
             {/* Desktop nav */}
             <div className="hidden md:flex items-center gap-1">
 
-              {/* Accueil */}
-              <Link href="/"
-                className="text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22] no-underline">
-                Accueil
-              </Link>
-
               {/* Outils dropdown */}
               <div className="relative">
                 <button
@@ -197,20 +191,23 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
 
               {/* À propos */}
               <Link href="/a-propos"
-                className="text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22] no-underline">
+                className="text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22] no-underline whitespace-nowrap">
                 À propos
               </Link>
 
               {/* Nous joindre */}
               <Link href="/nous-joindre"
-                className="text-xs text-[#E6EDF3] bg-[#21262D] hover:bg-[#30363D] transition-colors px-3 py-1.5 rounded-lg no-underline border border-[#30363D]">
+                className="text-xs text-[#E6EDF3] bg-[#21262D] hover:bg-[#30363D] transition-colors px-3 py-1.5 rounded-lg no-underline border border-[#30363D] whitespace-nowrap">
                 Nous joindre
               </Link>
             </div>
 
-            {/* Right side — 🇨🇦 + burger mobile */}
-            <div className="flex items-center gap-3">
-              <span className="hidden sm:flex items-center gap-1.5 text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
+            {/* Right side — Bêta + 🇨🇦 + burger mobile */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-medium text-[#484F58] bg-[#161B22] border border-[#21262D] rounded-full px-2 py-0.5 tracking-wide">
+                Bêta
+              </span>
+              <span className="hidden lg:flex items-center gap-1.5 text-xs text-[#8B949E] bg-[#161B22] border border-[#21262D] rounded-full px-3 py-1">
                 🇨🇦 100% canadien
               </span>
 
@@ -283,12 +280,18 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="border-t border-[#21262D] py-6 text-center">
+        <footer className="border-t border-[#21262D] py-8 text-center">
+          <p className="text-xs text-[#484F58] mb-2">
+            Les informations fournies sont à titre éducatif uniquement et ne constituent pas des conseils financiers.{" "}
+            Consultez un professionnel avant de prendre toute décision financière.
+          </p>
           <p className="text-xs text-[#484F58]">
-            monportefeuille.ca · Outils éducatifs uniquement · Les liens peuvent être des liens affiliés ·{" "}
+            monportefeuille.ca · Les liens peuvent être des liens affiliés ·{" "}
             <Link href="/a-propos" className="underline hover:text-[#8B949E]">À propos</Link>
             {" "}·{" "}
             <Link href="/nous-joindre" className="underline hover:text-[#8B949E]">Nous joindre</Link>
+            {" "}·{" "}
+            <Link href="/nous-joindre" className="underline hover:text-[#8B949E]">Signaler une erreur</Link>
             {" "}·{" "}
             <Link href="/mentions-legales" className="underline hover:text-[#8B949E]">Mentions légales</Link>
             {" "}·{" "}
