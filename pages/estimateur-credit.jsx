@@ -26,26 +26,28 @@ function Tooltip({ text, children }) {
 }
 
 // ─── Score calculation ────────────────────────────────────────────────────────
+// Échelle 300–900 (Equifax Canada). Le bonus total maximum = 600 points,
+// pondéré selon les vrais facteurs : 35/30/15/10/10.
 function calcScore({ payments, utilization, history, inquiries, accounts }) {
   let score = 300;
-  // Payment history (35%)
-  const paymentMap = { always: 265, usually: 200, sometimes: 100, often: 30 };
+  // Historique de paiements (35% — max 210)
+  const paymentMap = { always: 210, usually: 160, sometimes: 80, often: 20 };
   score += paymentMap[payments] || 0;
-  // Utilization (30%)
+  // Utilisation du crédit (30% — max 180)
   const util = Number(utilization);
-  if (util <= 10) score += 228;
-  else if (util <= 30) score += 190;
-  else if (util <= 50) score += 130;
-  else if (util <= 75) score += 60;
+  if (util <= 10) score += 180;
+  else if (util <= 30) score += 150;
+  else if (util <= 50) score += 100;
+  else if (util <= 75) score += 50;
   else score += 10;
-  // History length (15%)
-  const histMap = { lt1: 20, "1to3": 60, "3to6": 90, "6to10": 100, gt10: 114 };
+  // Ancienneté du crédit (15% — max 90)
+  const histMap = { lt1: 15, "1to3": 40, "3to6": 60, "6to10": 75, gt10: 90 };
   score += histMap[history] || 0;
-  // Inquiries (10%)
-  const inqMap = { 0: 76, 1: 60, "2to3": 40, "4plus": 15 };
+  // Nouvelles demandes (10% — max 60)
+  const inqMap = { 0: 60, 1: 45, "2to3": 25, "4plus": 10 };
   score += inqMap[inquiries] || 0;
-  // Accounts (10%)
-  const accMap = { 0: 10, 1: 40, "2to4": 70, "5plus": 76 };
+  // Variété de comptes (10% — max 60)
+  const accMap = { 0: 5, 1: 30, "2to4": 50, "5plus": 60 };
   score += accMap[accounts] || 0;
   return Math.min(900, Math.max(300, Math.round(score)));
 }
@@ -434,7 +436,7 @@ export default function EstimateurCredit() {
               Comment améliorer votre cote de crédit rapidement
             </h2>
             <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
-              Payez TOUTES vos factures à temps — même un seul retard de 30+ jours peut faire chuter votre cote de 50-100 points. Gardez votre utilisation de crédit sous 30% de votre limite (idéalement sous 10%) — si votre limite totale est 10 000$, ne dépassez jamais 3 000$ de solde. Ne fermez pas vos vieilles cartes même si vous ne les utilisez plus (l'ancienneté aide). Évitez de demander trop de nouveaux crédits en peu de temps. Si vous avez des dettes, utilisez notre <a href="/calculateur-reer" className="text-[#3DDC97] underline">stratégie de remboursement</a> pour les éliminer méthodiquement.
+              Payez TOUTES vos factures à temps — même un seul retard de 30+ jours peut faire chuter votre cote de 50-100 points. Gardez votre utilisation de crédit sous 30% de votre limite (idéalement sous 10%) — si votre limite totale est 10 000$, ne dépassez jamais 3 000$ de solde. Ne fermez pas vos vieilles cartes même si vous ne les utilisez plus (l'ancienneté aide). Évitez de demander trop de nouveaux crédits en peu de temps. Si vous avez des dettes, priorisez celles à taux d'intérêt élevé (cartes de crédit à 19-22%) avec la méthode avalanche, ou commencez par les plus petits soldes pour un effet de motivation rapide avec la méthode boule de neige.
             </p>
 
             <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">

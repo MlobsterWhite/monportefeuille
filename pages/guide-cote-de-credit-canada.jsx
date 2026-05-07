@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
 import Link from "next/link";
+import AffiliateLink from "../components/AffiliateLink";
 
 const FAQ_ITEMS = [
   {
@@ -372,7 +373,8 @@ export default function GuideCoteDeCredit() {
                   bureau: "Equifax",
                   prix: "Gratuit",
                   desc: "Le service gratuit le plus populaire au Canada. Score mis à jour hebdomadairement. Recommandations personnalisées.",
-                  url: "https://borrowell.com",
+                  url: "https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247",
+                  partner: "borrowell",
                 },
                 {
                   service: "Credit Karma",
@@ -398,7 +400,17 @@ export default function GuideCoteDeCredit() {
               ].map(s => (
                 <div key={s.service} className="bg-[#161B22] border border-[#21262D] rounded-xl px-5 py-4">
                   <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-                    <span className="text-sm font-semibold text-[#E6EDF3]">{s.service}</span>
+                    {s.partner ? (
+                      <AffiliateLink href={s.url} partner={s.partner}
+                        className="text-sm font-semibold text-[#E6EDF3] hover:text-[#3DDC97] transition-colors no-underline">
+                        {s.service} ↗
+                      </AffiliateLink>
+                    ) : (
+                      <a href={s.url} target="_blank" rel="noopener noreferrer"
+                        className="text-sm font-semibold text-[#E6EDF3] hover:text-[#3DDC97] transition-colors no-underline">
+                        {s.service} ↗
+                      </a>
+                    )}
                     <div className="flex gap-2">
                       <span className="text-[10px] bg-[#60A5FA]/10 text-[#60A5FA] border border-[#60A5FA]/20 rounded-full px-2 py-0.5">{s.bureau}</span>
                       <span className="text-[10px] bg-[#3DDC97]/10 text-[#3DDC97] border border-[#3DDC97]/20 rounded-full px-2 py-0.5">{s.prix}</span>
@@ -407,6 +419,25 @@ export default function GuideCoteDeCredit() {
                   <p className="text-xs text-[#8B949E] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Borrowell affiliate CTA */}
+            <div className="mt-6 bg-[#161B22] border border-[#3DDC97]/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-5">
+              <div className="flex-1">
+                <p className="text-sm font-bold text-[#E6EDF3] mb-1">Vérifier ton score Equifax — gratuitement avec Borrowell</p>
+                <p className="text-xs text-[#8B949E] leading-relaxed">
+                  Borrowell est le service le plus populaire au Canada pour surveiller sa cote Equifax. Inscription gratuite,
+                  score mis à jour chaque semaine, aucun impact sur ta cote.
+                </p>
+                <p className="text-[10px] text-[#484F58] mt-2">Lien affilié — nous pouvons recevoir une commission si tu t'inscris via ce lien, sans frais pour toi.</p>
+              </div>
+              <AffiliateLink
+                href="https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247"
+                partner="borrowell"
+                className="flex-shrink-0 bg-[#3DDC97] text-[#0D1117] font-bold rounded-xl px-6 py-2.5 text-sm hover:opacity-90 transition-opacity no-underline whitespace-nowrap"
+              >
+                Créer un compte gratuit →
+              </AffiliateLink>
             </div>
 
             <div className="bg-[#F0A500]/10 border border-[#F0A500]/30 rounded-2xl p-5 mt-6">
@@ -568,10 +599,8 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 7 ── */}
           <section id="delais" className="mb-14">
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
-              <span className="text-[#3DDC97] font-mono text-xl mr-3">7</span>
-              Combien de temps pour s'améliorer?
-            </h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">7 — Combien de temps pour s'améliorer?</h2>
+            <p className="text-sm text-[#8B949E] mb-8">Des estimations réalistes par scénario</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
                 Il n'existe pas de réponse unique — le délai dépend de ce qui a affecté ta cote et de ta situation de départ.
@@ -601,10 +630,8 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 8 ── */}
           <section id="zero" className="mb-14">
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
-              <span className="text-[#3DDC97] font-mono text-xl mr-3">8</span>
-              Bâtir un crédit de zéro
-            </h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">8 — Bâtir un crédit de zéro</h2>
+            <p className="text-sm text-[#8B949E] mb-8">Nouveaux arrivants, jeunes adultes, ou après une faillite</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
                 Tu arrives au Canada, tu as 18 ans, ou tu n'as simplement jamais utilisé de crédit?
