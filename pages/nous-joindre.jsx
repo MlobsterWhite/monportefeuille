@@ -144,13 +144,3 @@ export default function NousJoindre() {
     </Layout>
   );
 }
-            <a href="mailto:info@monportefeuille.ca" className="text-xs text-[#3DDC97] hover:underline no-underline">
-              Écrire →
-            </a>
-          </div>
-
-        </div>
-      </div>
-    </Layout>
-  );
-}

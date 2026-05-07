@@ -14,7 +14,6 @@ export default function ValeurNettePage() {
         description="Calculez votre valeur nette en additionnant vos actifs et passifs. Suivez l'évolution de votre patrimoine dans le temps. Gratuit pour tous les Canadiens."
         url="https://monportefeuille.ca/valeur-nette"
       />
-    >
       <NetWorthTracker />
     </Layout>
   );

@@ -106,7 +106,6 @@ export default function EstimateurAssurance() {
         description="Estimez votre prime d'assurance auto ou habitation selon votre profil. Comparez les meilleures options au Canada."
         url="https://monportefeuille.ca/estimateur-assurance"
       />
-    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
