@@ -6,7 +6,7 @@ export default function Confidentialite() {
   return (
     <Layout
       title="Politique de confidentialité"
-      description="Politique de confidentialité de monportefeuille.ca — nous ne collectons ni ne stockons vos données financières personnelles. Aucune information saisie dans nos calculateurs n'est transmise."
+      description="Politique de confidentialité de monportefeuille.ca — aucune donnée financière collectée ni stockée. Vos calculs restent sur votre appareil."
       canonical="https://monportefeuille.ca/confidentialite"
     >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "3rem 1rem" }}>

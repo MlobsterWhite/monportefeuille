@@ -43,7 +43,7 @@ export default function GuideCoteDeCredit() {
 
   return (
     <Layout
-      title="Guide Cote de Crédit Canada 2026 — Bâtir et Améliorer son Score"
+      title="Guide Cote de Crédit Canada 2026"
       description="Guide complet pour comprendre, vérifier et améliorer sa cote de crédit au Canada. Les 5 facteurs, les erreurs à éviter, et les étapes concrètes pour bâtir un excellent dossier."
       canonical="https://monportefeuille.ca/guide-cote-de-credit-canada"
     >

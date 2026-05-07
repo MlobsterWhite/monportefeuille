@@ -285,8 +285,8 @@ export default function EstimateurImpot() {
 
   return (
     <Layout
-      title="Estimateur d'impôt 2025 — Québec et Canada"
-      description="Estimez votre impôt fédéral et provincial 2025, calculez vos déductions REER et optimisez votre déclaration. Gratuit pour les résidents du Québec et du Canada."
+      title="Estimateur d'impôt 2026 — Québec et Canada"
+      description="Estimez votre impôt fédéral et provincial 2026, calculez vos déductions REER et optimisez votre déclaration. Gratuit pour les résidents du Québec et du Canada."
       canonical="https://monportefeuille.ca/estimateur-impot"
     >
       <ToolSchema
@@ -517,7 +517,7 @@ export default function EstimateurImpot() {
                 { icon: "💡", title: "REER vs CELIAPP — peut-on faire les deux?", text: "Oui! Si vous êtes premier acheteur, maximisez d'abord votre CELIAPP (8 000$) avant le REER — vous bénéficiez des deux avantages fiscaux. Vous pouvez contribuer aux deux dans la même année." },
                 { icon: "👷", title: "Cotisations syndicales et professionnelles", text: "Les cotisations à un syndicat, à un ordre professionnel ou à une association professionnelle sont entièrement déductibles. Vérifiez votre T4 ou reçus de fin d'année — ces montants sont souvent oubliés." },
                 { icon: "👶", title: "Frais de garde", text: "Les frais de garde d'enfants (garderie, camp de jour, garde à domicile) sont déductibles jusqu'à 8 000$ par enfant de moins de 7 ans, et 5 000$ pour les 7-16 ans. C'est la personne avec le revenu le plus bas qui doit généralement réclamer." },
-                { icon: "⚠️", title: "Important", text: "Cet estimateur utilise les taux 2025 et les crédits de base. Votre situation peut inclure d'autres crédits et déductions. Pour les frais de garde, les règles exactes peuvent varier — consultez un comptable." },
+                { icon: "⚠️", title: "Important", text: "Cet estimateur utilise les taux 2026 et les crédits de base. Votre situation peut inclure d'autres crédits et déductions. Pour les frais de garde, les règles exactes peuvent varier — consultez un comptable." },
               ].map(({ icon, title, text }) => (
                 <div key={title} className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
                   <div className="flex items-center gap-2 mb-2">

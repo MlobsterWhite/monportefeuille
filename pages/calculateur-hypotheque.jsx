@@ -200,12 +200,12 @@ export default function CalculateurHypotheque() {
 
   return (
     <Layout
-      title="Calculateur Hypothèque 2025 — Mensualités et amortissement"
+      title="Calculateur Hypothèque 2026 — Mensualités"
       description="Calculez vos paiements hypothécaires mensuels, comparez taux fixe vs variable et planifiez l'achat de votre propriété au Canada."
       canonical="https://monportefeuille.ca/calculateur-hypotheque"
     >
       <ToolSchema
-        name="Calculateur Hypothèque Canada 2025"
+        name="Calculateur Hypothèque Canada 2026"
         description="Calculez vos paiements hypothécaires mensuels, comparez taux fixe vs variable, visualisez l'amortissement et planifiez l'achat de votre propriété au Canada."
         url="https://monportefeuille.ca/calculateur-hypotheque"
       />
@@ -216,7 +216,7 @@ export default function CalculateurHypotheque() {
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
-              Calculateur Hypothèque Canada 2025
+              Calculateur Hypothèque Canada 2026
             </h1>
             <p className="text-sm text-[#8B949E] leading-relaxed">
               Calculez vos paiements mensuels, comparez taux fixe vs variable et planifiez l'achat de votre propriété
@@ -456,10 +456,10 @@ export default function CalculateurHypotheque() {
             </p>
 
             <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
-              Taux fixe vs taux variable : lequel choisir en 2025
+              Taux fixe vs taux variable : lequel choisir en 2026
             </h2>
             <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
-              Le taux fixe garantit un paiement stable pendant toute la durée du terme (généralement 5 ans), vous protégeant des hausses de taux. Le taux variable fluctue selon le taux directeur de la Banque du Canada — il peut être plus bas initialement, mais comporte un risque si les taux montent. En 2025, avec les taux qui ont grimpé depuis 2022, plusieurs Canadiens privilégient le fixe pour la prévisibilité budgétaire. Utilisez notre calculateur pour comparer les deux scénarios selon votre tolérance au risque.
+              Le taux fixe garantit un paiement stable pendant toute la durée du terme (généralement 5 ans), vous protégeant des hausses de taux. Le taux variable fluctue selon le taux directeur de la Banque du Canada — il peut être plus bas initialement, mais comporte un risque si les taux montent. En 2026, avec les taux qui ont grimpé depuis 2022, plusieurs Canadiens privilégient le fixe pour la prévisibilité budgétaire. Utilisez notre calculateur pour comparer les deux scénarios selon votre tolérance au risque.
             </p>
 
             <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">

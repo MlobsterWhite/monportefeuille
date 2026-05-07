@@ -198,7 +198,7 @@ export default function EstimateurCredit() {
 
   return (
     <Layout
-      title="Estimateur de Cote de Crédit — Score Equifax Canada"
+      title="Estimateur de Cote de Crédit Equifax"
       description="Estimez votre cote de crédit Equifax gratuitement, découvrez comment l'améliorer et accédez aux meilleurs taux au Canada. Sans impact sur votre score."
       canonical="https://monportefeuille.ca/estimateur-credit"
     >

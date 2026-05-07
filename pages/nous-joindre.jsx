@@ -34,7 +34,11 @@ export default function NousJoindre() {
   };
 
   return (
-    <Layout title="Nous joindre">
+    <Layout
+      title="Nous joindre"
+      description="Une suggestion, une erreur à signaler ou une idée de partenariat? Contactez l'équipe de monportefeuille.ca — on lit tout."
+      canonical="https://monportefeuille.ca/nous-joindre"
+    >
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "3rem 1rem" }}>
         <div style={{ maxWidth: 620, margin: "0 auto" }}>
 
@@ -130,6 +134,16 @@ export default function NousJoindre() {
               <div className="text-xs text-[#8B949E]">Contact direct</div>
               <div className="text-sm text-[#E6EDF3] mt-0.5">info@monportefeuille.ca</div>
             </div>
+            <a href="mailto:info@monportefeuille.ca" className="text-xs text-[#3DDC97] hover:underline no-underline">
+              Écrire →
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </Layout>
+  );
+}
             <a href="mailto:info@monportefeuille.ca" className="text-xs text-[#3DDC97] hover:underline no-underline">
               Écrire →
             </a>

@@ -9,7 +9,7 @@ export default function GuideInvestissementDebutant() {
 
   return (
     <Layout
-      title="Guide Investissement Débutant Canada 2026 | CELI, REER, FNB"
+      title="Guide Investissement Débutant Canada 2026"
       description="Guide complet pour débuter en investissement au Canada : ordre de priorité, CELI vs REER, CELIAPP, FNB, CPG, plateformes. Gratuit, sans jargon, 100% canadien."
       canonical="https://monportefeuille.ca/guide-investissement-debutant-canada"
     >

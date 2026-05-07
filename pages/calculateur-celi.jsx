@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
+import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
 import ShareButton from "../components/ShareButton";        
 import useSharedParams from "../hooks/useSharedParams";
@@ -163,10 +164,15 @@ export default function CalculateurCELI() {
 
   return (
     <Layout
-      title="Calculateur CELI 2025 — Droits de cotisation et retraite"
+      title="Calculateur CELI 2026 — Épargne libre d'impôt"
       description="Calculez vos droits de cotisation CELI, projetez votre épargne libre d'impôt et maximisez votre retraite. Gratuit pour tous les Canadiens."
       canonical="https://monportefeuille.ca/calculateur-celi"
     >
+      <ToolSchema
+        name="Calculateur CELI 2026"
+        description="Calculez vos droits de cotisation CELI, projetez la croissance de votre épargne libre d'impôt et planifiez votre retraite au Canada."
+        url="https://monportefeuille.ca/calculateur-celi"
+      />
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 

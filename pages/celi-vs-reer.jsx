@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
+import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
 import ShareButton from "../components/ShareButton";        
 import useSharedParams from "../hooks/useSharedParams";
@@ -361,10 +362,15 @@ export default function CELIvsREER() {
 
   return (
     <Layout
-      title="Comparateur CELI vs REER 2025 — Quel compte d'épargne choisir?"
+      title="CELI vs REER 2026 — Lequel choisir?"
       description="Comparez le CELI et le REER selon votre situation fiscale pour maximiser votre épargne-retraite. Calculateur gratuit pour toutes les provinces canadiennes."
       canonical="https://monportefeuille.ca/celi-vs-reer"
     >
+      <ToolSchema
+        name="Comparateur CELI vs REER 2026"
+        description="Comparez le CELI et le REER selon votre situation fiscale pour maximiser votre épargne-retraite. Gratuit pour toutes les provinces canadiennes."
+        url="https://monportefeuille.ca/celi-vs-reer"
+      />
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 

@@ -66,6 +66,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <meta property="og:title" content={`${title} | monportefeuille.ca`} />
         <meta property="og:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         <meta property="og:type" content="website" />
+        <meta property="og:locale" content="fr_CA" />
         <meta property="og:site_name" content="monportefeuille.ca" />
         <meta property="og:image" content="https://monportefeuille.ca/og-image.png" />
         <meta property="og:image:width" content="1200" />

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
+import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
 import ShareButton from "../components/ShareButton";        
 import useSharedParams from "../hooks/useSharedParams";
@@ -389,10 +390,15 @@ export default function CalculateurREER() {
 
   return (
     <Layout
-      title="Calculateur REER 2025 — Remboursement d'impôt et retraite"
+      title="Calculateur REER 2026 — Remboursement d'impôt"
       description="Calculez votre remboursement d'impôt REER, projetez votre épargne-retraite et comparez REER vs CELI. Gratuit, pour tous les Canadiens et Québécois."
       canonical="https://monportefeuille.ca/calculateur-reer"
     >
+      <ToolSchema
+        name="Calculateur REER 2026"
+        description="Calculez votre remboursement d'impôt REER, projetez votre épargne-retraite et comparez REER vs CELI. Gratuit pour tous les Canadiens."
+        url="https://monportefeuille.ca/calculateur-reer"
+      />
       <div style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#0D1117", minHeight: "100vh", padding: "2rem 1rem" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
 
@@ -831,7 +837,7 @@ export default function CalculateurREER() {
                 { icon: "💸", title: "Le remboursement d'impôt", text: "Chaque dollar contribué au REER réduit votre revenu imposable. Si votre taux marginal est de 45%, une contribution de 10 000$ vous donne un remboursement de ~4 500$. Réinvestir ce remboursement chaque année crée un effet boule de neige puissant." },
                 { icon: "📅", title: "Date limite de contribution", text: "La date limite pour contribuer et déduire dans l'année fiscale courante est le 1er mars (60 jours après le 31 décembre). Vos droits de cotisation sont 18% de votre revenu de l'année précédente, jusqu'au maximum annuel." },
                 { icon: "🔄", title: "REER vs CELI", text: "Le REER est optimal si vous êtes dans une tranche d'imposition élevée maintenant et prévoyez être dans une tranche plus basse à la retraite. Le CELI est idéal si vous êtes dans une tranche basse maintenant. Les deux sont complémentaires." },
-                { icon: "⚠️", title: "Important", text: "Ce calculateur est un outil éducatif. Les taux d'imposition sont basés sur 2025 et peuvent changer. Pour des conseils personnalisés, consultez un planificateur financier." },
+                { icon: "⚠️", title: "Important", text: "Ce calculateur est un outil éducatif. Les taux d'imposition sont basés sur 2026 et peuvent changer. Pour des conseils personnalisés, consultez un planificateur financier." },
               ].map(({ icon, title, text }) => (
                 <div key={title} className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D]">
                   <div className="flex items-center gap-2 mb-2">
