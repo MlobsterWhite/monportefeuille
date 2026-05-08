@@ -6,7 +6,7 @@ import AffiliateLink from "../components/AffiliateLink";
 const FAQ_ITEMS = [
   {
     q: "Vérifier ma cote de crédit la fait-elle baisser?",
-    a: "Non. Vérifier toi-même ta cote est une vérification douce (soft check) et n'a aucun impact. Seules les vérifications dures (hard checks) — faites par un prêteur lors d'une demande de crédit — peuvent temporairement affecter ta cote.",
+    a: "Non. Vérifier toi-même ta cote est une vérification douce (soft check) et n'a aucun impact. Seules les vérifications dures (hard checks) (faites par un prêteur lors d'une demande de crédit) peuvent temporairement affecter ta cote.",
   },
   {
     q: "Est-ce que porter un solde sur ma carte améliore ma cote?",
@@ -33,7 +33,7 @@ const FAQ_ITEMS = [
     a: "Oui. Les paiements de prêts auto, prêts étudiants et hypothèques sont rapportés aux bureaux de crédit. Certains fournisseurs de services (télécommunications, certains loyers) peuvent aussi rapporter les paiements. Les prêts pour bâtir le crédit (credit builder loans) sont aussi une option.",
   },
   {
-    q: "Mon score Borrowell est différent de mon score TransUnion — lequel est exact?",
+    q: "Mon score Borrowell est différent de mon score TransUnion : lequel est exact?",
     a: "Les deux sont exacts mais utilisent des modèles de calcul différents (Borrowell utilise le score Equifax, Credit Karma utilise TransUnion). Les prêteurs utilisent souvent leur propre modèle de score interne. L'important est la tendance générale, pas le chiffre exact.",
   },
 ];
@@ -51,7 +51,7 @@ export default function GuideCoteDeCredit() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Guide Complet — Cote de Crédit au Canada 2026",
+        "headline": "Guide complet : Cote de crédit au Canada 2026",
         "description": "Comment comprendre, vérifier et améliorer sa cote de crédit au Canada. Les 5 facteurs, les erreurs à éviter, et les étapes concrètes.",
         "author": { "@type": "Organization", "name": "monportefeuille.ca" },
         "publisher": {
@@ -64,7 +64,7 @@ export default function GuideCoteDeCredit() {
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://monportefeuille.ca/guide-cote-de-credit-canada" }
       })}} />
 
-      <div style={{ fontFamily: "var(--font-dm-sans, 'Helvetica Neue', sans-serif)" }}>
+      <div style={{ fontFamily: "var(--font-dm-sans, 'Helvetica Neue', sans-serif)", background: "#0D1117", minHeight: "100vh" }}>
         <style>{`
           .prose { max-width: 75ch; line-height: 1.7; }
           .prose p { margin-bottom: 1.25rem; }
@@ -83,13 +83,13 @@ export default function GuideCoteDeCredit() {
           <nav aria-label="breadcrumb" className="text-xs text-[#8B949E] mb-6">
             <Link href="/" className="hover:text-[#E6EDF3] transition-colors">Accueil</Link>
             <span className="mx-2">›</span>
-            <span className="text-[#E6EDF3]">Guide — Cote de crédit au Canada</span>
+            <span className="text-[#E6EDF3]">Guide : Cote de crédit au Canada</span>
           </nav>
 
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl sm:text-5xl font-bold text-[#E6EDF3] mb-4" style={{ fontFamily: "var(--font-dm-mono, monospace)" }}>
-              Cote de crédit au Canada — Guide complet 2026
+              Cote de crédit au Canada : Guide complet 2026
             </h1>
             <div className="flex flex-wrap gap-4 text-xs text-[#8B949E] mb-6">
               <span>📖 Temps de lecture : ~12 minutes</span>
@@ -118,14 +118,14 @@ export default function GuideCoteDeCredit() {
             <h2 className="text-sm font-bold text-[#E6EDF3] mb-4 uppercase tracking-wide">Table des matières</h2>
             <nav className="space-y-2">
               {[
-                { id: "quest-ce-que", label: "1 — C'est quoi une cote de crédit?" },
-                { id: "comment-calculee", label: "2 — Comment est-elle calculée?" },
-                { id: "niveaux", label: "3 — Les niveaux de cote au Canada" },
-                { id: "verifier", label: "4 — Comment vérifier sa cote gratuitement" },
-                { id: "ameliorer", label: "5 — 7 habitudes pour améliorer sa cote" },
-                { id: "erreurs", label: "6 — Les erreurs qui font baisser la cote" },
-                { id: "delais", label: "7 — Combien de temps pour s'améliorer?" },
-                { id: "zero", label: "8 — Bâtir un crédit de zéro" },
+                { id: "quest-ce-que", label: "1 : C'est quoi une cote de crédit?" },
+                { id: "comment-calculee", label: "2 : Comment est-elle calculée?" },
+                { id: "niveaux", label: "3 : Les niveaux de cote au Canada" },
+                { id: "verifier", label: "4 : Comment vérifier sa cote gratuitement" },
+                { id: "ameliorer", label: "5 : 7 habitudes pour améliorer sa cote" },
+                { id: "erreurs", label: "6 : Les erreurs qui font baisser la cote" },
+                { id: "delais", label: "7 : Combien de temps pour s'améliorer?" },
+                { id: "zero", label: "8 : Bâtir un crédit de zéro" },
                 { id: "faq", label: "Questions fréquentes" },
               ].map(({ id, label }) => (
                 <a key={id} href={`#${id}`} className="block text-sm text-[#8B949E] hover:text-[#3DDC97] transition-colors">
@@ -172,7 +172,7 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 1 ── */}
           <section id="quest-ce-que" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">1 — C'est quoi une cote de crédit?</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">1 : C'est quoi une cote de crédit?</h2>
             <p className="text-sm text-[#8B949E] mb-8">Equifax, TransUnion, et la plage 300–900</p>
             <div className="prose">
               <p className="text-[#C9D1D9]">
@@ -216,7 +216,7 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 2 ── */}
           <section id="comment-calculee" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">2 — Comment est-elle calculée?</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">2 : Comment est-elle calculée?</h2>
             <p className="text-sm text-[#8B949E] mb-8">Les 5 facteurs et leur poids exact</p>
             <div className="prose">
               <p className="text-[#C9D1D9]">
@@ -231,14 +231,14 @@ export default function GuideCoteDeCredit() {
                   pct: "35%",
                   titre: "Historique de paiement",
                   color: "#3DDC97",
-                  desc: "Le facteur le plus important. Est-ce que tu paies tes factures à temps? Un seul retard de paiement — même de quelques jours — peut faire chuter ta cote de façon significative. À l'inverse, des années de paiements ponctuels sont ce qui construit une excellente cote.",
+                  desc: "Le facteur le plus important. Est-ce que tu paies tes factures à temps? Un seul retard de paiement (même de quelques jours) peut faire chuter ta cote de façon significative. À l'inverse, des années de paiements ponctuels sont ce qui construit une excellente cote.",
                   conseil: "Mets toutes tes factures en paiement automatique. Un oubli peut coûter cher.",
                 },
                 {
                   pct: "30%",
                   titre: "Taux d'utilisation du crédit",
                   color: "#F0A500",
-                  desc: "C'est le ratio entre le crédit que tu utilises et le crédit total disponible. Si ta carte a une limite de 5 000 $ et que tu portes un solde de 2 500 $, ton taux est de 50 % — ce qui est trop élevé. Vise un taux sous 30 %, idéalement sous 10 %.",
+                  desc: "C'est le ratio entre le crédit que tu utilises et le crédit total disponible. Si ta carte a une limite de 5 000 $ et que tu portes un solde de 2 500 $, ton taux est de 50 %, ce qui est trop élevé. Vise un taux sous 30 %, idéalement sous 10 %.",
                   conseil: "Si possible, demande une augmentation de limite sans augmenter tes dépenses. Ton taux d'utilisation baisse automatiquement.",
                 },
                 {
@@ -252,7 +252,7 @@ export default function GuideCoteDeCredit() {
                   pct: "10%",
                   titre: "Types de crédit",
                   color: "#C084FC",
-                  desc: "Avoir une variété de types de crédit (cartes de crédit, prêt auto, hypothèque, ligne de crédit) démontre que tu peux gérer différentes formes d'endettement. Mais n'ouvre pas de crédit uniquement pour diversifier — l'impact est limité.",
+                  desc: "Avoir une variété de types de crédit (cartes de crédit, prêt auto, hypothèque, ligne de crédit) démontre que tu peux gérer différentes formes d'endettement. Mais n'ouvre pas de crédit uniquement pour diversifier; l'impact est limité.",
                   conseil: "Ne t'endette pas pour diversifier. Ce facteur est secondaire.",
                 },
                 {
@@ -283,12 +283,12 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 3 ── */}
           <section id="niveaux" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">3 — Les niveaux de cote au Canada</h2>
-            <p className="text-sm text-[#8B949E] mb-8">De 300 à 900 — ce que ça veut dire concrètement</p>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">3 : Les niveaux de cote au Canada</h2>
+            <p className="text-sm text-[#8B949E] mb-8">De 300 à 900 : ce que ça veut dire concrètement</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
                 Voici comment les prêteurs canadiens interprètent généralement les niveaux de cote.
-                Ces plages sont indicatives — chaque institution a ses propres critères.
+                Ces plages sont indicatives; chaque institution a ses propres critères.
               </p>
             </div>
 
@@ -330,8 +330,8 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 4 ── */}
           <section id="verifier" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">4 — Comment vérifier sa cote gratuitement</h2>
-            <p className="text-sm text-[#8B949E] mb-8">Soft check vs hard check — la distinction qui change tout</p>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">4 : Comment vérifier sa cote gratuitement</h2>
+            <p className="text-sm text-[#8B949E] mb-8">Soft check vs hard check : la distinction qui change tout</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
                 Bonne nouvelle : vérifier ta propre cote de crédit est une vérification douce (<em>soft check</em>) et
@@ -424,12 +424,12 @@ export default function GuideCoteDeCredit() {
             {/* Borrowell affiliate CTA */}
             <div className="mt-6 bg-[#161B22] border border-[#3DDC97]/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-5">
               <div className="flex-1">
-                <p className="text-sm font-bold text-[#E6EDF3] mb-1">Vérifier ton score Equifax — gratuitement avec Borrowell</p>
+                <p className="text-sm font-bold text-[#E6EDF3] mb-1">Vérifier ton score Equifax, gratuitement avec Borrowell</p>
                 <p className="text-xs text-[#8B949E] leading-relaxed">
                   Borrowell est le service le plus populaire au Canada pour surveiller sa cote Equifax. Inscription gratuite,
                   score mis à jour chaque semaine, aucun impact sur ta cote.
                 </p>
-                <p className="text-[10px] text-[#484F58] mt-2">Lien affilié — nous pouvons recevoir une commission si tu t'inscris via ce lien, sans frais pour toi.</p>
+                <p className="text-[10px] text-[#484F58] mt-2">Lien affilié : nous pouvons recevoir une commission si tu t'inscris via ce lien, sans frais pour toi.</p>
               </div>
               <AffiliateLink
                 href="https://borrowell.com/refer-a-friend/free-credit-score?utm_campaign=Refer5&utm_medium=web&utm_source=refer2022-1115247"
@@ -444,7 +444,7 @@ export default function GuideCoteDeCredit() {
               <p className="text-xs text-[#8B949E] leading-relaxed">
                 <span className="text-[#F0A500] font-medium">Conseil : </span>
                 Vérifie ton dossier complet (pas juste la cote) auprès d'Equifax et TransUnion au moins une fois par an.
-                Le dossier complet révèle les erreurs potentielles — comptes que tu ne reconnais pas, informations incorrectes —
+                Le dossier complet révèle les erreurs potentielles (comptes que tu ne reconnais pas, informations incorrectes)
                 que tu peux contester directement auprès des bureaux.
               </p>
             </div>
@@ -462,7 +462,7 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 5 ── */}
           <section id="ameliorer" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">5 — 7 habitudes pour améliorer sa cote</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">5 : 7 habitudes pour améliorer sa cote</h2>
             <p className="text-sm text-[#8B949E] mb-8">Les actions concrètes, classées par impact</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
@@ -478,7 +478,7 @@ export default function GuideCoteDeCredit() {
                   titre: "Payer à temps, toujours",
                   impact: "Très élevé",
                   impactColor: "#3DDC97",
-                  desc: "C'est le facteur le plus important (35% du score). Un seul paiement manqué peut faire chuter ta cote de 50 à 100 points. Mets en place des paiements automatiques au minimum pour le montant minimum dû — idéalement pour le solde total.",
+                  desc: "C'est le facteur le plus important (35% du score). Un seul paiement manqué peut faire chuter ta cote de 50 à 100 points. Mets en place des paiements automatiques au minimum pour le montant minimum dû, idéalement pour le solde total.",
                 },
                 {
                   num: "02",
@@ -499,7 +499,7 @@ export default function GuideCoteDeCredit() {
                   titre: "Demander des augmentations de limite",
                   impact: "Modéré",
                   impactColor: "#F0A500",
-                  desc: "Demander une augmentation de ta limite de crédit (sans augmenter tes dépenses) réduit mécaniquement ton taux d'utilisation. La demande elle-même peut être une vérification douce ou dure selon l'émetteur — renseigne-toi avant.",
+                  desc: "Demander une augmentation de ta limite de crédit (sans augmenter tes dépenses) réduit mécaniquement ton taux d'utilisation. La demande elle-même peut être une vérification douce ou dure selon l'émetteur; renseigne-toi avant.",
                 },
                 {
                   num: "05",
@@ -546,7 +546,7 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 6 ── */}
           <section id="erreurs" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">6 — Les erreurs qui font baisser la cote</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">6 : Les erreurs qui font baisser la cote</h2>
             <p className="text-sm text-[#8B949E] mb-8">Ce qu'il faut absolument éviter</p>
 
             <div className="space-y-3">
@@ -599,11 +599,11 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 7 ── */}
           <section id="delais" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">7 — Combien de temps pour s'améliorer?</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">7 : Combien de temps pour s'améliorer?</h2>
             <p className="text-sm text-[#8B949E] mb-8">Des estimations réalistes par scénario</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
-                Il n'existe pas de réponse unique — le délai dépend de ce qui a affecté ta cote et de ta situation de départ.
+                Il n'existe pas de réponse unique : le délai dépend de ce qui a affecté ta cote et de ta situation de départ.
                 Voici des estimations générales pour différents scénarios.
               </p>
             </div>
@@ -630,12 +630,12 @@ export default function GuideCoteDeCredit() {
 
           {/* ── Section 8 ── */}
           <section id="zero" className="mb-14">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">8 — Bâtir un crédit de zéro</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">8 : Bâtir un crédit de zéro</h2>
             <p className="text-sm text-[#8B949E] mb-8">Nouveaux arrivants, jeunes adultes, ou après une faillite</p>
             <div className="prose mb-6">
               <p className="text-[#C9D1D9]">
                 Tu arrives au Canada, tu as 18 ans, ou tu n'as simplement jamais utilisé de crédit?
-                Sans historique, tu es «invisible» pour les prêteurs — ce qui est presque aussi difficile
+                Sans historique, tu es «invisible» pour les prêteurs, ce qui est presque aussi difficile
                 qu'un mauvais historique. Voici comment construire une base solide.
               </p>
             </div>
@@ -663,7 +663,7 @@ export default function GuideCoteDeCredit() {
                 {
                   etape: "4",
                   titre: "Rapporter les paiements de loyer",
-                  desc: "Certains services permettent maintenant de rapporter tes paiements de loyer aux bureaux de crédit — un historique qui n'était pas traditionnellement comptabilisé.",
+                  desc: "Certains services permettent maintenant de rapporter tes paiements de loyer aux bureaux de crédit, un historique qui n'était pas traditionnellement comptabilisé.",
                   exemples: "Landlord Credit Bureau, Chexy",
                 },
               ].map(e => (
@@ -706,20 +706,61 @@ export default function GuideCoteDeCredit() {
                 <div key={i} className="bg-[#0E1520] border border-[#21262D] rounded-xl overflow-hidden">
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full text-left px-5 py-4 flex justify-between items-center gap-4"
+                    className="w-full text-left px-5 py-4 flex justify-between items-center gap-4 hover:bg-[#0E1520] transition-colors"
                   >
                     <span className="text-sm font-medium text-[#E6EDF3]">{item.q}</span>
-                    <span className="text-[#3DDC97] text-lg flex-shrink-0">{openFaq === i ? "−" : "+"}</span>
+                    <span className="text-[#8B949E] flex-shrink-0">{openFaq === i ? "−" : "+"}</span>
                   </button>
                   {openFaq === i && (
                     <div className="px-5 pb-4">
-                      <p className="text-sm text-[#8B949E] leading-relaxed font-light">{item.a}</p>
+                      <p className="text-xs text-[#8B949E] leading-relaxed">{item.a}</p>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           </section>
+
+          {/* Conclusion */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-6">En résumé</h2>
+            <div className="prose">
+              <p className="text-[#C9D1D9]">
+                Ta cote de crédit n'est pas une sentence permanente. C'est le résultat de comportements financiers
+                mesurables, et ces comportements peuvent changer. La plupart des gens qui améliorent leur cote
+                le font simplement en adoptant deux habitudes : payer à temps et maintenir un faible taux d'utilisation.
+              </p>
+              <p className="text-[#C9D1D9]">
+                Ce guide t'a présenté les mécanismes réels du système de crédit canadien, les facteurs qui comptent,
+                et les actions concrètes les plus documentées. La suite dépend de ta situation de départ.
+              </p>
+              <div className="bg-[#3DDC97]/10 border border-[#3DDC97]/30 rounded-xl p-6 my-8">
+                <p className="text-sm font-bold text-[#E6EDF3] mb-3">Prochaines étapes suggérées :</p>
+                <ol className="text-xs text-[#8B949E] space-y-2 list-decimal list-inside">
+                  <li>Vérifie ta cote gratuitement sur <Link href="https://borrowell.com" className="text-[#3DDC97] hover:underline">Borrowell</Link> (Equifax) et Credit Karma (TransUnion)</li>
+                  <li>Mets en place le paiement automatique du solde minimum sur toutes tes cartes</li>
+                  <li>Vérifie ton taux d'utilisation et vise sous 30 % sur chaque carte</li>
+                  <li><Link href="/estimateur-credit" className="text-[#3DDC97] hover:underline">Utilise notre estimateur</Link> pour identifier tes leviers prioritaires</li>
+                  <li>Pour une situation complexe (faillite, dettes importantes), consulte un syndic autorisé en insolvabilité (AFCC)</li>
+                </ol>
+              </div>
+              <p className="text-[#C9D1D9]">
+                N'oublie pas : ce guide est informatif, pas prescriptif. Les comportements décrits reflètent ce qui est
+                généralement observé; ta situation personnelle peut justifier une approche différente.
+              </p>
+              <p className="text-[#C9D1D9] font-medium">Bonne chance dans la construction de ton dossier de crédit. 🎯</p>
+            </div>
+          </section>
+
+          {/* Retour en haut */}
+          <div className="text-center mb-8">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-sm text-[#8B949E] hover:text-[#3DDC97] transition-colors"
+            >
+              ↑ Retour en haut
+            </button>
+          </div>
 
           {/* Footer du guide */}
           <div className="border-t border-[#21262D] pt-8 text-center">

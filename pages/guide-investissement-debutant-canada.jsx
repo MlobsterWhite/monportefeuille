@@ -84,11 +84,11 @@ export default function GuideInvestissementDebutant() {
             <h2 className="text-sm font-bold text-[#E6EDF3] mb-4 uppercase tracking-wide">Table des matières</h2>
             <nav className="space-y-2">
               {[
-                { id: "etape-1", label: "Étape 1 — Évalue ta situation financière" },
-                { id: "etape-2", label: "Étape 2 — L'ordre de priorité recommandé" },
-                { id: "etape-3", label: "Étape 3 — Les véhicules d'épargne (CELI, REER, CELIAPP)" },
-                { id: "etape-4", label: "Étape 4 — Quoi acheter à l'intérieur (FNB, CPG, actions)" },
-                { id: "etape-5", label: "Étape 5 — Où ouvrir ton compte (plateformes)" },
+                { id: "etape-1", label: "Étape 1 : Évalue ta situation financière" },
+                { id: "etape-2", label: "Étape 2 : L'ordre de priorité recommandé" },
+                { id: "etape-3", label: "Étape 3 : Les véhicules d'épargne (CELI, REER, CELIAPP)" },
+                { id: "etape-4", label: "Étape 4 : Quoi acheter à l'intérieur (FNB, CPG, actions)" },
+                { id: "etape-5", label: "Étape 5 : Où ouvrir ton compte (plateformes)" },
                 { id: "faq",     label: "Questions fréquentes" },
               ].map(({ id, label }) => (
                 <a key={id} href={`#${id}`} className="block text-sm text-[#8B949E] hover:text-[#3DDC97] transition-colors">
@@ -103,15 +103,14 @@ export default function GuideInvestissementDebutant() {
             <h2 className="text-2xl font-bold text-[#E6EDF3]">Par où commencer quand tout semble compliqué</h2>
             <p className="text-[#C9D1D9]">
               Tu veux commencer à investir, mais tu te sens submergé par les options. CELI, REER, FNB, CPG, robo-advisor,
-              courtier autonome — les termes s'empilent et chaque article financier semble te dire quelque chose de différent.
+              courtier autonome : les termes s'empilent et chaque article financier semble te dire quelque chose de différent.
             </p>
             <p className="text-[#C9D1D9]">
-              C'est normal. L'industrie financière canadienne est complexe par conception, et les ressources en français sont
-              souvent limitées ou adaptées de France, où les produits et lois sont complètement différents.
+              C'est normal. L'industrie financière canadienne est complexe par conception.
             </p>
             <p className="text-[#C9D1D9]">
               Ce guide existe pour une raison simple : te présenter les options disponibles au Canada de façon honnête, sans jargon,
-              sans promesses irréalistes, et sans te dire quoi faire — parce qu'investir, c'est personnel.
+              sans promesses irréalistes, et sans te dire quoi faire : parce qu'investir, c'est personnel.
             </p>
             <div className="grid sm:grid-cols-2 gap-4 my-6">
               <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-5">
@@ -138,7 +137,7 @@ export default function GuideInvestissementDebutant() {
 
           {/* ── Étape 1 ── */}
           <section id="etape-1" className="mb-16">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 1 — Évalue ta situation financière</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 1 : Évalue ta situation financière</h2>
             <p className="text-sm text-[#8B949E] mb-8">Le point de départ que beaucoup sautent</p>
 
             <div className="prose">
@@ -153,7 +152,7 @@ export default function GuideInvestissementDebutant() {
                 <p className="text-sm font-mono text-[#3DDC97] mb-4">Valeur nette = Actifs − Passifs</p>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">ACTIFS (ce que tu possèdes) :</p>
+                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">ACTIFS (ce que tu possèdes) : </p>
                     <ul className="text-xs text-[#8B949E] space-y-1">
                       <li>• Comptes bancaires</li>
                       <li>• CELI / REER / CELIAPP existants</li>
@@ -163,7 +162,7 @@ export default function GuideInvestissementDebutant() {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">PASSIFS (ce que tu dois) :</p>
+                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">PASSIFS (ce que tu dois) : </p>
                     <ul className="text-xs text-[#8B949E] space-y-1">
                       <li>• Prêt étudiant</li>
                       <li>• Dettes de cartes de crédit</li>
@@ -175,14 +174,14 @@ export default function GuideInvestissementDebutant() {
                 </div>
               </div>
 
-              <h3 className="text-xl font-bold text-[#E6EDF3] mt-8 mb-4">Exemple courant — 28 ans, Montréal</h3>
+              <h3 className="text-xl font-bold text-[#E6EDF3] mt-8 mb-4">Exemple courant : 28 ans, Montréal</h3>
               <div className="bg-[#0D1117] border border-[#30363D] rounded-xl p-5 my-6 font-mono text-xs">
-                <p className="text-[#3DDC97] font-bold mb-3">ACTIFS :</p>
+                <p className="text-[#3DDC97] font-bold mb-3">ACTIFS : </p>
                 <p className="text-[#8B949E] mb-1">• Compte chèque : 3 200 $</p>
                 <p className="text-[#8B949E] mb-1">• CELI : 1 800 $</p>
                 <p className="text-[#8B949E] mb-1">• Voiture : 8 000 $</p>
                 <p className="text-[#E6EDF3] font-bold mb-4">TOTAL : 13 000 $</p>
-                <p className="text-red-400 font-bold mb-3">PASSIFS :</p>
+                <p className="text-red-400 font-bold mb-3">PASSIFS : </p>
                 <p className="text-[#8B949E] mb-1">• Prêt étudiant AFE : 12 000 $</p>
                 <p className="text-[#8B949E] mb-1">• Carte de crédit : 2 400 $</p>
                 <p className="text-[#E6EDF3] font-bold mb-4">TOTAL : 14 400 $</p>
@@ -199,17 +198,17 @@ export default function GuideInvestissementDebutant() {
               <div className="space-y-4">
                 {[
                   {
-                    label: "SITUATION A — Dettes à hauts intérêts (carte de crédit 19 %+)",
+                    label: "SITUATION A : Dettes à hauts intérêts (carte de crédit 19 %+)",
                     obs: "Remboursement prioritaire avant investissements",
-                    why: "Rendement « garanti » de 19 %+ en économisant les intérêts — difficile à battre"
+                    why: "Rendement « garanti » de 19 %+ en économisant les intérêts : difficile à battre"
                   },
                   {
-                    label: "SITUATION B — Dettes à bas intérêts (prêt étudiant 3–4 %)",
+                    label: "SITUATION B : Dettes à bas intérêts (prêt étudiant 3–4 %)",
                     obs: "Remboursement minimal + début d'investissement simultané",
                     why: "Le potentiel de croissance des marchés dépasse généralement le coût de la dette"
                   },
                   {
-                    label: "SITUATION C — Sans dette significative",
+                    label: "SITUATION C : Sans dette significative",
                     obs: "Fonds d'urgence (3–6 mois de dépenses) en premier, puis investir le surplus",
                     why: "Un coussin de liquidités évite de devoir liquider des placements à perte en cas d'imprévu"
                   },
@@ -227,19 +226,19 @@ export default function GuideInvestissementDebutant() {
               <Link href="/valeur-nette" className="text-[#3DDC97] font-bold text-sm hover:underline">
                 → Calcule ta valeur nette en 2 minutes
               </Link>
-              <p className="text-xs text-[#8B949E] mt-2">Bilan complet actifs et passifs — gratuit, aucune donnée transmise.</p>
+              <p className="text-xs text-[#8B949E] mt-2">Bilan complet actifs et passifs : gratuit, aucune donnée transmise.</p>
             </div>
           </section>
 
-          {/* ── Étape 2 — Ordre de priorité ── */}
+          {/* ── Étape 2 : Ordre de priorité ── */}
           <section id="etape-2" className="mb-16">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 2 — L'ordre de priorité couramment recommandé</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 2 : L'ordre de priorité couramment recommandé</h2>
             <p className="text-sm text-[#8B949E] mb-8">La séquence que beaucoup de planificateurs suggèrent</p>
 
             <div className="prose">
               <p className="text-[#C9D1D9]">
                 Une des questions les plus fréquentes est : « Par quoi commencer ? » Voici l'ordre de priorité
-                le plus souvent observé dans la littérature financière canadienne. Ce n'est pas une règle universelle —
+                le plus souvent observé dans la littérature financière canadienne. Ce n'est pas une règle universelle;
                 ta situation peut justifier une approche différente.
               </p>
             </div>
@@ -265,13 +264,13 @@ export default function GuideInvestissementDebutant() {
                   color: "#F0A500",
                   title: "REER collectif avec cotisation patronale (si disponible)",
                   desc: "Si ton employeur offre un REER collectif avec cotisation de contrepartie (ex : il verse 0,50 $ pour chaque 1 $ que tu contribues), c'est un rendement immédiat de 50 %. Peu importe le marché, c'est difficile à ignorer.",
-                  note: "📌 Vérifie dans ton contrat ou avec les RH — c'est souvent sous-utilisé"
+                  note: "📌 Vérifie dans ton contrat ou avec les RH : c'est souvent sous-utilisé"
                 },
                 {
                   num: "4",
                   color: "#60A5FA",
                   title: "CELIAPP (si premier acheteur)",
-                  desc: "Combine les avantages CELI + REER pour l'achat d'une première propriété. Double avantage fiscal unique — prioritaire sur CELI/REER si tu comptes acheter dans 5–15 ans.",
+                  desc: "Combine les avantages CELI + REER pour l'achat d'une première propriété. Double avantage fiscal unique : prioritaire sur CELI/REER si tu comptes acheter dans 5–15 ans.",
                   note: null
                 },
                 {
@@ -285,7 +284,7 @@ export default function GuideInvestissementDebutant() {
                   num: "6",
                   color: "#484F58",
                   title: "Compte non enregistré (une fois les comptes enregistrés maximisés)",
-                  desc: "Une fois CELI et REER maximisés, un compte non enregistré permet d'investir sans plafond — mais les gains sont imposables (gains en capital imposés à 50 %, dividendes selon les crédits applicables).",
+                  desc: "Une fois CELI et REER maximisés, un compte non enregistré permet d'investir sans plafond : mais les gains sont imposables (gains en capital imposés à 50 %, dividendes selon les crédits applicables).",
                   note: null
                 },
               ].map(({ num, color, title, desc, note }) => (
@@ -302,7 +301,7 @@ export default function GuideInvestissementDebutant() {
 
             <div className="bg-[#F0A500]/10 border border-[#F0A500]/30 rounded-xl p-5 mt-6">
               <p className="text-xs text-[#8B949E] leading-relaxed">
-                <strong className="text-[#E6EDF3]">Important :</strong> Cette séquence est un cadre général, pas une règle absolue.
+                <strong className="text-[#E6EDF3]">Important : </strong> Cette séquence est un cadre général, pas une règle absolue.
                 Des facteurs comme l'âge, les objectifs de retraite, un régime de retraite à prestations déterminées (DB pension),
                 ou une situation fiscale particulière peuvent changer l'ordre optimal. Un planificateur financier agréé (CFP/Pl.Fin.)
                 peut t'aider à personnaliser cette séquence.
@@ -310,20 +309,20 @@ export default function GuideInvestissementDebutant() {
             </div>
           </section>
 
-          {/* ── Étape 3 — Véhicules d'épargne ── */}
+          {/* ── Étape 3 : Véhicules d'épargne ── */}
           <section id="etape-3" className="mb-16">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 3 — Les véhicules d'épargne canadiens</h2>
-            <p className="text-sm text-[#8B949E] mb-8">CELI, REER, CELIAPP — des enveloppes fiscales, pas des placements</p>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 3 : Les véhicules d'épargne canadiens</h2>
+            <p className="text-sm text-[#8B949E] mb-8">CELI, REER, CELIAPP : des enveloppes fiscales, pas des placements</p>
 
             <div className="prose">
               <p className="text-[#C9D1D9]">
                 Au Canada, tu choisis non seulement <em>quoi</em> acheter, mais aussi <em>dans quel type de compte</em> le placer.
-                Ces comptes sont des enveloppes fiscales — à l'intérieur, tu peux détenir des FNB, des CPG, des actions, etc.
+                Ces comptes sont des enveloppes fiscales : à l'intérieur, tu peux détenir des FNB, des CPG, des actions, etc.
                 Le compte lui-même détermine comment tes gains sont imposés.
               </p>
 
               {/* CELI vs REER */}
-              <h3 className="text-xl font-bold text-[#E6EDF3] mt-8 mb-4">A) CELI vs REER — les différences clés</h3>
+              <h3 className="text-xl font-bold text-[#E6EDF3] mt-8 mb-4">A) CELI vs REER : les différences clés</h3>
 
               <div className="overflow-x-auto my-6">
                 <table className="min-w-full text-xs">
@@ -337,8 +336,8 @@ export default function GuideInvestissementDebutant() {
                   <tbody className="text-[#8B949E]">
                     {[
                       ["Plafond annuel (2025)", "7 000 $ (cumulatif depuis 2009)", "18 % du revenu, max 32 490 $"],
-                      ["Déduction fiscale", "Non — cotisation après impôt", "Oui — réduit le revenu imposable"],
-                      ["Impôt au retrait", "Aucun — croissance et retraits libres d'impôt", "Oui — imposé comme revenu ordinaire"],
+                      ["Déduction fiscale", "Non : cotisation après impôt", "Oui : réduit le revenu imposable"],
+                      ["Impôt au retrait", "Aucun : croissance et retraits libres d'impôt", "Oui : imposé comme revenu ordinaire"],
                       ["Récupération des droits", "Droits retirés récupérés le 1er janvier suivant", "Droits perdus définitivement au retrait"],
                       ["Flexibilité", "Retrait possible en tout temps, sans pénalité", "Retenue à la source + perte de droits"],
                       ["Âge limite", "Aucun", "Conversion en FERR obligatoire à 71 ans"],
@@ -359,10 +358,10 @@ export default function GuideInvestissementDebutant() {
                 <p className="text-sm font-bold text-[#E6EDF3] mb-3">📌 Point souvent mal compris : la récupération des droits CELI</p>
                 <p className="text-xs text-[#8B949E] leading-relaxed mb-2">
                   Si tu retires 5 000 $ de ton CELI en 2025, ces 5 000 $ sont <strong className="text-[#E6EDF3]">rajoutés à tes droits disponibles le 1er janvier 2026</strong>.
-                  Tu peux les re-cotiser à ce moment — pas avant (à moins d'avoir des droits non utilisés).
+                  Tu peux les re-cotiser à ce moment : pas avant (à moins d'avoir des droits non utilisés).
                 </p>
                 <p className="text-xs text-[#8B949E] leading-relaxed mb-2">
-                  Re-cotiser dans la même année sans droits disponibles entraîne une <strong className="text-red-400]">pénalité de 1 %/mois</strong> sur l'excédent — une erreur fréquente.
+                  Re-cotiser dans la même année sans droits disponibles entraîne une <strong className="text-red-400]">pénalité de 1 %/mois</strong> sur l'excédent : une erreur fréquente.
                 </p>
                 <p className="text-xs text-[#484F58]">
                   Droits cumulatifs maximaux en 2026 (si tu avais 18 ans ou plus en 2009 et n'as jamais cotisé) : <strong className="text-[#E6EDF3]">109 000 $</strong>
@@ -372,7 +371,7 @@ export default function GuideInvestissementDebutant() {
               <h3 className="text-xl font-bold text-[#E6EDF3] mt-8 mb-4">Situations où chacun est couramment choisi</h3>
               <div className="grid md:grid-cols-2 gap-4 my-6">
                 <div className="bg-[#F0A500]/10 border border-[#F0A500]/30 rounded-xl p-5">
-                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">CELI souvent privilégié :</p>
+                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">CELI souvent privilégié : </p>
                   <ul className="text-xs text-[#8B949E] space-y-1.5">
                     <li>• Revenus sous 55 000 $ (faible avantage fiscal REER)</li>
                     <li>• Objectifs à court-moyen terme (mise de fonds, voyage, voiture)</li>
@@ -381,7 +380,7 @@ export default function GuideInvestissementDebutant() {
                   </ul>
                 </div>
                 <div className="bg-[#60A5FA]/10 border border-[#60A5FA]/30 rounded-xl p-5">
-                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">REER souvent avantageux :</p>
+                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">REER souvent avantageux : </p>
                   <ul className="text-xs text-[#8B949E] space-y-1.5">
                     <li>• Revenus au-dessus de 70 000 $ (économie fiscale substantielle)</li>
                     <li>• Horizon retraite 20+ ans</li>
@@ -392,14 +391,14 @@ export default function GuideInvestissementDebutant() {
               </div>
 
               <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-5 my-6">
-                <p className="text-sm font-bold text-[#E6EDF3] mb-2">Utilise notre estimateur pour voir ton économie REER exacte :</p>
+                <p className="text-sm font-bold text-[#E6EDF3] mb-2">Utilise notre estimateur pour voir ton économie REER exacte : </p>
                 <Link href="/estimateur-impot" className="text-[#C084FC] hover:underline text-xs">
-                  → Estimateur d'impôt — calcule ton remboursement REER selon ta province
+                  → Estimateur d'impôt : calcule ton remboursement REER selon ta province
                 </Link>
               </div>
 
               {/* CELIAPP */}
-              <h3 className="text-xl font-bold text-[#E6EDF3] mt-10 mb-4">B) CELIAPP — Pour les premiers acheteurs</h3>
+              <h3 className="text-xl font-bold text-[#E6EDF3] mt-10 mb-4">B) CELIAPP : Pour les premiers acheteurs</h3>
               <p className="text-[#C9D1D9]">
                 Le Compte d'épargne libre d'impôt pour l'achat d'une première propriété (CELIAPP) est disponible depuis avril 2023.
                 Il combine les avantages fiscaux du REER et du CELI dans un seul compte.
@@ -407,17 +406,17 @@ export default function GuideInvestissementDebutant() {
 
               <div className="grid md:grid-cols-2 gap-4 my-6">
                 <div className="bg-[#0D1117] border border-[#30363D] rounded-xl p-5">
-                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">Caractéristiques :</p>
+                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">Caractéristiques : </p>
                   <ul className="text-xs text-[#8B949E] space-y-1.5">
                     <li>• Plafond annuel : 8 000 $ (max 40 000 $ à vie)</li>
                     <li>• Déduction fiscale immédiate (comme le REER)</li>
                     <li>• Retrait libre d'impôt pour achat d'une maison (comme le CELI)</li>
                     <li>• Droits non utilisés reportables à l'année suivante</li>
-                    <li>• Si non utilisé, fermé après 15 ans — fonds transférables au REER</li>
+                    <li>• Si non utilisé, fermé après 15 ans : fonds transférables au REER</li>
                   </ul>
                 </div>
                 <div className="bg-[#0D1117] border border-[#30363D] rounded-xl p-5">
-                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">Conditions d'admissibilité :</p>
+                  <p className="text-sm font-bold text-[#E6EDF3] mb-3">Conditions d'admissibilité : </p>
                   <ul className="text-xs text-[#8B949E] space-y-1.5">
                     <li>• Résider au Canada</li>
                     <li>• Ne pas avoir possédé une résidence principale <strong className="text-[#C9D1D9]">au cours de l'année en cours ni des 4 années civiles précédentes</strong></li>
@@ -432,7 +431,7 @@ export default function GuideInvestissementDebutant() {
 
               {/* RAP */}
               <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-5 my-6">
-                <p className="text-sm font-bold text-[#E6EDF3] mb-2">Le RAP (Régime d'accession à la propriété) — alternative REER</p>
+                <p className="text-sm font-bold text-[#E6EDF3] mb-2">Le RAP (Régime d'accession à la propriété) : alternative REER</p>
                 <p className="text-xs text-[#8B949E] leading-relaxed">
                   Si tu as des fonds dans un REER, le RAP te permet de retirer jusqu'à <strong className="text-[#C9D1D9]">60 000 $</strong> (limite relevée en 2024)
                   pour l'achat d'une première propriété, sans impôt immédiat. Tu dois rembourser le montant dans ton REER sur 15 ans.
@@ -455,28 +454,28 @@ export default function GuideInvestissementDebutant() {
             </div>
           </section>
 
-          {/* ── Étape 4 — Types de placements ── */}
+          {/* ── Étape 4 : Types de placements ── */}
           <section id="etape-4" className="mb-16">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 4 — Quoi acheter à l'intérieur des comptes</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 4 : Quoi acheter à l'intérieur des comptes</h2>
             <p className="text-sm text-[#8B949E] mb-8">Du plus simple au plus complexe</p>
 
             <div className="prose">
               <p className="text-[#C9D1D9]">
                 Une fois que tu sais <em>où</em> mettre ton argent (CELI, REER, CELIAPP), il faut choisir <em>quoi</em> acheter à l'intérieur.
-                Ces comptes sont des contenants vides — tu dois y déposer des placements.
+                Ces comptes sont des contenants vides : tu dois y déposer des placements.
               </p>
 
               {/* CPG */}
               <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-6 my-6">
-                <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">1. CPG — Certificat de placement garanti</h3>
-                <p className="text-xs text-[#484F58] mb-4">Option la plus conservatrice — idéale pour l'épargne à court terme</p>
+                <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">1. CPG : Certificat de placement garanti</h3>
+                <p className="text-xs text-[#484F58] mb-4">Option la plus conservatrice : idéale pour l'épargne à court terme</p>
                 <p className="text-sm text-[#C9D1D9] mb-4">
                   Un CPG est un dépôt à terme auprès d'une banque ou caisse : tu immobilises ton argent pour une période définie
                   (3 mois à 5 ans) en échange d'un taux d'intérêt garanti. Aucun risque de perdre le capital.
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">Avantages :</p>
+                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">Avantages : </p>
                     <ul className="text-xs text-[#8B949E] space-y-1">
                       <li>• Capital 100 % garanti</li>
                       <li>• Protégé par la SADC (jusqu'à 100 000 $ par catégorie)</li>
@@ -485,10 +484,10 @@ export default function GuideInvestissementDebutant() {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">Limites :</p>
+                    <p className="text-xs font-bold text-[#E6EDF3] mb-2">Limites : </p>
                     <ul className="text-xs text-[#8B949E] space-y-1">
                       <li>• Argent souvent bloqué jusqu'à échéance</li>
-                      <li>• Rendement plafonné — pas de croissance au-delà du taux</li>
+                      <li>• Rendement plafonné : pas de croissance au-delà du taux</li>
                       <li>• Sous-performe historiquement les marchés sur 20+ ans</li>
                     </ul>
                   </div>
@@ -500,7 +499,7 @@ export default function GuideInvestissementDebutant() {
 
               {/* FNB */}
               <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-6 my-6">
-                <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">2. FNB tout-en-un — L'option la plus courante chez débutants</h3>
+                <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">2. FNB tout-en-un : L'option la plus courante chez débutants</h3>
                 <p className="text-xs text-[#484F58] mb-4">Un seul achat = diversification mondiale instantanée</p>
                 <p className="text-sm text-[#C9D1D9] mb-4">
                   Un FNB (Fonds Négocié en Bourse) est un « panier » de centaines ou milliers d'actions et obligations mondiales,
@@ -535,7 +534,7 @@ export default function GuideInvestissementDebutant() {
                 </div>
                 <p className="text-[10px] text-[#484F58] mt-3">
                   V = Vanguard Canada, X = iShares (BlackRock Canada). Les deux familles sont bien établies et largement utilisées.
-                  Les frais sont approximatifs — vérifier sur le site de chaque gestionnaire.
+                  Les frais sont approximatifs : vérifier sur le site de chaque gestionnaire.
                 </p>
               </div>
 
@@ -547,27 +546,27 @@ export default function GuideInvestissementDebutant() {
                   Similaires aux FNB dans leur principe (panier diversifié), mais achetés directement auprès d'une institution, sans passer par la bourse.
                 </p>
                 <p className="text-xs text-[#8B949E]">
-                  ⚠️ Les frais de gestion (RFG) sont souvent beaucoup plus élevés que les FNB — entre 1,5 % et 2,5 %/an.
+                  ⚠️ Les frais de gestion (RFG) sont souvent beaucoup plus élevés que les FNB : entre 1,5 % et 2,5 %/an.
                   Sur 25 ans, cet écart peut représenter des dizaines de milliers de dollars de différence sur un même portefeuille.
                 </p>
               </div>
 
               {/* Ce qu'on évite */}
               <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-5 my-6">
-                <p className="text-sm font-bold text-[#E6EDF3] mb-3">Ce que beaucoup évitent en début de parcours :</p>
+                <p className="text-sm font-bold text-[#E6EDF3] mb-3">Ce que beaucoup évitent en début de parcours : </p>
                 <ul className="text-xs text-[#8B949E] space-y-2">
-                  <li>• <strong className="text-[#C9D1D9]">Actions individuelles :</strong> Sélectionner les bons titres requiert temps, expertise et discipline. Les études montrent que la grande majorité des investisseurs actifs sous-performent un simple FNB indiciel sur 10–20 ans.</li>
-                  <li>• <strong className="text-[#C9D1D9]">Cryptomonnaies comme placement principal :</strong> Volatilité extrême, cadre réglementaire limité, aucune garantie. Certains les incluent comme portion spéculative mineure d'un portefeuille, pas comme base.</li>
-                  <li>• <strong className="text-[#C9D1D9]">Produits à effet de levier (options, contrats à terme) :</strong> Possibilité de pertes supérieures au capital investi. Non recommandés sans expérience avancée.</li>
-                  <li>• <strong className="text-[#C9D1D9]">Fonds communs à frais élevés (2 %+) :</strong> Les frais érodent les rendements de façon significative sur un horizon long.</li>
+                  <li>• <strong className="text-[#C9D1D9]">Actions individuelles : </strong> Sélectionner les bons titres requiert temps, expertise et discipline. Les études montrent que la grande majorité des investisseurs actifs sous-performent un simple FNB indiciel sur 10–20 ans.</li>
+                  <li>• <strong className="text-[#C9D1D9]">Cryptomonnaies comme placement principal : </strong> Volatilité extrême, cadre réglementaire limité, aucune garantie. Certains les incluent comme portion spéculative mineure d'un portefeuille, pas comme base.</li>
+                  <li>• <strong className="text-[#C9D1D9]">Produits à effet de levier (options, contrats à terme) : </strong> Possibilité de pertes supérieures au capital investi. Non recommandés sans expérience avancée.</li>
+                  <li>• <strong className="text-[#C9D1D9]">Fonds communs à frais élevés (2 %+) : </strong> Les frais érodent les rendements de façon significative sur un horizon long.</li>
                 </ul>
               </div>
             </div>
           </section>
 
-          {/* ── Étape 5 — Plateformes ── */}
+          {/* ── Étape 5 : Plateformes ── */}
           <section id="etape-5" className="mb-16">
-            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 5 — Où ouvrir ton compte</h2>
+            <h2 className="text-3xl font-bold text-[#E6EDF3] mb-2">Étape 5 : Où ouvrir ton compte</h2>
             <p className="text-sm text-[#8B949E] mb-8">Les plateformes canadiennes et leurs différences réelles</p>
 
             <div className="prose">
@@ -580,11 +579,11 @@ export default function GuideInvestissementDebutant() {
 
                 {/* Robo-advisors */}
                 <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-6">
-                  <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">1. Robo-Advisors — Gestion automatisée</h3>
+                  <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">1. Robo-Advisors : Gestion automatisée</h3>
                   <p className="text-xs text-[#484F58] mb-4">Exemples : Wealthsimple Invest, Questwealth, BMO SmartFolio</p>
                   <div className="grid md:grid-cols-2 gap-4 text-xs mb-4">
                     <div>
-                      <p className="font-bold text-[#E6EDF3] mb-2">Comment ça fonctionne :</p>
+                      <p className="font-bold text-[#E6EDF3] mb-2">Comment ça fonctionne : </p>
                       <ul className="text-[#8B949E] space-y-1">
                         <li>• Questionnaire risque / objectifs</li>
                         <li>• Portfolio créé et géré automatiquement</li>
@@ -593,7 +592,7 @@ export default function GuideInvestissementDebutant() {
                       </ul>
                     </div>
                     <div>
-                      <p className="font-bold text-[#E6EDF3] mb-2">Pour qui :</p>
+                      <p className="font-bold text-[#E6EDF3] mb-2">Pour qui : </p>
                       <ul className="text-[#8B949E] space-y-1">
                         <li>• Débutants absolus</li>
                         <li>• Ceux qui préfèrent déléguer</li>
@@ -602,9 +601,9 @@ export default function GuideInvestissementDebutant() {
                     </div>
                   </div>
                   <div className="bg-[#0D1117] rounded-lg p-4 text-xs">
-                    <p className="font-bold text-[#E6EDF3] mb-2">Frais réels à prévoir :</p>
+                    <p className="font-bold text-[#E6EDF3] mb-2">Frais réels à prévoir : </p>
                     <ul className="text-[#8B949E] space-y-1">
-                      <li>• Wealthsimple Invest (robo) : <strong className="text-[#C9D1D9]">0,50 %/an</strong> sous 100 000 $ — <strong className="text-[#C9D1D9]">0,40 %/an</strong> au-dessus</li>
+                      <li>• Wealthsimple Invest (robo) : <strong className="text-[#C9D1D9]">0,50 %/an</strong> sous 100 000 $ : <strong className="text-[#C9D1D9]">0,40 %/an</strong> au-dessus</li>
                       <li>• Questwealth : 0,25 %/an (+ frais FNB internes ~0,20 %)</li>
                       <li>• BMO SmartFolio : 0,40–0,70 %/an selon solde</li>
                     </ul>
@@ -614,11 +613,11 @@ export default function GuideInvestissementDebutant() {
 
                 {/* Courtiers autonomes */}
                 <div className="bg-[#161B22] border border-[#21262D] rounded-xl p-6">
-                  <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">2. Courtiers Autonomes — Gestion manuelle (DIY)</h3>
+                  <h3 className="text-lg font-bold text-[#E6EDF3] mb-1">2. Courtiers Autonomes : Gestion manuelle (DIY)</h3>
                   <p className="text-xs text-[#484F58] mb-4">Exemples : Wealthsimple Trade, Questrade, Disnat (Desjardins), BNCD (Banque Nationale)</p>
                   <div className="grid md:grid-cols-2 gap-4 text-xs mb-4">
                     <div>
-                      <p className="font-bold text-[#E6EDF3] mb-2">Comment ça fonctionne :</p>
+                      <p className="font-bold text-[#E6EDF3] mb-2">Comment ça fonctionne : </p>
                       <ul className="text-[#8B949E] space-y-1">
                         <li>• Tu achètes toi-même les FNB ou actions</li>
                         <li>• Aucun conseil ni gestion automatique</li>
@@ -626,7 +625,7 @@ export default function GuideInvestissementDebutant() {
                       </ul>
                     </div>
                     <div>
-                      <p className="font-bold text-[#E6EDF3] mb-2">Pour qui :</p>
+                      <p className="font-bold text-[#E6EDF3] mb-2">Pour qui : </p>
                       <ul className="text-[#8B949E] space-y-1">
                         <li>• Investisseurs qui ont fait leurs recherches</li>
                         <li>• Acheteurs de FNB tout-en-un (1–2 transactions/mois)</li>
@@ -635,7 +634,7 @@ export default function GuideInvestissementDebutant() {
                     </div>
                   </div>
                   <div className="bg-[#0D1117] rounded-lg p-4 text-xs">
-                    <p className="font-bold text-[#E6EDF3] mb-2">Frais de transaction :</p>
+                    <p className="font-bold text-[#E6EDF3] mb-2">Frais de transaction : </p>
                     <ul className="text-[#8B949E] space-y-1">
                       <li>• Wealthsimple Trade : 0 $ pour titres canadiens</li>
                       <li>• Questrade : 0 $ pour achats de FNB, 4,95–9,95 $ pour ventes</li>
@@ -657,7 +656,7 @@ export default function GuideInvestissementDebutant() {
                   </p>
                   <p className="text-[10px] text-[#484F58]">
                     📌 Pour des décisions importantes (planification retraite, assurances, régimes de pension, successions),
-                    un planificateur financier agréé (Pl.Fin. / CFP) est le meilleur interlocuteur — indépendamment de la plateforme choisie.
+                    un planificateur financier agréé (Pl.Fin. / CFP) est le meilleur interlocuteur : indépendamment de la plateforme choisie.
                   </p>
                 </div>
 
@@ -680,7 +679,7 @@ export default function GuideInvestissementDebutant() {
                 },
                 {
                   q: "Quel FNB choisir pour débuter ?",
-                  a: "Observation courante chez débutants : FNB tout-en-un (VGRO ou XGRO si tolérance au risque élevée, VBAL ou XBAL si modérée). Un seul titre = diversification mondiale automatique + rééquilibrage inclus. Frais autour de 0,24 %/an. L'avantage principal : tu n'as pas à décider quoi acheter chaque mois — tu achètes toujours le même titre."
+                  a: "Observation courante chez débutants : FNB tout-en-un (VGRO ou XGRO si tolérance au risque élevée, VBAL ou XBAL si modérée). Un seul titre = diversification mondiale automatique + rééquilibrage inclus. Frais autour de 0,24 %/an. L'avantage principal : tu n'as pas à décider quoi acheter chaque mois : tu achètes toujours le même titre."
                 },
                 {
                   q: "Dois-je attendre le « bon moment » pour investir ?",
@@ -688,11 +687,11 @@ export default function GuideInvestissementDebutant() {
                 },
                 {
                   q: "Puis-je perdre tout mon argent avec des FNB ?",
-                  a: "Avec des FNB diversifiés mondiaux (ex : VGRO, qui détient des milliers d'entreprises dans des dizaines de pays), une perte totale nécessiterait un effondrement économique mondial complet — hautement improbable historiquement. Des baisses temporaires importantes (30–50 %) sont normales et se sont toutes récupérées à ce jour. La durée de détention est le facteur clé. Avec des actions individuelles ou des cryptomonnaies : oui, une perte totale est possible."
+                  a: "Avec des FNB diversifiés mondiaux (ex : VGRO, qui détient des milliers d'entreprises dans des dizaines de pays), une perte totale nécessiterait un effondrement économique mondial complet : hautement improbable historiquement. Des baisses temporaires importantes (30–50 %) sont normales et se sont toutes récupérées à ce jour. La durée de détention est le facteur clé. Avec des actions individuelles ou des cryptomonnaies : oui, une perte totale est possible."
                 },
                 {
-                  q: "Mon employeur offre un REER collectif — est-ce que je devrais y cotiser ?",
-                  a: "Si ton employeur verse une cotisation de contrepartie (matching), oui — c'est généralement la priorité absolue avant tout autre investissement. Un employeur qui verse 50 % de ta cotisation te donne un rendement immédiat de 50 % avant même que les marchés bougent. Vérifie les conditions (période de vesting, plafond de cotisation éligible) auprès de tes RH."
+                  q: "Mon employeur offre un REER collectif : est-ce que je devrais y cotiser ?",
+                  a: "Si ton employeur verse une cotisation de contrepartie (matching), oui : c'est généralement la priorité absolue avant tout autre investissement. Un employeur qui verse 50 % de ta cotisation te donne un rendement immédiat de 50 % avant même que les marchés bougent. Vérifie les conditions (période de vesting, plafond de cotisation éligible) auprès de tes RH."
                 },
                 {
                   q: "Quelle est la différence entre Wealthsimple Trade et Wealthsimple Invest ?",
@@ -700,7 +699,7 @@ export default function GuideInvestissementDebutant() {
                 },
                 {
                   q: "J'ai retiré 10 000 $ de mon CELI cette année. Puis-je les remettre ?",
-                  a: "Pas dans la même année civile, à moins d'avoir des droits de cotisation disponibles. Les 10 000 $ retirés seront ajoutés à tes droits disponibles le 1er janvier de l'année suivante. Re-cotiser avant sans avoir les droits entraîne une pénalité de 1 %/mois sur l'excédent — une erreur fréquente. Vérifie tes droits disponibles sur Mon dossier ARC (canada.ca)."
+                  a: "Pas dans la même année civile, à moins d'avoir des droits de cotisation disponibles. Les 10 000 $ retirés seront ajoutés à tes droits disponibles le 1er janvier de l'année suivante. Re-cotiser avant sans avoir les droits entraîne une pénalité de 1 %/mois sur l'excédent : une erreur fréquente. Vérifie tes droits disponibles sur Mon dossier ARC (canada.ca)."
                 },
               ].map((faq, i) => (
                 <div key={i} className="bg-[#161B22] border border-[#21262D] rounded-xl overflow-hidden">
@@ -731,13 +730,13 @@ export default function GuideInvestissementDebutant() {
               </p>
               <p className="text-[#C9D1D9]">
                 Ce guide t'a présenté les options couramment observées et les règles réelles qui les gouvernent.
-                Que tu choisisses CELI ou REER, FNB tout-en-un ou CPG, robo-advisor ou courtier autonome —
+                Que tu choisisses CELI ou REER, FNB tout-en-un ou CPG, robo-advisor ou courtier autonome,
                 l'important est de commencer de façon informée et cohérente avec ta situation.
               </p>
               <div className="bg-[#3DDC97]/10 border border-[#3DDC97]/30 rounded-xl p-6 my-8">
-                <p className="text-sm font-bold text-[#E6EDF3] mb-3">Prochaines étapes suggérées :</p>
+                <p className="text-sm font-bold text-[#E6EDF3] mb-3">Prochaines étapes suggérées : </p>
                 <ol className="text-xs text-[#8B949E] space-y-2 list-decimal list-inside">
-                  <li><Link href="/valeur-nette" className="text-[#3DDC97] hover:underline">Fais ton bilan financier</Link> — valeur nette, dettes, actifs</li>
+                  <li><Link href="/valeur-nette" className="text-[#3DDC97] hover:underline">Fais ton bilan financier</Link> : valeur nette, dettes, actifs</li>
                   <li><Link href="/estimateur-impot" className="text-[#3DDC97] hover:underline">Évalue ton économie REER selon ta province</Link></li>
                   <li><Link href="/calculateur-celi" className="text-[#3DDC97] hover:underline">Projette ta croissance CELI jusqu'à la retraite</Link></li>
                   <li><Link href="/celi-vs-reer" className="text-[#3DDC97] hover:underline">Compare CELI vs REER selon ta situation</Link></li>
@@ -746,7 +745,7 @@ export default function GuideInvestissementDebutant() {
               </div>
               <p className="text-[#C9D1D9]">
                 N'oublie pas : ce guide est informatif, pas prescriptif. Les montants, stratégies et choix présentés
-                reflètent ce qui est couramment observé — pas nécessairement ce qui conviendra à ta situation unique.
+                reflètent ce qui est couramment observé : pas nécessairement ce qui conviendra à ta situation unique.
               </p>
               <p className="text-[#C9D1D9] font-medium">Bonne chance dans ton parcours d'investissement. 🎯</p>
             </div>
@@ -767,7 +766,7 @@ export default function GuideInvestissementDebutant() {
               </AffiliateLink>
             </div>
             <p className="text-[10px] text-[#484F58] text-center mt-4">
-              Lien affilié — monportefeuille.ca reçoit une commission si tu ouvres un compte, sans frais pour toi.
+              Lien affilié : monportefeuille.ca reçoit une commission si tu ouvres un compte, sans frais pour toi.
             </p>
           </div>
 
