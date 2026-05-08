@@ -119,7 +119,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
 
             {/* Logo */}
             <Link href="/" className="flex items-center no-underline">
-              <img src="/logo.svg" alt="monportefeuille.ca" className="h-16 w-auto" />
+              <img src="/logo.svg" alt="monportefeuille.ca" className="h-16 w-auto" width="480" height="72" />
             </Link>
 
             {/* Desktop nav */}
