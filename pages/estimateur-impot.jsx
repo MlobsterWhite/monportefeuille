@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
 import ToolSchema from "../components/ToolSchema";
-import ShareButton from "../components/ShareButton";        
+import ShareButton from "../components/ShareButton";
+import Slider from "../components/Slider";
 import useSharedParams from "../hooks/useSharedParams";
 
 
@@ -136,42 +137,6 @@ function getMarginal(income, province) {
 const fmt = (n) => "$" + Math.abs(Math.round(n || 0)).toLocaleString("fr-CA");
 const pct = (n) => (n * 100).toFixed(1) + "%";
 
-// ─── Slider ───────────────────────────────────────────────────────────────────
-function Slider({ label, value, min, max, step, onChange, display }) {
-  const [editing, setEditing] = useState(false);
-  const [raw, setRaw] = useState("");
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-1.5">
-        <label className="text-xs text-[#8B949E]">{label}</label>
-        {editing ? (
-          <input type="number" autoFocus value={raw} min={min} max={max}
-            onChange={(e) => setRaw(e.target.value)}
-            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
-            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
-            className="w-28 bg-[#0D1117] border rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none"
-            style={{ borderColor: ACCENT }} />
-        ) : (
-          <span onClick={() => { setRaw(value); setEditing(true); }}
-            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer border-b border-dashed border-[#484F58]"
-            onMouseEnter={e => e.target.style.color = ACCENT}
-            onMouseLeave={e => e.target.style.color = "#E6EDF3"}>
-            {display}
-          </span>
-        )}
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 rounded-full cursor-pointer"
-        style={{ accentColor: ACCENT }} />
-      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
-        <span>{typeof min === "number" && min >= 1000 ? fmt(min) : min}</span>
-        <span>{typeof max === "number" && max >= 1000 ? fmt(max) : max}</span>
-      </div>
-    </div>
-  );
-}
-
 // ─── Number Input ─────────────────────────────────────────────────────────────
 function NumInput({ label, value, onChange, placeholder, max, note, highlight }) {
   return (
@@ -300,7 +265,7 @@ export default function EstimateurImpot() {
 
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
+            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">
               Estimateur d'Impôt Québec 2026
             </h1>
             <p className="text-sm text-[#8B949E] leading-relaxed">
@@ -386,7 +351,7 @@ export default function EstimateurImpot() {
                   </div>
                 </div>
 
-                <Slider label="Revenu annuel brut" value={revenu} min={15000} max={300000} step={1000} onChange={setRevenu} display={fmt(revenu)} />
+                <Slider label="Revenu annuel brut" value={revenu} min={15000} max={300000} step={1000} onChange={setRevenu} display={fmt(revenu)} color={ACCENT} />
               </div>
 
               {/* Déductions */}
@@ -639,4 +604,4 @@ export default function EstimateurImpot() {
       </div>
     </Layout>
   );
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

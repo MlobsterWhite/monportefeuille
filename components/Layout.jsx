@@ -59,7 +59,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
   return (
     <>
       <Head>
-        <title>{title} | monportefeuille.ca</title>
+        <title>{`${title} | monportefeuille.ca`}</title>
         <meta name="description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         {canonical && <link rel="canonical" href={canonical} />}
         {canonical && <meta property="og:url" content={canonical} />}

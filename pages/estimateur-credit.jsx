@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
 import ToolSchema from "../components/ToolSchema";
-import ShareButton from "../components/ShareButton";        
+import ShareButton from "../components/ShareButton";
+import Slider from "../components/Slider";
 import useSharedParams from "../hooks/useSharedParams";
 
 
@@ -63,31 +64,35 @@ function getScoreLabel(score) {
 // ─── Score gauge ──────────────────────────────────────────────────────────────
 function ScoreGauge({ score }) {
   const pct = (score - 300) / 600;
-  const W = 300, H = 160, cx = 150, cy = 150, r = 110;
+  // cy=150, r=110 → top of arc at y=40, endpoints at y=150.
+  // H=176 gives room for labels at y=172.
+  const W = 300, H = 176, cx = 150, cy = 150, r = 110;
   const startAngle = Math.PI;
-  const endAngle = 2 * Math.PI;
-  const angleRange = endAngle - startAngle;
-  const scoreAngle = startAngle + pct * angleRange;
-  const x1 = cx + r * Math.cos(startAngle);
+  const endAngle   = 2 * Math.PI;
+  const scoreAngle = startAngle + pct * (endAngle - startAngle);
+
+  const x1 = cx + r * Math.cos(startAngle);  // left  (40, 150)
   const y1 = cy + r * Math.sin(startAngle);
-  const x2 = cx + r * Math.cos(endAngle);
+  const x2 = cx + r * Math.cos(endAngle);    // right (260, 150)
   const y2 = cy + r * Math.sin(endAngle);
   const sx = cx + r * Math.cos(scoreAngle);
   const sy = cy + r * Math.sin(scoreAngle);
   const { color } = getScoreLabel(score);
 
+  // sweep=1 = clockwise in screen coords → goes through the TOP (upper arc).
+  // Fill spans at most 180° so large-arc is always 0.
   const trackD = `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`;
-  const fillD = `M ${x1} ${y1} A ${r} ${r} 0 ${pct > 0.5 ? 1 : 0} 1 ${sx} ${sy}`;
+  const fillD  = pct > 0 ? `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${sx} ${sy}` : null;
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: H }}>
       <path d={trackD} fill="none" stroke="#21262D" strokeWidth="14" strokeLinecap="round" />
-      <path d={fillD} fill="none" stroke={color} strokeWidth="14" strokeLinecap="round" />
+      {fillD && <path d={fillD} fill="none" stroke={color} strokeWidth="14" strokeLinecap="round" />}
       <circle cx={sx} cy={sy} r="8" fill={color} />
-      <text x={cx} y={cy - 10} textAnchor="middle" fontSize="42" fontWeight="600" fill={color} fontFamily="monospace">{score}</text>
-      <text x={cx} y={cy + 22} textAnchor="middle" fontSize="13" fill="#8B949E">{getScoreLabel(score).label}</text>
-      <text x={cx - r + 4} y={cy + 20} textAnchor="middle" fontSize="10" fill="#484F58">300</text>
-      <text x={cx + r - 4} y={cy + 20} textAnchor="middle" fontSize="10" fill="#484F58">900</text>
+      <text x={cx} y={cy - 14} textAnchor="middle" fontSize="42" fontWeight="600" fill={color} fontFamily="monospace">{score}</text>
+      <text x={cx} y={cy + 18} textAnchor="middle" fontSize="13" fill="#8B949E">{getScoreLabel(score).label}</text>
+      <text x={x1 + 4}  y={cy + 22} textAnchor="start" fontSize="10" fill="#484F58">300</text>
+      <text x={x2 - 4}  y={cy + 22} textAnchor="end"   fontSize="10" fill="#484F58">900</text>
     </svg>
   );
 }
@@ -108,44 +113,6 @@ function Select({ label, value, onChange, options, tooltip }) {
         className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-[#E6EDF3] text-sm focus:outline-none focus:border-[#3DDC97] transition-colors">
         {options.map(({ value: v, label: l }) => <option key={v} value={v}>{l}</option>)}
       </select>
-    </div>
-  );
-}
-
-// ─── Slider ───────────────────────────────────────────────────────────────────
-function Slider({ label, value, min, max, step, onChange, display, tooltip }) {
-  const [editing, setEditing] = useState(false);
-  const [raw, setRaw] = useState("");
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-1.5">
-        <div className="flex items-center gap-1.5">
-          <label className="text-xs text-[#8B949E]">{label}</label>
-          {tooltip && (
-            <Tooltip text={tooltip}>
-              <span className="text-[10px] text-[#484F58] border border-[#484F58] rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help">?</span>
-            </Tooltip>
-          )}
-        </div>
-        {editing ? (
-          <input type="number" autoFocus value={raw} min={min} max={max}
-            onChange={(e) => setRaw(e.target.value)}
-            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
-            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
-            className="w-20 bg-[#0D1117] border border-[#3DDC97] rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none" />
-        ) : (
-          <span onClick={() => { setRaw(value); setEditing(true); }}
-            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer hover:text-[#3DDC97] transition-colors border-b border-dashed border-[#484F58]">
-            {display}
-          </span>
-        )}
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[#3DDC97] h-1.5 rounded-full cursor-pointer" />
-      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
-        <span>{min}%</span><span>{max}%</span>
-      </div>
     </div>
   );
 }
@@ -214,7 +181,7 @@ export default function EstimateurCredit() {
           {/* Header */}
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
+            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">
               Estimateur de Cote de Crédit Canada
             </h1>
             <p className="text-sm text-[#8B949E] leading-relaxed">
@@ -285,7 +252,8 @@ export default function EstimateurCredit() {
               <Slider label="Utilisation du crédit"
                 tooltip="Pourcentage de votre limite de crédit utilisée. Idéalement moins de 30%. Ex: 1 500$ sur une limite de 5 000$ = 30%."
                 value={params.utilization} min={0} max={100} step={5}
-                onChange={set("utilization")} display={`${params.utilization}%`} />
+                onChange={set("utilization")} display={`${params.utilization}%`}
+                color="#3DDC97" minLabel="0%" maxLabel="100%" />
 
               <Select label="Ancienneté du crédit"
                 tooltip="Depuis combien de temps avez-vous votre plus ancien compte de crédit? Plus c'est long, mieux c'est."
@@ -422,84 +390,17 @@ export default function EstimateurCredit() {
             </div>
           )}
 
-          {/* ─── Guide Crédit ─── */}
-          <section className="mt-16 max-w-2xl mx-auto px-4 text-justify">
-            
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6">
-              Comment fonctionne la cote de crédit au Canada
-            </h2>
-            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
-              Votre cote de crédit (entre 300 et 900) reflète votre fiabilité financière selon les agences Equifax et TransUnion. Elle est calculée à partir de votre historique de paiement (35%), utilisation du crédit (30%), ancienneté des comptes (15%), types de crédit (10%) et nouvelles demandes (10%). Une cote de 720+ vous donne accès aux meilleurs taux hypothécaires et cartes de crédit premium. Une cote sous 650 peut entraîner des refus ou des taux d'intérêt beaucoup plus élevés. La bonne nouvelle : vous pouvez améliorer votre cote en 6-12 mois avec les bonnes stratégies.
-            </p>
-
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
-              Comment améliorer votre cote de crédit rapidement
-            </h2>
-            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
-              Payez TOUTES vos factures à temps — même un seul retard de 30+ jours peut faire chuter votre cote de 50-100 points. Gardez votre utilisation de crédit sous 30% de votre limite (idéalement sous 10%) — si votre limite totale est 10 000$, ne dépassez jamais 3 000$ de solde. Ne fermez pas vos vieilles cartes même si vous ne les utilisez plus (l'ancienneté aide). Évitez de demander trop de nouveaux crédits en peu de temps. Si vous avez des dettes, priorisez celles à taux d'intérêt élevé (cartes de crédit à 19-22%) avec la méthode avalanche, ou commencez par les plus petits soldes pour un effet de motivation rapide avec la méthode boule de neige.
-            </p>
-
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
-              Vérifier votre cote gratuitement sans impact
-            </h2>
-            <p className="text-sm text-[#8B949E] leading-relaxed mb-4">
-              Il existe deux types de vérifications : soft check (aucun impact) et hard check (baisse temporaire de 5-10 points). Quand VOUS vérifiez votre propre cote via Borrowell, Equifax ou TransUnion, c'est un soft check — vous pouvez vérifier aussi souvent que vous voulez. Quand un prêteur vérifie avant de vous accorder un crédit (hypothèque, carte de crédit, prêt auto), c'est un hard check qui apparaît dans votre dossier. Vérifiez votre cote au moins une fois par trimestre pour détecter les erreurs ou activités suspectes. C'est gratuit et ne nuit jamais à votre score.
-            </p>
-
-            <h2 className="text-2xl font-bold text-[#E6EDF3] mb-6 mt-12">
-              Questions fréquentes sur la cote de crédit
-            </h2>
-            
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
-                  Quelle est une bonne cote de crédit au Canada ?
-                </h3>
-                <p className="text-sm text-[#8B949E] leading-relaxed">
-                  300-579 : Très faible (refus fréquents) • 580-669 : Acceptable (taux élevés) • 670-739 : Bon (taux moyens) • 740-799 : Très bon (bons taux) • 800-900 : Excellent (meilleurs taux). La moyenne canadienne est environ 650. Pour les meilleurs taux hypothécaires et cartes premium, visez 720+.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
-                  Combien de temps faut-il pour reconstruire une mauvaise cote ?
-                </h3>
-                <p className="text-sm text-[#8B949E] leading-relaxed">
-                  Si votre cote a chuté à cause de retards de paiement ou dettes envoyées aux collections, comptez 6-12 mois pour voir une amélioration significative (+50-100 points) si vous adoptez de bonnes habitudes immédiatement. Les éléments négatifs restent dans votre dossier 6-7 ans, mais leur impact diminue avec le temps. Une faillite reste 6-7 ans selon la province. La clé : commencer maintenant et être patient.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
-                  Fermer une carte de crédit nuit-il à ma cote ?
-                </h3>
-                <p className="text-sm text-[#8B949E] leading-relaxed">
-                  Oui, surtout si c'est une vieille carte. Fermer un compte réduit votre crédit disponible total (augmente votre taux d'utilisation) et peut réduire l'ancienneté moyenne de vos comptes. Exemple : si vous avez 10 000$ de limite totale et fermez une carte de 3 000$, vos autres soldes représentent maintenant un pourcentage plus élevé de votre nouveau total (7 000$). Gardez vos vieilles cartes ouvertes même si vous ne les utilisez plus, ou utilisez-les pour un petit achat mensuel automatique.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-base font-bold text-[#E6EDF3] mb-2">
-                  Ma cote est basse, puis-je quand même obtenir une hypothèque ?
-                </h3>
-                <p className="text-sm text-[#8B949E] leading-relaxed">
-                  Oui, mais vos options sont limitées et les taux seront plus élevés. Avec une cote sous 650, les prêteurs traditionnels (banques) peuvent refuser ou exiger une mise de fonds plus élevée (20%+). Vous pourriez vous tourner vers les prêteurs B ou privés qui acceptent des cotes plus basses, mais avec des taux 2-4% plus élevés. Sur un prêt de 400 000$, ça représente 600-800$/mois de plus. Mieux vaut prendre 6-12 mois pour améliorer votre cote AVANT de demander une hypothèque — utilisez notre <a href="/calculateur-hypotheque" className="text-[#3DDC97] underline">calculateur hypothécaire</a> pour voir l'impact du taux sur vos paiements.
-                </p>
-              </div>
+          {/* ─── CTA Guide ─── */}
+          <a href="/guide-cote-de-credit-canada"
+            className="mt-8 rounded-2xl p-6 flex items-center justify-between gap-4 no-underline transition-colors group"
+            style={{ background: "#161B22", border: "1px solid #21262D" }}>
+            <div>
+              <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">Aller plus loin</div>
+              <div className="text-sm font-medium text-[#E6EDF3] mb-1">Guide complet — Cote de crédit au Canada</div>
+              <div className="text-xs text-[#8B949E]">8 chapitres · FAQ · 7 habitudes concrètes · ~12 min</div>
             </div>
-
-            <div className="mt-12 p-6 bg-[#161B22] border border-[#21262D] rounded-xl">
-              <h3 className="text-base font-bold text-[#E6EDF3] mb-3">
-                💡 Outils connexes pour améliorer vos finances
-              </h3>
-              <ul className="text-sm text-[#8B949E] leading-relaxed space-y-2">
-                <li>→ <a href="/calculateur-hypotheque" className="text-[#3DDC97] underline">Calculateur hypothèque</a> : Voir l'impact de votre cote sur vos paiements</li>
-                <li>→ <a href="/valeur-nette" className="text-[#3DDC97] underline">Calculateur valeur nette</a> : Portrait financier complet</li>
-                <li>→ <a href="/calculateur-reer" className="text-[#3DDC97] underline">Calculateur REER</a> : Épargne automatique améliore crédit</li>
-              </ul>
-            </div>
-
-          </section>
+            <div className="text-[#3DDC97] text-lg flex-shrink-0 group-hover:translate-x-1 transition-transform">→</div>
+          </a>
 
           {/* CTA */}
           <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
@@ -534,4 +435,4 @@ export default function EstimateurCredit() {
       </div>
     </Layout>
   );
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

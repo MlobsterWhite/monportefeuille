@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
-import ShareButton from "../components/ShareButton";        
+import ShareButton from "../components/ShareButton";
+import Slider from "../components/Slider";
 import useSharedParams from "../hooks/useSharedParams";
 
 const ACCENT = "#60A5FA";
@@ -23,39 +24,6 @@ function calcPrime(type, province, age, annees, franchise) {
   };
 }
 
-function Slider({ label, value, min, max, step, onChange, display }) {
-  const [editing, setEditing] = useState(false);
-  const [raw, setRaw] = useState("");
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-1.5">
-        <label className="text-xs text-[#8B949E]">{label}</label>
-        {editing ? (
-          <input type="number" autoFocus value={raw} min={min} max={max}
-            onChange={(e) => setRaw(e.target.value)}
-            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
-            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
-            className="w-20 bg-[#0D1117] border rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none"
-            style={{ borderColor: ACCENT }} />
-        ) : (
-          <span onClick={() => { setRaw(value); setEditing(true); }}
-            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer border-b border-dashed border-[#484F58]"
-            onMouseEnter={e => e.target.style.color = ACCENT}
-            onMouseLeave={e => e.target.style.color = "#E6EDF3"}>
-            {display}
-          </span>
-        )}
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 rounded-full cursor-pointer"
-        style={{ accentColor: ACCENT }} />
-      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
-        <span>{min}</span><span>{max}</span>
-      </div>
-    </div>
-  );
-}
 
 const DEFAULT = { type: "auto", province: "QC", age: 35, annees: 5, franchise: 500 };
 
@@ -184,10 +152,10 @@ export default function EstimateurAssurance() {
                 </select>
               </div>
 
-              <Slider label="Votre âge" value={age} min={16} max={75} step={1} onChange={setAge} display={age + " ans"} />
+              <Slider label="Votre âge" value={age} min={16} max={75} step={1} onChange={setAge} display={age + " ans"} color={ACCENT} />
 
               {type === "auto" && (
-                <Slider label="Années sans réclamation" value={annees} min={0} max={15} step={1} onChange={setAnnees} display={annees + " ans"} />
+                <Slider label="Années sans réclamation" value={annees} min={0} max={15} step={1} onChange={setAnnees} display={annees + " ans"} color={ACCENT} />
               )}
 
               {/* Franchise */}
@@ -320,3 +288,4 @@ export default function EstimateurAssurance() {
     </Layout>
   );
 }
+      

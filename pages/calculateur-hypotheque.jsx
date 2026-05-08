@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import Layout from "../components/Layout";
 import AffiliateLink from "../components/AffiliateLink";
 import ToolSchema from "../components/ToolSchema";
-import ShareButton from "../components/ShareButton";        
+import ShareButton from "../components/ShareButton";
+import Slider from "../components/Slider";
 import useSharedParams from "../hooks/useSharedParams";
 
 const ACCENT = "#FB923C";
@@ -71,41 +72,6 @@ function simuler(pret, tauxAnnuel, paiement, nbParAn) {
 }
 
 // ─── Composants ───────────────────────────────────────────────────────────────
-function Slider({ label, value, min, max, step, onChange, display }) {
-  const [editing, setEditing] = useState(false);
-  const [raw, setRaw] = useState("");
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-1.5">
-        <label className="text-xs text-[#8B949E]">{label}</label>
-        {editing ? (
-          <input type="number" autoFocus value={raw} min={min} max={max}
-            onChange={(e) => setRaw(e.target.value)}
-            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
-            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
-            className="w-32 bg-[#0D1117] border rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none"
-            style={{ borderColor: ACCENT }} />
-        ) : (
-          <span onClick={() => { setRaw(value); setEditing(true); }}
-            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer border-b border-dashed border-[#484F58]"
-            onMouseEnter={e => e.target.style.color = ACCENT}
-            onMouseLeave={e => e.target.style.color = "#E6EDF3"}>
-            {display}
-          </span>
-        )}
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 rounded-full cursor-pointer"
-        style={{ accentColor: ACCENT }} />
-      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
-        <span>{typeof min === "number" && min >= 1000 ? fmt(min) : min}</span>
-        <span>{typeof max === "number" && max >= 1000 ? fmt(max) : max}</span>
-      </div>
-    </div>
-  );
-}
-
 function AmortChart({ principal, tauxAnnuel, amort }) {
   const W = 500, H = 160, PX = 8, PY = 12;
   const r = tauxAnnuel / 100 / 12;
@@ -215,7 +181,7 @@ export default function CalculateurHypotheque() {
 
           <div className="mb-6">
             <div className="text-[10px] text-[#484F58] uppercase tracking-widest mb-1">monportefeuille.ca</div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-2 mt-3">
+            <h1 style={{ fontFamily: "'DM Mono', monospace" }} className="text-3xl font-medium text-[#E6EDF3]">
               Calculateur Hypothèque Canada 2026
             </h1>
             <p className="text-sm text-[#8B949E] leading-relaxed">
@@ -285,7 +251,7 @@ export default function CalculateurHypotheque() {
           {/* Inputs */}
           {tab === "inputs" && (
             <div className="rounded-2xl p-5 space-y-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
-              <Slider label="Prix d'achat" value={prix} min={100000} max={2000000} step={5000} onChange={setPrix} display={fmtFull(prix)} />
+              <Slider label="Prix d'achat" value={prix} min={100000} max={2000000} step={5000} onChange={setPrix} display={fmtFull(prix)} color={ACCENT} />
 
               {/* Mise de fonds $ / % */}
               <div className="bg-[#0D1117] rounded-xl p-4 border border-[#21262D] space-y-3">
@@ -304,16 +270,16 @@ export default function CalculateurHypotheque() {
                 </div>
                 {miseMode === "$" ? (
                   <Slider label="Montant" value={mise} min={0} max={prix * 0.5} step={1000}
-                    onChange={setMise} display={`${fmtFull(mise)} (${misePct}%)`} />
+                    onChange={setMise} display={`${fmtFull(mise)} (${misePct}%)`} color={ACCENT} />
                 ) : (
                   <Slider label="Pourcentage" value={parseFloat(misePct)} min={0} max={50} step={0.5}
                     onChange={(v) => setMise(Math.round(prix * v / 100))}
-                    display={`${parseFloat(misePct).toFixed(1)}% → ${fmtFull(mise)}`} />
+                    display={`${parseFloat(misePct).toFixed(1)}% → ${fmtFull(mise)}`} color={ACCENT} />
                 )}
               </div>
 
-              <Slider label="Taux d'intérêt" value={taux} min={1} max={12} step={0.05} onChange={setTaux} display={taux.toFixed(2) + "%"} />
-              <Slider label="Amortissement" value={amort} min={5} max={30} step={1} onChange={setAmort} display={amort + " ans"} />
+              <Slider label="Taux d'intérêt" value={taux} min={1} max={12} step={0.05} onChange={setTaux} display={taux.toFixed(2) + "%"} color={ACCENT} />
+              <Slider label="Amortissement" value={amort} min={5} max={30} step={1} onChange={setAmort} display={amort + " ans"} color={ACCENT} />
 
               <div>
                 <label className="text-xs text-[#8B949E] block mb-2">Fréquence de paiement</label>
@@ -554,4 +520,4 @@ export default function CalculateurHypotheque() {
       </div>
     </Layout>
   );
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

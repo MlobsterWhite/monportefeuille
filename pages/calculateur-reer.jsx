@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import Layout from "../components/Layout";
 import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
-import ShareButton from "../components/ShareButton";        
+import ShareButton from "../components/ShareButton";
+import Slider from "../components/Slider";
 import useSharedParams from "../hooks/useSharedParams";
 
 // ─── Tax Data 2025 ───────────────────────────────────────────────────────────
@@ -200,41 +201,6 @@ function AreaChart({ dataBase, dataReinvest, showReinvest, maxVal }) {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const fmt = (n) => "$" + Math.round(n || 0).toLocaleString("fr-CA");
 const pct = (n) => (n * 100).toFixed(1) + "%";
-
-function Slider({ label, value, min, max, step, onChange, display }) {
-  const [editing, setEditing] = useState(false);
-  const [raw, setRaw] = useState("");
-
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-1.5">
-        <label className="text-xs text-[#8B949E]">{label}</label>
-        {editing ? (
-          <input
-            type="number" autoFocus value={raw} min={min} max={max}
-            onChange={(e) => setRaw(e.target.value)}
-            onBlur={() => { const v = Math.min(max, Math.max(min, Number(raw) || value)); onChange(v); setEditing(false); }}
-            onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditing(false); }}
-            className="w-28 bg-[#0D1117] border border-[#F0A500] rounded px-2 py-0.5 text-xs text-[#E6EDF3] text-right focus:outline-none"
-          />
-        ) : (
-          <span onClick={() => { setRaw(value); setEditing(true); }}
-            className="text-xs font-medium text-[#E6EDF3] tabular-nums cursor-pointer hover:text-[#F0A500] transition-colors border-b border-dashed border-[#484F58]"
-            title="Cliquez pour modifier">
-            {display}
-          </span>
-        )}
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[#F0A500] h-1.5 rounded-full cursor-pointer" />
-      <div className="flex justify-between text-[10px] text-[#484F58] mt-1">
-        <span>{typeof min === "number" && min >= 1000 ? fmt(min) : min}</span>
-        <span>{typeof max === "number" && max >= 1000 ? fmt(max) : max}</span>
-      </div>
-    </div>
-  );
-}
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function CalculateurREER() {
