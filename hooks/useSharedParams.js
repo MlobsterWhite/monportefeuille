@@ -41,5 +41,8 @@ export default function useSharedParams(paramConfig) {
         page: window.location.pathname,
       });
     }
-  }, []); // Execute seulement au montage
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Intentionnel : paramConfig change de référence à chaque rendu du parent,
+  // mais les paramètres URL ne doivent être lus qu'une seule fois au montage initial.
+  }, []);
 }

@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import CookieConsent from "./CookieConsent";
 
 const OUTILS = [
@@ -52,17 +53,65 @@ const OUTILS = [
 ];
 
 export default function Layout({ children, title = "Mon Portefeuille", description, canonical }) {
+  const router = useRouter();
+  const BASE_URL = "https://monportefeuille.ca";
+  // Canonical explicite ou construit depuis le path (sans query string, sans trailing slash)
+  const is404 = router.pathname === "/404";
+  const canonicalUrl = canonical || (is404 ? null : BASE_URL + (router.asPath === "/" ? "" : router.asPath.split("?")[0]));
+
   const [outilsOpen, setOutilsOpen] = useState(false);
   const [guidesOpen, setGuidesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const outilsRef = useRef(null);
+  const guidesRef = useRef(null);
+  const navRef = useRef(null);
+
+  // Fermer un dropdown si le focus sort du conteneur parent
+  function handleDropdownBlur(ref, setter) {
+    return (e) => {
+      if (ref.current && !ref.current.contains(e.relatedTarget)) {
+        setter(false);
+      }
+    };
+  }
+
+  // Fermer le menu mobile au clic/tap en dehors de la nav
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (mobileOpen && navRef.current && !navRef.current.contains(e.target)) {
+        setMobileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [mobileOpen]);
+
   return (
     <>
+      {/* Skip navigation — visible uniquement au focus clavier (WCAG 2.4.1) */}
+      <a
+        href="#main-content"
+        className="
+          sr-only focus:not-sr-only
+          focus:fixed focus:top-4 focus:left-4 focus:z-[9999]
+          focus:bg-[#F0A500] focus:text-[#0D1117] focus:font-bold
+          focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm
+          focus:shadow-xl focus:outline-none
+        "
+      >
+        Aller au contenu principal
+      </a>
+
       <Head>
         <title>{`${title} | monportefeuille.ca`}</title>
         <meta name="description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
-        {canonical && <link rel="canonical" href={canonical} />}
-        {canonical && <meta property="og:url" content={canonical} />}
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+        {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
         <meta property="og:title" content={`${title} | monportefeuille.ca`} />
         <meta property="og:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         <meta property="og:type" content="website" />
@@ -71,10 +120,12 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         <meta property="og:image" content="https://monportefeuille.ca/og-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="monportefeuille.ca — Outils financiers gratuits pour Canadiens" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} | monportefeuille.ca`} />
         <meta name="twitter:description" content={description || "Outils financiers interactifs pour Canadiens — crédit, épargne, investissement."} />
         <meta name="twitter:image" content="https://monportefeuille.ca/og-image.png" />
+        <meta name="twitter:image:alt" content="monportefeuille.ca — Outils financiers gratuits pour Canadiens" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Schema.org Organization */}
@@ -114,7 +165,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
       <div className="min-h-screen bg-[#0D1117] text-[#E6EDF3]" style={{ fontFamily: "var(--font-dm-sans, 'Helvetica Neue', sans-serif)" }}>
 
         {/* Nav */}
-        <nav className="border-b border-[#21262D] sticky top-0 bg-[#0D1117]/95 backdrop-blur-md z-50">
+        <nav ref={navRef} className="border-b border-[#21262D] sticky top-0 bg-[#0D1117]/95 backdrop-blur-md z-50">
           <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-[60px]">
 
             {/* Logo */}
@@ -126,10 +177,9 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
             <div className="hidden md:flex items-center gap-1">
 
               {/* Outils dropdown */}
-              <div className="relative">
+              <div className="relative" ref={outilsRef} onBlur={handleDropdownBlur(outilsRef, setOutilsOpen)}>
                 <button
                   onClick={() => setOutilsOpen(!outilsOpen)}
-                  onBlur={() => setTimeout(() => setOutilsOpen(false), 150)}
                   className="flex items-center gap-1.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22]"
                 >
                   Outils
@@ -162,10 +212,9 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
               </div>
 
               {/* Guides dropdown */}
-              <div className="relative">
+              <div className="relative" ref={guidesRef} onBlur={handleDropdownBlur(guidesRef, setGuidesOpen)}>
                 <button
                   onClick={() => setGuidesOpen(!guidesOpen)}
-                  onBlur={() => setTimeout(() => setGuidesOpen(false), 150)}
                   className="flex items-center gap-1.5 text-xs text-[#8B949E] hover:text-[#E6EDF3] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#161B22]"
                 >
                   Guides
@@ -286,7 +335,7 @@ export default function Layout({ children, title = "Mon Portefeuille", descripti
         </nav>
 
         {/* Page content */}
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
 
         {/* Footer */}
         <footer className="border-t border-[#21262D] py-8 text-center">

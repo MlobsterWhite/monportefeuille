@@ -6,22 +6,22 @@ const CONSENT_KEY = "mp_cookie_consent"; // "accepted" | "declined"
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const stored = localStorage.getItem(CONSENT_KEY);
-    if (!stored) {
-      // Small delay so it doesn't flash on first paint
-      const t = setTimeout(() => setVisible(true), 800);
-      return () => clearTimeout(t);
-    }
-    if (stored === "accepted") enableAnalytics();
-  }, []);
-
   function enableAnalytics() {
     if (typeof window === "undefined" || !window.gtag) return;
     window.gtag("consent", "update", {
       analytics_storage: "granted",
     });
   }
+
+  useEffect(() => {
+    const stored = localStorage.getItem(CONSENT_KEY);
+    if (!stored) {
+      // Small delay so it doesn't flash on first paint
+      const t = setTimeout(() => setVisible(true), 300);
+      return () => clearTimeout(t);
+    }
+    if (stored === "accepted") enableAnalytics();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleAccept() {
     localStorage.setItem(CONSENT_KEY, "accepted");

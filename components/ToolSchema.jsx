@@ -15,7 +15,21 @@ export default function ToolSchema({ name, description, url }) {
           },
           "operatingSystem": "Web Browser",
           "description": description,
-          "url": url
+          "url": url,
+          "inLanguage": "fr-CA",
+          "availableLanguage": {
+            "@type": "Language",
+            "name": "French",
+            "alternateName": "fr-CA"
+          },
+          "audience": {
+            "@type": "Audience",
+            "audienceType": "Investors and savers",
+            "geographicArea": {
+              "@type": "Country",
+              "name": "Canada"
+            }
+          }
         })
       }}
     />

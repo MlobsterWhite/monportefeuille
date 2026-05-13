@@ -104,9 +104,11 @@ const faqs = [
   },
   {
     q: "Par où commencer si je suis débutant?",
+    // schemaText : version texte brut pour JSON-LD (la version JSX avec <Link> est dans a)
+    schemaText: "Commencez par l'estimateur de crédit — gratuit, 2 minutes. Ensuite ouvrez un CELI avec notre calculateur et contribuez ce que vous pouvez chaque mois, même 50$.",
     a: (
       <>
-        Commencez par <Link href="/estimateur-credit" className="text-[#3DDC97] underline hover:text-[#3DDC97]/80">l'estimateur de crédit</Link> — gratuit, 2 minutes. 
+        Commencez par <Link href="/estimateur-credit" className="text-[#3DDC97] underline hover:text-[#3DDC97]/80">l'estimateur de crédit</Link> — gratuit, 2 minutes.
         Ensuite ouvrez un <Link href="/calculateur-celi" className="text-[#3DDC97] underline hover:text-[#3DDC97]/80">CELI avec notre calculateur</Link> et contribuez ce que vous pouvez chaque mois, même 50$.
       </>
     )
@@ -116,6 +118,21 @@ const faqs = [
     a: "Le CELI vous permet de retirer sans payer d'impôt. Le REER réduit votre revenu imposable maintenant, mais vous payez de l'impôt au retrait. En général, le CELI est recommandé en premier."
   },
 ];
+
+// Schéma FAQPage généré dynamiquement depuis le tableau faqs (source unique de vérité)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((item) => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      // Utiliser schemaText si disponible (JSX), sinon a directement (string)
+      "text": item.schemaText || (typeof item.a === "string" ? item.a : ""),
+    },
+  })),
+};
 
 function FAQ() {
   const [open, setOpen] = useState(null);
@@ -158,57 +175,10 @@ export default function Home() {
       description="Calculateurs REER, CELI, hypothèque, impôt, crédit et assurance. Des outils financiers gratuits et interactifs pour prendre de meilleures décisions au Canada."
       canonical="https://monportefeuille.ca"
     >
-      {/* Schema FAQPage */}
+      {/* Schema FAQPage — généré dynamiquement depuis le tableau faqs (source unique de vérité) */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Est-ce que ces outils sont vraiment gratuits?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Oui, tous les outils sur monportefeuille.ca sont 100% gratuits. Le site est financé par des liens affiliés — si vous ouvrez un compte via nos liens, on reçoit une petite commission, sans coût supplémentaire pour vous."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Vérifier ma cote de crédit affecte-t-il mon score?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Non. La vérification est douce (soft check) et n'a aucun impact sur votre cote. Vous pouvez vérifier aussi souvent que vous voulez."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Wealthsimple est-il sécuritaire?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Oui. Wealthsimple est membre de l'OCRI et les comptes sont protégés par le FCPE jusqu'à 1 million de dollars."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Par où commencer si je suis débutant?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Commencez par l'estimateur de crédit — gratuit, 2 minutes. Ensuite ouvrez un CELI et contribuez ce que vous pouvez chaque mois, même 50$."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Quelle est la différence entre un CELI et un REER?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Le CELI vous permet de retirer sans payer d'impôt. Le REER réduit votre revenu imposable maintenant, mais vous payez de l'impôt au retrait. En général, le CELI est recommandé en premier."
-                }
-              }
-            ]
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
       <div className="max-w-5xl mx-auto px-6 pb-24">

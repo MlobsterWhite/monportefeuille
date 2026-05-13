@@ -7,8 +7,8 @@ export default function AffiliateLink({ href, partner, children, className }) {
   };
 
   return (
-    
-      <a href={href}
+    <a
+      href={href}
       target="_blank"
       rel="noopener noreferrer sponsored"
       onClick={handleClick}

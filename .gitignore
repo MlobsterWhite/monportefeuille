@@ -46,3 +46,7 @@ Local/
 
 # Fichiers locaux privés
 finance-dashboard.html
+
+# Sitemaps et robots générés par next-sitemap à chaque build — ne pas committer
+public/sitemap*.xml
+public/robots.txt

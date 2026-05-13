@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import Layout from "../components/Layout";
 import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
@@ -521,7 +522,7 @@ export default function CELIvsREER() {
               <AffiliateLink href="https://www.wealthsimple.com/invite/EDVQ3W" partner="wealthsimple-reer" className="inline-block bg-[#60A5FA] text-white font-medium rounded-xl px-6 py-3 text-sm text-center hover:opacity-90 transition-opacity no-underline">Ouvrir un REER →</AffiliateLink>
             </div>
             <p className="text-xs text-[#484F58] text-center mt-4 leading-relaxed">
-              Note: Liens affiliés — monportefeuille.ca reçoit une commission si vous ouvrez un compte, sans frais pour vous.<br/>Voir notre <a href="/a-propos" className="text-[#60A5FA] hover:underline">politique de transparence</a>.
+              Note: Liens affiliés — monportefeuille.ca reçoit une commission si vous ouvrez un compte, sans frais pour vous.<br/>Voir notre <Link href="/a-propos" className="text-[#60A5FA] hover:underline">politique de transparence</Link>.
             </p>
           </div>
 
@@ -537,7 +538,7 @@ export default function CELIvsREER() {
             </div>
           </div>
 
-        </div>
+                </div>
       </div>
     </Layout>
   );

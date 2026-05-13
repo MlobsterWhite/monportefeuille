@@ -5,14 +5,7 @@ export default function Document() {
     <Html lang="fr-CA">
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        {/* Google Analytics GA4 — G-9MMLY6FHFR */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9MMLY6FHFR" />
-        <script dangerouslySetInnerHTML={{__html:`
-          window.dataLayer=window.dataLayer||[];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js',new Date());
-          gtag('config','G-9MMLY6FHFR');
-        `}} />
+        {/* GA4 géré exclusivement dans components/Layout.jsx (consent mode + afterInteractive) */}
       </Head>
       <body className="antialiased">
         <Main />

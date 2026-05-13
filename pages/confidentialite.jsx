@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Layout from "../components/Layout";
 
 const dateStr = "6 mai 2026";
@@ -101,14 +102,14 @@ export default function Confidentialite() {
               <h2 className="text-base font-medium text-[#E6EDF3] mb-2">Contact</h2>
               <p className="text-xs text-[#8B949E] leading-relaxed">
                 Pour toute question concernant cette politique de confidentialité, contactez-nous via la page{" "}
-                <a href="/nous-joindre" className="text-[#60A5FA] hover:underline">Nous joindre</a>.
+                <Link href="/nous-joindre" className="text-[#60A5FA] hover:underline">Nous joindre</Link>.
               </p>
             </div>
 
             <div className="text-center pt-4">
-              <a href="/mentions-legales" className="text-xs text-[#484F58] hover:text-[#8B949E] underline">
+              <Link href="/mentions-legales" className="text-xs text-[#484F58] hover:text-[#8B949E] underline">
                 Voir aussi : Mentions légales et Conditions d'utilisation →
-              </a>
+              </Link>
             </div>
 
           </div>

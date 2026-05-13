@@ -19,10 +19,10 @@ const dmMono = DM_Mono({
 
 export default function App({ Component, pageProps }) {
   return (
-    <main className={`${dmSans.variable} ${dmMono.variable}`}>
+    <div className={`${dmSans.variable} ${dmMono.variable}`}>
       <Component {...pageProps} />
       <Analytics />
       <SpeedInsights />
-    </main>
+    </div>
   );
 }

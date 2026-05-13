@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Layout from "../components/Layout";
 import ToolSchema from "../components/ToolSchema";
 import AffiliateLink from "../components/AffiliateLink";
@@ -24,12 +24,12 @@ function AreaChart({ dataPoints, maxVal }) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 140 }}>
       <defs>
-        <linearGradient id="celiGrad" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="celiGradSmall" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#F0A500" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#F0A500" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d={area} fill="url(#celiGrad)" />
+      <path d={area} fill="url(#celiGradSmall)" />
       <path d={path} fill="none" stroke="#F0A500" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
@@ -60,6 +60,7 @@ export default function CalculateurCELI() {
   const [returnRate, setReturnRate] = useState(7);
   const [tab, setTab] = useState("inputs");
   const [celiRoom, setCeliRoom] = useState(0);
+  const heroResultRef = useRef(null);
 
   useSharedParams({
     currentBalance: { setter: setCurrentBalance, parser: Number },
@@ -299,7 +300,13 @@ export default function CalculateurCELI() {
 
               {/* Voir résultats + Reset */}
               <button
-                onClick={() => { setTab("results"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                onClick={() => {
+                  setTab("results");
+                  // Attendre le rendu du nouvel onglet avant de scroller vers le résultat héros
+                  setTimeout(() => {
+                    heroResultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 50);
+                }}
                 className="w-full bg-[#F0A500] text-[#0D1117] font-bold rounded-xl py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors"
               >
                 Voir mes résultats ↑
@@ -319,7 +326,7 @@ export default function CalculateurCELI() {
 
           {/* Results Tab */}
           {tab === "results" && (
-            <div className="space-y-3">
+            <div className="space-y-3" ref={heroResultRef}>
               <div className="rounded-2xl p-5" style={{ background: "#161B22", border: "1px solid #21262D" }}>
                 <div className="text-xs text-[#8B949E] uppercase tracking-widest mb-4">Projection détaillée</div>
                 <div className="space-y-3">
@@ -382,7 +389,7 @@ export default function CalculateurCELI() {
           )}
 
           {/* CTA */}
-          <div className="mt-4 bg-[#3B82F6]/06 border border-[#3B82F6]/25 rounded-2xl p-8 text-center">
+          <div className="mt-4 bg-[#F0A500]/06 border border-[#F0A500]/25 rounded-2xl p-8 text-center">
             <div className="text-3xl mb-3">📈</div>
             <h3 className="text-xl font-bold text-[#E6EDF3] mb-2">Ouvrez votre CELI chez Wealthsimple</h3>
             <p className="text-sm text-[#8B949E] mb-6 leading-relaxed max-w-sm mx-auto">
@@ -391,7 +398,7 @@ export default function CalculateurCELI() {
             <AffiliateLink
               href="https://www.wealthsimple.com/invite/EDVQ3W"
               partner="wealthsimple-celi"
-              className="inline-block bg-[#3B82F6] text-white font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#2563EB] transition-colors no-underline"
+              className="inline-block bg-[#F0A500] text-[#0D1117] font-bold rounded-xl px-8 py-3.5 text-sm tracking-wide hover:bg-[#D4940A] transition-colors no-underline"
             >
               Ouvrir un CELI chez Wealthsimple →
             </AffiliateLink>
