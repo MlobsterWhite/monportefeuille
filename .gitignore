@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Dossier d'instructions privées
 Local/
+
+# Fichiers locaux privés
+finance-dashboard.html
